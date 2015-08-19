@@ -3,6 +3,7 @@ var camera, controls, scene, renderer;
 var pickingData = [], pickingTexture, pickingScene;
 var objects = [];
 var highlightBox;
+var defaultMaterial
 
 var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3( 10, 10, 10 );
@@ -61,21 +62,28 @@ function init() {
 
   }
 
+
+
   // var geom = new THREE.BoxGeometry( 1, 1, 1 );
-  var geom = new THREE.TorusKnotGeometry(1.0453, 1.2825, 64, 2, 1.61, 15, 1)
+
+
 
   var color = new THREE.Color();
 
   var matrix = new THREE.Matrix4();
   var quaternion = new THREE.Quaternion();
 
-  for ( var i = 0; i < 100; i ++ ) {
+  for ( var i = 0; i < dreamTestData.length; i ++ ) {
+
+
+    // var geom = new THREE.TorusKnotGeometry(5, 200, 59, 2, 5.1, 7.83, 5.25)
+    var geom = THREE.geometryChooser(dreamTestData[i].sentiment)
 
     // sets the position for each mesh
     var position = new THREE.Vector3();
-    position.x = Math.random() * 10000 - 5000;
-    position.y = Math.random() * 6000 - 3000;
-    position.z = Math.random() * 8000 - 4000;
+    position.x = Math.random() * 20 - 10;
+    position.y = Math.random() * 12 - 6;
+    position.z = Math.random() * 16 - 8;
 
     // sets the rotation for each mesh
     var rotation = new THREE.Euler();
@@ -85,9 +93,9 @@ function init() {
 
     // sets the scale for each mesh
     var scale = new THREE.Vector3();
-    scale.x = Math.random() * 200 + 100;
-    scale.y = Math.random() * 200 + 100;
-    scale.z = Math.random() * 200 + 100;
+    scale.x =  0.01;
+    scale.y =  0.01;
+    scale.z =  0.01;
 
     quaternion.setFromEuler( rotation, false );
 
@@ -116,15 +124,13 @@ function init() {
 
   }
 
-  console.log(scene)
-
   var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
   scene.add( drawnObject );
 
   pickingScene.add( new THREE.Mesh( pickingGeometry, pickingMaterial ) );
 
   highlightBox = new THREE.Mesh(
-      new THREE.BoxGeometry( 1, 1, 1 ),
+      new THREE.BoxGeometry( 0.1, 0.1, 0.1 ),
       new THREE.MeshLambertMaterial( { color: 0xffff00 }
   ) );
   scene.add( highlightBox );
@@ -200,6 +206,18 @@ function pick() {
   }
 
 }
+
+
+
+  //////////////////////////////////////////////////////////////////////////////////
+  //    add the montains            //
+  //////////////////////////////////////////////////////////////////////////////////
+  THREEx.MontainsArena.defaultMaterial  = THREE.MeshPhongMaterial
+
+  var mesh  = new THREEx.MontainsArena()
+  mesh.scale.multiplyScalar(30)
+  scene.add(mesh)
+
 
 function render() {
 
