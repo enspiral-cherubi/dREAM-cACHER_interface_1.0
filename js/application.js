@@ -1,74 +1,202 @@
-function Environment (opts) {
-  this.timer = null,
-  this.onRenderFunctions = [],
-  this.scene = new THREE.Scene(),
-  this.camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight, 0.1,30000),
-  this.camera.position.z = 1500,
-  this.renderer = new THREE.WebGLRenderer({ antialias : true }),
-  this.renderer.setSize(window.innerWidth, window.innerHeight),
-  this.projector = new THREE.Projector()
-}
+var container, stats;
+var camera, controls, scene, renderer;
+var pickingData = [], pickingTexture, pickingScene;
+var objects = [];
+var highlightBox;
 
-Environment.prototype.appendScene = function () {
-  $(document.body).append(renderer.domElement);
-}
+var mouse = new THREE.Vector2();
+var offset = new THREE.Vector3( 10, 10, 10 );
 
-// User interaction
-Environment.prototype.addListeners = function () {
-  window.addEventListener( 'mousedown', this.openDream, false );
-  window.addEventListener( 'resize', this.onWindowResize, false );
-}
+init();
+animate();
 
-Environment.prototype.openDream = function () {
-  var vector = new THREE.Vector3()
-  var raycaster = new THREE.Raycaster()
-  vector.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 ) // z = 0.5 important!
-  vector.unproject( camera )
-  raycaster.set( camera.position, vector.sub( camera.position ).normalize() )
-  var intersects = raycaster.intersectObjects( catCubes )
-  if (intersects.length > 0) {
-    var intersection = intersects[ 0 ],
-    obj = intersection.object
-    var url = obj['userData']['url']
-    window.location.replace(url)
+function init() {
+
+  container = document.getElementById( "container" );
+
+  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+  camera.position.z = 1000;
+
+  controls = new THREE.TrackballControls( camera );
+  controls.rotateSpeed = 1.0;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
+  controls.noZoom = false;
+  controls.noPan = false;
+  controls.staticMoving = true;
+  controls.dynamicDampingFactor = 0.3;
+
+  scene = new THREE.Scene();
+
+  pickingScene = new THREE.Scene();
+  pickingTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
+  pickingTexture.minFilter = THREE.LinearFilter;
+  pickingTexture.generateMipmaps = false;
+
+  scene.add( new THREE.AmbientLight( 0x555555 ) );
+
+  var light = new THREE.SpotLight( 0xffffff, 1.5 );
+  light.position.set( 0, 500, 2000 );
+  scene.add( light );
+
+  var geometry = new THREE.Geometry(),
+  pickingGeometry = new THREE.Geometry(),
+  pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } ),
+  defaultMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
+
+  function applyVertexColors( g, c ) {
+
+    g.faces.forEach( function( f ) {
+
+        var n = ( f instanceof THREE.Face3 ) ? 3 : 4;
+
+        for( var j = 0; j < n; j ++ ) {
+
+            f.vertexColors[ j ] = c;
+
+        }
+
+    } );
+
   }
+
+  var geom = new THREE.BoxGeometry( 1, 1, 1 );
+  var color = new THREE.Color();
+
+  var matrix = new THREE.Matrix4();
+  var quaternion = new THREE.Quaternion();
+
+  for ( var i = 0; i < 5000; i ++ ) {
+
+    var position = new THREE.Vector3();
+    position.x = Math.random() * 10000 - 5000;
+    position.y = Math.random() * 6000 - 3000;
+    position.z = Math.random() * 8000 - 4000;
+
+    var rotation = new THREE.Euler();
+    rotation.x = Math.random() * 2 * Math.PI;
+    rotation.y = Math.random() * 2 * Math.PI;
+    rotation.z = Math.random() * 2 * Math.PI;
+
+    var scale = new THREE.Vector3();
+    scale.x = Math.random() * 200 + 100;
+    scale.y = Math.random() * 200 + 100;
+    scale.z = Math.random() * 200 + 100;
+
+    quaternion.setFromEuler( rotation, false );
+    matrix.compose( position, quaternion, scale );
+
+    // give the geom's vertices a random color, to be displayed
+
+    applyVertexColors( geom, color.setHex( Math.random() * 0xffffff ) );
+
+    geometry.merge( geom, matrix );
+
+    // give the geom's vertices a color corresponding to the "id"
+
+    applyVertexColors( geom, color.setHex( i ) );
+
+    pickingGeometry.merge( geom, matrix );
+
+    pickingData[ i ] = {
+
+        position: position,
+        rotation: rotation,
+        scale: scale
+
+    };
+
+  }
+
+  var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
+  scene.add( drawnObject );
+
+  pickingScene.add( new THREE.Mesh( pickingGeometry, pickingMaterial ) );
+
+  highlightBox = new THREE.Mesh(
+      new THREE.BoxGeometry( 1, 1, 1 ),
+      new THREE.MeshLambertMaterial( { color: 0xffff00 }
+  ) );
+  scene.add( highlightBox );
+
+  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  renderer.setClearColor( 0xffffff );
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.sortObjects = false;
+  container.appendChild( renderer.domElement );
+
+  stats = new Stats();
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.top = '0px';
+  container.appendChild( stats.domElement );
+
+  renderer.domElement.addEventListener( 'mousemove', onMouseMove );
+
 }
 
-Environment.prototype.render = function () {
-  var time = Date.now()/1000 // increments 1/second
-  requestAnimationFrame(this.render)
-  this.onRenderFunctions.forEach(function (onRenderFunction) {
-    onRenderFunction(time)
-  })
-  this.renderer.render(this.scene, this.camera)
+//
+
+function onMouseMove( e ) {
+
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+
 }
 
+function animate() {
 
-var environment = new Environment()
+  requestAnimationFrame( animate );
 
-var logfuck = function() {
-  console.log('fuck')
+  render();
+  stats.update();
+
 }
 
-environment.onRenderFunctions.push(logfuck)
+function pick() {
 
-geometry = new THREE.TorusKnotGeometry(104.53, 128.25, 64, 2, 1.61, 15, 1);
-material = new THREE.MeshNormalMaterial({shading: THREE.FlatShading});
-mesh = new THREE.Mesh(geometry, material);
-environment.scene.add(mesh);
+  //render the picking scene off-screen
 
-environment.render()
+  renderer.render( pickingScene, camera, pickingTexture );
 
+  //create buffer for reading single pixel
+  var pixelBuffer = new Uint8Array( 4 );
 
+  //read the pixel under the mouse from the texture
+  renderer.readRenderTargetPixels(pickingTexture, mouse.x, pickingTexture.height - mouse.y, 1, 1, pixelBuffer);
 
+  //interpret the pixel as an ID
 
+  var id = ( pixelBuffer[0] << 16 ) | ( pixelBuffer[1] << 8 ) | ( pixelBuffer[2] );
+  var data = pickingData[ id ];
 
+  if ( data) {
 
+    //move our highlightBox so that it surrounds the picked object
 
+    if ( data.position && data.rotation && data.scale ){
 
+      highlightBox.position.copy( data.position );
+      highlightBox.rotation.copy( data.rotation );
+      highlightBox.scale.copy( data.scale ).add( offset );
+      highlightBox.visible = true;
 
+    }
 
+  } else {
 
+      highlightBox.visible = false;
 
+  }
 
+}
 
+function render() {
+
+  controls.update();
+
+  pick();
+
+  renderer.render( scene, camera );
+
+}
