@@ -2,6 +2,7 @@ var container, stats;
 var camera, controls, scene, renderer;
 var pickingData = [], pickingTexture, pickingScene;
 var objects = [];
+var onRenderFcts = []
 var highlightBox;
 var defaultMaterial
 
@@ -9,7 +10,7 @@ var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3( 10, 10, 10 );
 
 init();
-animate();
+// animate();
 
 function init() {
 
@@ -26,6 +27,8 @@ function init() {
   controls.noPan = false;
   controls.staticMoving = true;
   controls.dynamicDampingFactor = 0.3;
+
+  onRenderFcts.push(controls.update)
 
   scene = new THREE.Scene();
 
@@ -160,14 +163,14 @@ function onMouseMove( e ) {
 
 }
 
-function animate() {
+// function animate() {
 
-  requestAnimationFrame( animate );
+//   requestAnimationFrame( animate );
 
-  render();
-  stats.update();
+//   render();
+//   stats.update();
 
-}
+// }
 
 function pick() {
 
@@ -207,24 +210,71 @@ function pick() {
 
 }
 
+onRenderFcts.push(pick)
 
 
-  //////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////
   //    add the montains            //
-  //////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////
   THREEx.MontainsArena.defaultMaterial  = THREE.MeshPhongMaterial
 
   var mesh  = new THREEx.MontainsArena()
   mesh.scale.multiplyScalar(30)
   scene.add(mesh)
 
+  ////////////////////////////////////
+  //    add the starField           //
+  ////////////////////////////////////
 
-function render() {
+  var starField   = new THREEx.DayNight.StarField()
+  scene.add( starField.object3d )
 
-  controls.update();
 
-  pick();
+  var sunAngle = -1/6*Math.PI*2;
+  var sunAngle = -3/6*Math.PI*2;
+  onRenderFcts.push(function(delta, now){
+    var dayDuration = 10  // nb seconds for a full day cycle
+    sunAngle  += delta/dayDuration * Math.PI*2
+  })
 
+
+//////////////////////////////////////////////////////////////////////////////////
+//    render the scene            //
+//////////////////////////////////////////////////////////////////////////////////
+onRenderFcts.push(function(){
   renderer.render( scene, camera );
+})
 
-}
+var lastTimeMsec = null
+  requestAnimationFrame(function animate(nowMsec){
+    // keep looping
+    requestAnimationFrame( animate );
+    // measure time
+    lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
+    var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+    lastTimeMsec  = nowMsec
+    // call each update function
+    onRenderFcts.forEach(function(onRenderFct){
+      onRenderFct(deltaMsec/1000, nowMsec/1000)
+    })
+
+  })
+
+// function render() {
+
+//   controls.update();
+
+//   pick();
+
+//   lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
+//   var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+//   lastTimeMsec  = nowMsec
+//   // call each update function
+//   onRenderFcts.forEach(function(onRenderFct){
+//     onRenderFct(deltaMsec/1000, nowMsec/1000)
+//   })
+
+//   renderer.render( scene, camera );
+
+// }
