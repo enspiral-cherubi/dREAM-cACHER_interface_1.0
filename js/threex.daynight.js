@@ -21,7 +21,7 @@ THREEx.DayNight.currentPhase  = function(sunAngle){
 
 THREEx.DayNight.StarField = function(){
   // create the mesh
-  var texture = THREE.ImageUtils.loadTexture('./images/galaxy_starfield.png')
+  var texture = THREE.ImageUtils.loadTexture('./images/Michael_Shribakxxx.png')
   var material  = new THREE.MeshBasicMaterial({
     map : texture,
     side  : THREE.BackSide,
@@ -31,18 +31,24 @@ THREEx.DayNight.StarField = function(){
   var mesh  = new THREE.Mesh(geometry, material)
   this.object3d = mesh
 
+
+  //MODIFIED FOR CONTINUOUS STARFIELD
   this.update = function(sunAngle){
     var phase = THREEx.DayNight.currentPhase(sunAngle)
-    if( phase === 'day' ){
-      mesh.visible  = false
-    }else if( phase === 'twilight' ){
-      mesh.visible  = false
-    } else {
+    // if( phase === 'day' ){
+    //   // mesh.visible  = false
+    //   mesh.visible  = true
+    // }else if( phase === 'twilight' ){
+    //   // mesh.visible  = false
+    //   mesh.visible  = true
+    // } else {
       mesh.visible  = true
       mesh.rotation.y = sunAngle / 5
-            var intensity = Math.abs(Math.sin(sunAngle))
+            // var intensity = Math.abs(Math.sin(sunAngle))
+            var intensity = 1
+
             material.color.setRGB(intensity, intensity, intensity)
-    }
+    // }
   }
 }
 

@@ -17,7 +17,7 @@ function init() {
   container = document.getElementById( "container" );
 
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
-  camera.position.z = 1000;
+  camera.position.z = 100;
 
   controls = new THREE.TrackballControls( camera );
   controls.rotateSpeed = 1.0;
@@ -47,7 +47,7 @@ function init() {
   pickingGeometry = new THREE.Geometry(),
   pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } ),
   // defaultMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
-  defaultMaterial = new THREE.MeshNormalMaterial({shading: THREE.FlatShading, wireframe: false, wireframeLinewidth: 1})
+  defaultMaterial = new THREE.MeshNormalMaterial({shading: THREE.FlatShading, wireframe: true, wireframeLinewidth: 2})
 
   function applyVertexColors( g, c ) {
 
@@ -84,9 +84,9 @@ function init() {
 
     // sets the position for each mesh
     var position = new THREE.Vector3();
-    position.x = Math.random() * 20 - 10;
-    position.y = Math.random() * 12 - 6;
-    position.z = Math.random() * 16 - 8;
+    position.x = Math.random() * 80 - 40;
+    position.y = Math.random() * 10 - 5;
+    position.z = Math.random() * 80 - 40;
 
     // sets the rotation for each mesh
     var rotation = new THREE.Euler();
@@ -126,6 +126,28 @@ function init() {
     };
 
   }
+
+   // begining position
+  var sunAngle = -1/6*Math.PI*2;
+  // the day duraction in seconds
+  var dayDuration = 20
+  // then you periodically update it
+  onRenderFcts.push(function(delta, now){
+      sunAngle    += delta/dayDuration * Math.PI*2
+  })
+
+  console.log(scene.children)
+
+  ////////////////////////////////////
+  //    add the starField           //
+  ////////////////////////////////////
+
+  var starField   = new THREEx.DayNight.StarField()
+  scene.add( starField.object3d )
+  onRenderFcts.push(function() {
+    starField.update(sunAngle)
+  })
+
 
   var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
   scene.add( drawnObject );
@@ -212,31 +234,6 @@ function pick() {
 
 onRenderFcts.push(pick)
 
-
-
-  ////////////////////////////////////
-  //    add the montains            //
-  ////////////////////////////////////
-  THREEx.MontainsArena.defaultMaterial  = THREE.MeshPhongMaterial
-
-  var mesh  = new THREEx.MontainsArena()
-  mesh.scale.multiplyScalar(30)
-  scene.add(mesh)
-
-  ////////////////////////////////////
-  //    add the starField           //
-  ////////////////////////////////////
-
-  var starField   = new THREEx.DayNight.StarField()
-  scene.add( starField.object3d )
-
-
-  var sunAngle = -1/6*Math.PI*2;
-  var sunAngle = -3/6*Math.PI*2;
-  onRenderFcts.push(function(delta, now){
-    var dayDuration = 10  // nb seconds for a full day cycle
-    sunAngle  += delta/dayDuration * Math.PI*2
-  })
 
 
 //////////////////////////////////////////////////////////////////////////////////
