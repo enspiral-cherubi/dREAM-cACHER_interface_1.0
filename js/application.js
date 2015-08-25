@@ -1,4 +1,5 @@
 var container, stats;
+var matricies = []
 var camera, controls, scene, renderer;
 var pickingData = [], pickingTexture, pickingScene;
 var objects = [];
@@ -8,6 +9,14 @@ var defaultMaterial
 
 var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3( 10, 10, 10 );
+
+defaultMaterial = new THREEx.NoiseShaderMaterial()
+
+onRenderFcts.push(function (delta, now) {
+  // defaultMaterial.uniforms[ "time" ].value += delta/10
+  defaultMaterial.uniforms[ "offset" ].value.x += delta/8
+  // defaultMaterial.uniforms[ "scale" ].value.x += delta/10
+})
 
 init();
 // animate();
@@ -32,6 +41,7 @@ function init() {
 
   scene = new THREE.Scene();
 
+  // this is all for creating an offscene environment
   pickingScene = new THREE.Scene();
   pickingTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
   pickingTexture.minFilter = THREE.LinearFilter;
@@ -43,11 +53,10 @@ function init() {
   light.position.set( 0, 500, 2000 );
   scene.add( light );
 
-  var geometry = new THREE.Geometry(),
-  pickingGeometry = new THREE.Geometry(),
-  pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } ),
-  // defaultMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
-  defaultMaterial = new THREE.MeshNormalMaterial({shading: THREE.FlatShading, wireframe: true, wireframeLinewidth: 2})
+  var geometry = new THREE.Geometry()
+  pickingGeometry = new THREE.Geometry()
+  pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } )
+  // defaultMaterial = new THREE.MeshNormalMaterial({shading: THREE.FlatShading, wireframe: false, wireframeLinewidth: 2})
 
   function applyVertexColors( g, c ) {
 
@@ -65,21 +74,14 @@ function init() {
 
   }
 
-
-
-  // var geom = new THREE.BoxGeometry( 1, 1, 1 );
-
-
-
   var color = new THREE.Color();
-
-  var matrix = new THREE.Matrix4();
   var quaternion = new THREE.Quaternion();
+  var matrix = new THREE.Matrix4();
+
 
   for ( var i = 0; i < dreamTestData.length; i ++ ) {
 
 
-    // var geom = new THREE.TorusKnotGeometry(5, 200, 59, 2, 5.1, 7.83, 5.25)
     var geom = THREE.geometryChooser(dreamTestData[i].sentiment)
 
     // sets the position for each mesh
@@ -105,9 +107,7 @@ function init() {
     // the matrix has the position, scale, and rotation of the object
     matrix.compose( position, quaternion, scale );
 
-    // give the geom's vertices a random color, to be displayed
-
-    // applyVertexColors( geom, color.setHex( Math.random() * 0xffffff ) );
+    matricies.push(matrix)
 
     geometry.merge( geom, matrix );
 
@@ -127,27 +127,7 @@ function init() {
 
   }
 
-   // begining position
-  var sunAngle = -1/6*Math.PI*2;
-  // the day duraction in seconds
-  var dayDuration = 20
-  // then you periodically update it
-  onRenderFcts.push(function(delta, now){
-      sunAngle    += delta/dayDuration * Math.PI*2
-  })
-
-  console.log(scene.children)
-
-  ////////////////////////////////////
-  //    add the starField           //
-  ////////////////////////////////////
-
-  var starField   = new THREEx.DayNight.StarField()
-  scene.add( starField.object3d )
-  onRenderFcts.push(function() {
-    starField.update(sunAngle)
-  })
-
+  createStarField()
 
   var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
   scene.add( drawnObject );
@@ -167,10 +147,6 @@ function init() {
   renderer.sortObjects = false;
   container.appendChild( renderer.domElement );
 
-  stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.top = '0px';
-  container.appendChild( stats.domElement );
 
   renderer.domElement.addEventListener( 'mousemove', onMouseMove );
 
@@ -185,19 +161,10 @@ function onMouseMove( e ) {
 
 }
 
-// function animate() {
-
-//   requestAnimationFrame( animate );
-
-//   render();
-//   stats.update();
-
-// }
 
 function pick() {
 
   //render the picking scene off-screen
-
   renderer.render( pickingScene, camera, pickingTexture );
 
   //create buffer for reading single pixel
