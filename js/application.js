@@ -14,7 +14,7 @@ defaultMaterial = new THREEx.NoiseShaderMaterial()
 
 onRenderFcts.push(function (delta, now) {
   // defaultMaterial.uniforms[ "time" ].value += delta/10
-  defaultMaterial.uniforms[ "offset" ].value.x += delta/8
+  defaultMaterial.uniforms[ "offset" ].value.x += delta/1
   // defaultMaterial.uniforms[ "scale" ].value.x += delta/10
 })
 
