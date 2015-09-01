@@ -1,5 +1,4 @@
 var container, stats;
-var matricies = []
 var camera, controls, scene, renderer;
 var pickingData = [], pickingTexture, pickingScene;
 var objects = [];
@@ -10,8 +9,9 @@ var defaultMaterial
 var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3( 10, 10, 10 );
 
-defaultMaterial = new THREEx.NoiseShaderMaterial()
+/////////////////////////// set up marbled texture for objects ///////////////
 
+defaultMaterial = new THREEx.NoiseShaderMaterial()
 onRenderFcts.push(function (delta, now) {
   // defaultMaterial.uniforms[ "time" ].value += delta/10
   defaultMaterial.uniforms[ "offset" ].value.x += delta/1
@@ -19,14 +19,17 @@ onRenderFcts.push(function (delta, now) {
 })
 
 init();
-// animate();
 
 function init() {
 
   container = document.getElementById( "container" );
 
+  /////////////////////////// set up camera /////////////////////////////
+
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
   camera.position.z = 100;
+
+  /////////////////////////// set up controls /////////////////////////////
 
   controls = new THREE.TrackballControls( camera );
   controls.rotateSpeed = 1.0;
@@ -39,24 +42,29 @@ function init() {
 
   onRenderFcts.push(controls.update)
 
+  /////////////////////////// set up scene /////////////////////////////
+
   scene = new THREE.Scene();
 
-  // this is all for creating an offscene environment
+  ///////////////////// set up off-screen scene /////////////////////////////
+
   pickingScene = new THREE.Scene();
   pickingTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
   pickingTexture.minFilter = THREE.LinearFilter;
   pickingTexture.generateMipmaps = false;
 
-  scene.add( new THREE.AmbientLight( 0x555555 ) );
+  ///////////////////// set up lights /////////////////////////////
+  // not needed for current materials
 
-  var light = new THREE.SpotLight( 0xffffff, 1.5 );
-  light.position.set( 0, 500, 2000 );
-  scene.add( light );
+  // scene.add( new THREE.AmbientLight( 0x555555 ) );
+
+  // var light = new THREE.SpotLight( 0xffffff, 1.5 );
+  // light.position.set( 0, 500, 2000 );
+  // scene.add( light );
 
   var geometry = new THREE.Geometry()
   pickingGeometry = new THREE.Geometry()
   pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } )
-  // defaultMaterial = new THREE.MeshNormalMaterial({shading: THREE.FlatShading, wireframe: false, wireframeLinewidth: 2})
 
   function applyVertexColors( g, c ) {
 
@@ -74,13 +82,18 @@ function init() {
 
   }
 
+  ///////////////////// create the sky ////////////////////////
+
+  createStarField()
+
+  ///////////////////// create the dream objects ////////////////////////
+
   var color = new THREE.Color();
   var quaternion = new THREE.Quaternion();
   var matrix = new THREE.Matrix4();
 
 
   for ( var i = 0; i < dreamTestData.length; i ++ ) {
-
 
     var geom = THREE.geometryChooser(dreamTestData[i].sentiment)
 
@@ -107,8 +120,7 @@ function init() {
     // the matrix has the position, scale, and rotation of the object
     matrix.compose( position, quaternion, scale );
 
-    matricies.push(matrix)
-
+    // merge each geometry into the one 'master' geometry
     geometry.merge( geom, matrix );
 
     // give the geom's vertices a color corresponding to the "id"
@@ -118,19 +130,16 @@ function init() {
     pickingGeometry.merge( geom, matrix );
 
     pickingData[ i ] = {
-
         position: position,
         rotation: rotation,
         scale: scale
-
-    };
-
+    }
   }
-
-  createStarField()
 
   var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
   scene.add( drawnObject );
+
+  console.log ( drawnObject )
 
   pickingScene.add( new THREE.Mesh( pickingGeometry, pickingMaterial ) );
 
@@ -147,12 +156,10 @@ function init() {
   renderer.sortObjects = false;
   container.appendChild( renderer.domElement );
 
-
   renderer.domElement.addEventListener( 'mousemove', onMouseMove );
 
 }
 
-//
 
 function onMouseMove( e ) {
 
@@ -201,44 +208,24 @@ function pick() {
 
 onRenderFcts.push(pick)
 
-
-
-//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //    render the scene            //
-//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 onRenderFcts.push(function(){
   renderer.render( scene, camera );
 })
 
 var lastTimeMsec = null
-  requestAnimationFrame(function animate(nowMsec){
-    // keep looping
-    requestAnimationFrame( animate );
-    // measure time
-    lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
-    var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-    lastTimeMsec  = nowMsec
-    // call each update function
-    onRenderFcts.forEach(function(onRenderFct){
-      onRenderFct(deltaMsec/1000, nowMsec/1000)
-    })
-
+requestAnimationFrame(function animate(nowMsec){
+  // keep looping
+  requestAnimationFrame( animate );
+  // measure time
+  lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
+  var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+  lastTimeMsec  = nowMsec
+  // call each update function
+  onRenderFcts.forEach(function(onRenderFct){
+    onRenderFct(deltaMsec/1000, nowMsec/1000)
   })
 
-// function render() {
-
-//   controls.update();
-
-//   pick();
-
-//   lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
-//   var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-//   lastTimeMsec  = nowMsec
-//   // call each update function
-//   onRenderFcts.forEach(function(onRenderFct){
-//     onRenderFct(deltaMsec/1000, nowMsec/1000)
-//   })
-
-//   renderer.render( scene, camera );
-
-// }
+})
