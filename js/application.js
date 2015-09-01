@@ -136,6 +136,7 @@ function init() {
     }
   }
 
+  // drawnObject is all of the dream objects merged together together
   var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
   scene.add( drawnObject );
 
