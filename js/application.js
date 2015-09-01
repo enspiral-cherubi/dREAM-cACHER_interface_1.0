@@ -1,74 +1,232 @@
-function Environment (opts) {
-  this.timer = null,
-  this.onRenderFunctions = [],
-  this.scene = new THREE.Scene(),
-  this.camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight, 0.1,30000),
-  this.camera.position.z = 1500,
-  this.renderer = new THREE.WebGLRenderer({ antialias : true }),
-  this.renderer.setSize(window.innerWidth, window.innerHeight),
-  this.projector = new THREE.Projector()
-}
+var container, stats;
+var camera, controls, scene, renderer;
+var pickingData = [], pickingTexture, pickingScene;
+var objects = [];
+var onRenderFcts = []
+var highlightBox;
+var defaultMaterial
 
-Environment.prototype.appendScene = function () {
-  $(document.body).append(renderer.domElement);
-}
+var mouse = new THREE.Vector2();
+var offset = new THREE.Vector3( 10, 10, 10 );
 
-// User interaction
-Environment.prototype.addListeners = function () {
-  window.addEventListener( 'mousedown', this.openDream, false );
-  window.addEventListener( 'resize', this.onWindowResize, false );
-}
+/////////////////////////// set up marbled texture for objects ///////////////
 
-Environment.prototype.openDream = function () {
-  var vector = new THREE.Vector3()
-  var raycaster = new THREE.Raycaster()
-  vector.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 ) // z = 0.5 important!
-  vector.unproject( camera )
-  raycaster.set( camera.position, vector.sub( camera.position ).normalize() )
-  var intersects = raycaster.intersectObjects( catCubes )
-  if (intersects.length > 0) {
-    var intersection = intersects[ 0 ],
-    obj = intersection.object
-    var url = obj['userData']['url']
-    window.location.replace(url)
+defaultMaterial = new THREEx.NoiseShaderMaterial()
+onRenderFcts.push(function (delta, now) {
+  // defaultMaterial.uniforms[ "time" ].value += delta/10
+  defaultMaterial.uniforms[ "offset" ].value.x += delta/1
+  // defaultMaterial.uniforms[ "scale" ].value.x += delta/10
+})
+
+init();
+
+function init() {
+
+  container = document.getElementById( "container" );
+
+  /////////////////////////// set up camera /////////////////////////////
+
+  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+  camera.position.z = 100;
+
+  /////////////////////////// set up controls /////////////////////////////
+
+  controls = new THREE.TrackballControls( camera );
+  controls.rotateSpeed = 1.0;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
+  controls.noZoom = false;
+  controls.noPan = false;
+  controls.staticMoving = true;
+  controls.dynamicDampingFactor = 0.3;
+
+  onRenderFcts.push(controls.update)
+
+  /////////////////////////// set up scene /////////////////////////////
+
+  scene = new THREE.Scene();
+
+  ///////////////////// set up off-screen scene /////////////////////////////
+
+  pickingScene = new THREE.Scene();
+  pickingTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
+  pickingTexture.minFilter = THREE.LinearFilter;
+  pickingTexture.generateMipmaps = false;
+
+  ///////////////////// set up lights /////////////////////////////
+  // not needed for current materials
+
+  // scene.add( new THREE.AmbientLight( 0x555555 ) );
+
+  // var light = new THREE.SpotLight( 0xffffff, 1.5 );
+  // light.position.set( 0, 500, 2000 );
+  // scene.add( light );
+
+  var geometry = new THREE.Geometry()
+  pickingGeometry = new THREE.Geometry()
+  pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } )
+
+  function applyVertexColors( g, c ) {
+
+    g.faces.forEach( function( f ) {
+
+        var n = ( f instanceof THREE.Face3 ) ? 3 : 4;
+
+        for( var j = 0; j < n; j ++ ) {
+
+            f.vertexColors[ j ] = c;
+
+        }
+
+    } );
+
   }
+
+  ///////////////////// create the sky ////////////////////////
+
+  createStarField()
+
+  ///////////////////// create the dream objects ////////////////////////
+
+  var color = new THREE.Color();
+  var quaternion = new THREE.Quaternion();
+  var matrix = new THREE.Matrix4();
+
+
+  for ( var i = 0; i < dreamTestData.length; i ++ ) {
+
+    var geom = THREE.geometryChooser(dreamTestData[i].sentiment)
+
+    // sets the position for each mesh
+    var position = new THREE.Vector3();
+    position.x = Math.random() * 80 - 40;
+    position.y = Math.random() * 10 - 5;
+    position.z = Math.random() * 80 - 40;
+
+    // sets the rotation for each mesh
+    var rotation = new THREE.Euler();
+    rotation.x = Math.random() * 2 * Math.PI;
+    rotation.y = Math.random() * 2 * Math.PI;
+    rotation.z = Math.random() * 2 * Math.PI;
+
+    // sets the scale for each mesh
+    var scale = new THREE.Vector3();
+    scale.x =  0.01;
+    scale.y =  0.01;
+    scale.z =  0.01;
+
+    quaternion.setFromEuler( rotation, false );
+
+    // the matrix has the position, scale, and rotation of the object
+    matrix.compose( position, quaternion, scale );
+
+    // merge each geometry into the one 'master' geometry
+    geometry.merge( geom, matrix );
+
+    // give the geom's vertices a color corresponding to the "id"
+
+    applyVertexColors( geom, color.setHex( i ) );
+
+    pickingGeometry.merge( geom, matrix );
+
+    pickingData[ i ] = {
+        position: position,
+        rotation: rotation,
+        scale: scale
+    }
+  }
+
+  // drawnObject is all of the dream objects merged together together
+  var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
+  scene.add( drawnObject );
+
+  console.log ( drawnObject )
+
+  pickingScene.add( new THREE.Mesh( pickingGeometry, pickingMaterial ) );
+
+  highlightBox = new THREE.Mesh(
+      new THREE.BoxGeometry( 0.1, 0.1, 0.1 ),
+      new THREE.MeshLambertMaterial( { color: 0xffff00 }
+  ) );
+  scene.add( highlightBox );
+
+  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  renderer.setClearColor( 0xffffff );
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.sortObjects = false;
+  container.appendChild( renderer.domElement );
+
+  renderer.domElement.addEventListener( 'mousemove', onMouseMove );
+
 }
 
-Environment.prototype.render = function () {
-  var time = Date.now()/1000 // increments 1/second
-  requestAnimationFrame(this.render)
-  this.onRenderFunctions.forEach(function (onRenderFunction) {
-    onRenderFunction(time)
+
+function onMouseMove( e ) {
+
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+
+}
+
+
+function pick() {
+
+  //render the picking scene off-screen
+  renderer.render( pickingScene, camera, pickingTexture );
+
+  //create buffer for reading single pixel
+  var pixelBuffer = new Uint8Array( 4 );
+
+  //read the pixel under the mouse from the texture
+  renderer.readRenderTargetPixels(pickingTexture, mouse.x, pickingTexture.height - mouse.y, 1, 1, pixelBuffer);
+
+  //interpret the pixel as an ID
+
+  var id = ( pixelBuffer[0] << 16 ) | ( pixelBuffer[1] << 8 ) | ( pixelBuffer[2] );
+  var data = pickingData[ id ];
+
+  if ( data) {
+
+    //move our highlightBox so that it surrounds the picked object
+
+    if ( data.position && data.rotation && data.scale ){
+
+      highlightBox.position.copy( data.position );
+      highlightBox.rotation.copy( data.rotation );
+      highlightBox.scale.copy( data.scale ).add( offset );
+      highlightBox.visible = true;
+
+    }
+
+  } else {
+
+      highlightBox.visible = false;
+
+  }
+
+}
+
+onRenderFcts.push(pick)
+
+//////////////////////////////////////////////////////////////////////////////
+//    render the scene            //
+//////////////////////////////////////////////////////////////////////////////
+onRenderFcts.push(function(){
+  renderer.render( scene, camera );
+})
+
+var lastTimeMsec = null
+requestAnimationFrame(function animate(nowMsec){
+  // keep looping
+  requestAnimationFrame( animate );
+  // measure time
+  lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
+  var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+  lastTimeMsec  = nowMsec
+  // call each update function
+  onRenderFcts.forEach(function(onRenderFct){
+    onRenderFct(deltaMsec/1000, nowMsec/1000)
   })
-  this.renderer.render(this.scene, this.camera)
-}
 
-
-var environment = new Environment()
-
-var logfuck = function() {
-  console.log('fuck')
-}
-
-environment.onRenderFunctions.push(logfuck)
-
-geometry = new THREE.TorusKnotGeometry(104.53, 128.25, 64, 2, 1.61, 15, 1);
-material = new THREE.MeshNormalMaterial({shading: THREE.FlatShading});
-mesh = new THREE.Mesh(geometry, material);
-environment.scene.add(mesh);
-
-environment.render()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+})
