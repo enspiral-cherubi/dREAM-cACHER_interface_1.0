@@ -1,3 +1,4 @@
+var objectUnderMouse = null
 var container, stats;
 var camera, controls, scene, renderer;
 var pickingData = [], pickingTexture, pickingScene;
@@ -94,6 +95,7 @@ function init() {
 
 
   for ( var i = 0; i < dreamTestData.length; i ++ ) {
+  // for ( var i = 0; i < 3; i ++ ) {
 
     var geom = THREE.geometryChooser(dreamTestData[i].sentiment)
 
@@ -140,8 +142,6 @@ function init() {
   var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
   scene.add( drawnObject );
 
-  console.log ( drawnObject )
-
   pickingScene.add( new THREE.Mesh( pickingGeometry, pickingMaterial ) );
 
   highlightBox = new THREE.Mesh(
@@ -158,6 +158,11 @@ function init() {
   container.appendChild( renderer.domElement );
 
   renderer.domElement.addEventListener( 'mousemove', onMouseMove );
+
+  ///////////////////// pick the object!!!! ////////////////////////
+  renderer.domElement.addEventListener('mousedown', function () {
+    if (objectUnderMouse) {alert(dreamTestData[objectUnderMouse].contents)}
+  })
 
 }
 
@@ -185,19 +190,20 @@ function pick() {
 
   var id = ( pixelBuffer[0] << 16 ) | ( pixelBuffer[1] << 8 ) | ( pixelBuffer[2] );
   var data = pickingData[ id ];
-
+  objectUnderMouse = null
   if ( data) {
 
     //move our highlightBox so that it surrounds the picked object
-
     if ( data.position && data.rotation && data.scale ){
 
-      highlightBox.position.copy( data.position );
-      highlightBox.rotation.copy( data.rotation );
-      highlightBox.scale.copy( data.scale ).add( offset );
-      highlightBox.visible = true;
-
+      highlightBox.position.copy( data.position )
+      highlightBox.rotation.copy( data.rotation )
+      highlightBox.scale.copy( data.scale ).add( offset )
+      highlightBox.visible = true
+      objectUnderMouse = id
+      // renderer.domElement.addEventListener('mousedown', function () {alert(dreamTestData[id])})
     }
+
 
   } else {
 
@@ -206,6 +212,9 @@ function pick() {
   }
 
 }
+
+
+
 
 onRenderFcts.push(pick)
 
