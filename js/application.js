@@ -41,6 +41,17 @@ function init() {
   controls.staticMoving = true;
   controls.dynamicDampingFactor = 0.3;
 
+  // controls.enabled = false
+
+/////////////////////////// add event listener to disable controls on modal popup /////////////////////////////
+$('.modal-content').on('mouseover', function () {
+  controls.enabled = false
+}).on('mouseout', function() {
+  controls.enabled = true
+})
+
+
+
   onRenderFcts.push(controls.update)
 
   /////////////////////////// set up scene /////////////////////////////
@@ -159,9 +170,31 @@ function init() {
 
   renderer.domElement.addEventListener( 'mousemove', onMouseMove );
 
+
   ///////////////////// pick the object!!!! ////////////////////////
   renderer.domElement.addEventListener('mousedown', function () {
-    if (objectUnderMouse) {alert(dreamTestData[objectUnderMouse].contents)}
+    if (objectUnderMouse) {
+      // make the modal appear with the correct dream data
+      var dream = dreamTestData[objectUnderMouse].contents
+      var html = ""
+      +   '<div class="modal-body">'
+      +           "<p>"
+      +             dream
+      +           "</p>"
+      +       "</div>"
+
+      var titlehtml = ""
+      + '<h4 class="modal-title">'
+      +   "Dreamtime: "
+      +   dreamTestData[objectUnderMouse].created_at
+      + "</h4>"
+
+      $('#myModal').modal('show')
+      $('.modal-body').replaceWith(html)
+      $('.modal-title').replaceWith(titlehtml)
+      // alert(dreamTestData[objectUnderMouse].contents)
+
+    }
   })
 
 }
@@ -185,6 +218,7 @@ function pick() {
 
   //read the pixel under the mouse from the texture
   renderer.readRenderTargetPixels(pickingTexture, mouse.x, pickingTexture.height - mouse.y, 1, 1, pixelBuffer);
+
 
   //interpret the pixel as an ID
 
@@ -212,6 +246,7 @@ function pick() {
   }
 
 }
+
 
 
 
