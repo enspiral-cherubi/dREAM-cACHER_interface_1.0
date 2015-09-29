@@ -38,6 +38,11 @@ a {
   text-decoration: none;
 }
 
+.navbar-inverse .navbar-nav >li>a:hover {
+    color: #777;
+    background-color: transparent;
+}
+
 .modal-content {
   opacity: 0.8;
   border-radius: 1%;

@@ -1,8 +1,5 @@
 // makes ajax calls
 // calls view methods
-
-
-
 var dreamsModel = {
 
   emailSignIn: function(email, password) {
@@ -44,6 +41,7 @@ var dreamsModel = {
         dreamData = dreams
         dreamsView.clearScene()
         dreamsView.populateDreamscape(dreams)
+        dreamsView.updateNavBar()
       },
       error: function (err){
         console.log("Error: ", err);

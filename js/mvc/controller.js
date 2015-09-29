@@ -2,9 +2,7 @@
 
 $(document).ready( function () {
 
-  init('all');
-
-  dreamsView.updateNavBar()
+  init3dInterface();
 
   $('#sign-in-catch').on("click", function(e) {
     e.preventDefault()
@@ -25,9 +23,28 @@ $(document).ready( function () {
     e.preventDefault()
     $(this).addClass('active')
     $('#dreamscape-tab').removeClass('active')
-
     dreamsModel.getDreamsForUser()
+  })
 
+  $('#log-out-tab').on('click', function(e) {
+    e.preventDefault()
+    $.auth.signOut().then(function () {
+      if ( $("#my-dreams-tab").hasClass("active") ) {
+        dreamsModel.getAllDreams()
+        $('#my-dreams-tab').removeClass('active')
+        $('#dreamscape-tab').addClass('active')
+      }
+      dreamsView.updateNavBar()
+    })
+
+  })
+
+  renderer.domElement.addEventListener('mousedown', function () {
+    if (objectUnderMouse >= 0) {
+      // make the modal appear with the correct dream data
+      var dream = dreamData[objectUnderMouse]
+      dreamsView.showDreamModal(dream)
+    }
   })
 
 

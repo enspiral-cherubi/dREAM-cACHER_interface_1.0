@@ -31,7 +31,6 @@ var dreamsView = {
 
       getRandomCoords()
 
-
       // sets the position for each mesh
       var position = new THREE.Vector3();
         // position.z = 1
@@ -39,13 +38,16 @@ var dreamsView = {
         position.x = 0
         position.y = 0
         position.z = 0
-
       } else {
-        // this one is good after the initial cluseter
-        position.x = normCoords[0] * ( i + 1)^500
-        position.y = normCoords[1] * ( i + 1)^500
-        position.z = normCoords[2] * ( i + 1)^500
-        // position.z = 50
+        if (dreams.length < 500) {
+          position.x = normCoords[0] * Math.log(i + 1) * dreams.length
+          position.y = normCoords[1] * Math.log(i + 1) * dreams.length
+          position.z = normCoords[2] * Math.log(i + 1) * dreams.length
+        } else {
+          position.x = normCoords[0] * ( i + 1)^500
+          position.y = normCoords[1] * ( i + 1)^500
+          position.z = normCoords[2] * ( i + 1)^500
+        }
 
       }
 
@@ -110,6 +112,25 @@ var dreamsView = {
   positionCamera: function () {
     camera.position.set( 0, 0, 100 );
     camera.lookAt( scene.position )
+  },
+
+  showDreamModal: function (dream) {
+    var html = ""
+      +   '<div class="modal-body">'
+      +           "<p>"
+      +             dream.contents
+      +           "</p>"
+      +       "</div>"
+
+    var titlehtml = ""
+      + '<h4 class="modal-title">'
+      +   "Dreamtime: "
+      +   dream.created_at
+      + "</h4>"
+
+    $('#myModal').modal('show')
+    $('.modal-body').replaceWith(html)
+    $('.modal-title').replaceWith(titlehtml)
   }
 
 
