@@ -3,17 +3,49 @@ canvas {
   height: 100%;
   z-index: 1;
   visibility: visible;
+  /*position: absolute;*/
+  /*overflow-y: hidden; // hide vertical
+  overflow-x: hidden; // hide horizontal*/
 }
 
 
 body {
-  font-family: Monospace;
+  font-family: "Helvitica", Arial;
+  font-size:16px;
+  color:#222;
   background-color: #f0f0f0;
   margin: 0px;
   overflow: hidden;
 }
 
+a {
+  font-size: 16px;
+  color: #444;
+  text-decoration: underline;
+  /*display: inline-block;*/
+  /*margin-right: 6px;*/
+  /*line-height: 20px;*/
+}
+
+
+.navbar {
+  /*font-family: Monospace;*/
+  position: absolute;
+  width: 100%;
+  opacity: 0.8;
+  background: none;
+  border: none;
+  text-decoration: none;
+}
+
+.modal-content {
+  opacity: 0.8;
+  border-radius: 1%;
+}
+
 .info {
+  font-size: 20px;
+  font-family: Monospace;
   position: absolute;
   background-color: black;
   opacity: 0.8;
@@ -23,9 +55,9 @@ body {
   width: 100%;
 }
 
-.info a {
+/*.info a {
   color: #00ffff;
-}
+}*/
 
 #dreamDiv {
   z-index: 2000;
@@ -39,4 +71,67 @@ body {
 .modal-body {
     max-height: calc(100vh - 210px);
     overflow-y: auto;
+}
+
+#sign-in {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+
+
+
+
+/*login bar stuff*/
+
+#login-dp{
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.8);
+}
+#login-dp .help-block{
+    font-size:12px
+}
+#login-dp .bottom{
+    background-color:rgba(255,255,255,.8);
+    border-top:1px solid #ddd;
+    clear:both;
+    padding:14px;
+}
+#login-dp .social-buttons{
+    margin:12px 0
+}
+#login-dp .social-buttons a{
+    width: 49%;
+}
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+.btn-fb{
+    color: #fff;
+    background-color:#3b5998;
+}
+.btn-fb:hover{
+    color: #fff;
+    background-color:#496ebc
+}
+.btn-tw{
+    color: #fff;
+    background-color:#55acee;
+}
+.btn-tw:hover{
+    color: #fff;
+    background-color:#59b5fa;
+}
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
 }
