@@ -15,8 +15,6 @@ var dreamsModel = {
   },
 
   getDreamsForUser: function() {
-    // var self = this
-    // var returnValue = null
     $.ajax({
       url: "http://localhost:3000/user/dreams",
       type: 'GET',
@@ -47,7 +45,30 @@ var dreamsModel = {
         console.log("Error: ", err);
       }
     })
+  },
+
+  saveDream: function (dream) {
+    var formData = {dream: dream}; //Array
+
+    console.log(formData)
+
+    $.ajax({
+      url : "http://localhost:3000/dreams",
+      type: "POST",
+      data : formData,
+      success: function(data, textStatus, jqXHR)
+      {
+        console.log(data)
+      },
+      error: function (jqXHR, textStatus, errorThrown)
+      {
+        console.log(errorThrown)
+      }
+    });
+
   }
+
+
 
 
 }

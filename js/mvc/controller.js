@@ -39,6 +39,51 @@ $(document).ready( function () {
 
   })
 
+  $('#new-dream-tab').on('click', function (e) {
+    e.preventDefault()
+    $('#dream-entry-modal').modal('show')
+  })
+
+
+  // create new account modal
+  $('#create-account-catch').on('click', function (e) {
+    e.preventDefault()
+    $('#login-dropdown').removeClass('open')
+    $('#login-dropdown').hide()
+    // $('#login-dropdown-toggle').hide()
+    $('#login-dropdown-toggle').attr('aria-expanded', 'false')
+
+    showCreateAccount()
+  })
+
+  $('#submit-account-catch').on("click", function(e) {
+    e.preventDefault()
+    var email = $('#signup-dropdown').find('input[type="email"]').val()
+    var password = $('#signup-dropdown').find('input[type="password"]').val()
+    var confirmPassword = $('#confirm-password').find('input[type="password"]').val()
+    // console.log('email: ', email)
+    // console.log('password: ', password)
+    // console.log('confpassword: ', confirmPassword)
+
+    if (authentication(email, password, confirmPassword)) {
+      alert('signed up!')
+    }
+
+  })
+
+
+
+    // $('#signup-modal').modal('show')
+
+  // $('#login-dropdown').removeClass('open')
+
+
+  $('#save-dream').on('click', function (e) {
+    e.preventDefault()
+    var dream = $('#dream-entry-modal').find('textarea[type="dream"]').val()
+    dreamsModel.saveDream(dream)
+  })
+
   renderer.domElement.addEventListener('mousedown', function () {
     if (objectUnderMouse >= 0) {
       // make the modal appear with the correct dream data
@@ -54,3 +99,23 @@ $(document).ready( function () {
 
 
 })
+
+function showCreateAccount() {
+  setTimeout( function () {
+    $('.signup-dropdown-toggle').attr('aria-expanded', 'true')
+    $('#signup-dropdown').show()
+    $('#signup-dropdown').addClass('open')
+    $('.signup-dropdown-toggle').hide()
+    $('#login-dropdown').show()
+  }, 100)
+}
+
+function authentication(email, password, confirmPassword) {
+  if (password === confirmPassword) {
+      if (password.length > 7) {
+        if (email) {
+          return true
+        } else { console.log('email must be a real email') ; showCreateAccount() ; return false }
+      } else { console.log('password must be atleast 8 characters') ; showCreateAccount() ; return false }
+    } else { console.log('passwords do not match!') ; showCreateAccount() ; return false }
+}

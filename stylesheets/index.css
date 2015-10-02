@@ -38,6 +38,10 @@ a {
   text-decoration: none;
 }
 
+.navbar-nav>li {
+  display: none;
+}
+
 .navbar-inverse .navbar-nav >li>a:hover {
     color: #777;
     background-color: transparent;
@@ -48,7 +52,7 @@ a {
   border-radius: 1%;
 }
 
-.info {
+/*.info {
   font-size: 20px;
   font-family: Monospace;
   position: absolute;
@@ -59,16 +63,7 @@ a {
   top: 0px;
   width: 100%;
 }
-
-/*.info a {
-  color: #00ffff;
-}*/
-
-#dreamDiv {
-  z-index: 2000;
-}
-
-
+*/
 
 
 
@@ -78,13 +73,6 @@ a {
     overflow-y: auto;
 }
 
-#sign-in {
-  position: fixed;
-  top: 0;
-  right: 0;
-}
-
-
 
 
 
@@ -93,8 +81,8 @@ a {
 #login-dp{
     min-width: 250px;
     padding: 14px 14px 0;
-    overflow:hidden;
-    background-color:rgba(255,255,255,.8);
+    overflow: hidden;
+    background-color: rgba(255,255,255,.8);
 }
 #login-dp .help-block{
     font-size:12px
@@ -139,4 +127,52 @@ a {
         background-color: inherit;
         border-top:0 none;
     }
+}
+
+
+
+.modal-body#dream-entry-modal {
+  overflow: hidden;
+  height: 50%;
+}
+
+#dream-field {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+
+/*signup modal stuff*/
+
+#signup-modal input {
+    width: 95%;
+    margin: auto;
+}
+
+#signup-modal label {
+    margin-left: 2.5%;
+    padding-top: 1.5%;
+}
+
+#signup-modal em {
+    margin-left: 2.5%;
+}
+
+
+/*signup 2*/
+#test-signup>.dropdown-menu {
+    display: block;
+    position: absolute;
+    right: 0;
+    left: auto;
+    margin: 1%;
+}
+
+#login-dp {
+  /*position: absolute;*/
+  top: 45px;
+  margin: auto;
 }

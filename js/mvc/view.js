@@ -2,12 +2,13 @@
 
 var dreamsView = {
   updateNavBar: function () {
-    console.log($.auth.user)
+    $('#new-dream-tab').show()
     if ($.auth.user['id']) {
       $('#login-dropdown').hide()
       $('#dreamscape-tab').show()
       $('#my-dreams-tab').show()
       $('#log-out-tab').show()
+
     } else {
       $('#login-dropdown').show()
       $('#dreamscape-tab').hide()
