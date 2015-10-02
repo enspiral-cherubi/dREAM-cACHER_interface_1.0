@@ -102,9 +102,11 @@ a {
 #login-dp .form-group {
     margin-bottom: 10px;
 }
+
 .btn-fb{
     color: #fff;
     background-color:#3b5998;
+    margin-bottom: 1.5%;
 }
 .btn-fb:hover{
     color: #fff;
@@ -113,10 +115,29 @@ a {
 .btn-tw{
     color: #fff;
     background-color:#55acee;
+    margin-bottom: 1.5%;
 }
 .btn-tw:hover{
     color: #fff;
     background-color:#59b5fa;
+}
+.btn-gl{
+    color: #fff;
+    background-color:#3369e8;
+    margin-bottom: 1.5%;
+}
+.btn-gl:hover{
+    color: #fff;
+    background-color:#537EE4;
+}
+.btn-gh{
+    color: #fff;
+    background-color:#4CE8E3;
+    margin-bottom: 1.5%;
+}
+.btn-gh:hover{
+    color: #fff;
+    background-color:#6DEFEA;
 }
 @media(max-width:768px){
     #login-dp{

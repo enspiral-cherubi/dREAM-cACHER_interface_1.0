@@ -61,22 +61,35 @@ $(document).ready( function () {
     var email = $('#signup-dropdown').find('input[type="email"]').val()
     var password = $('#signup-dropdown').find('input[type="password"]').val()
     var confirmPassword = $('#confirm-password').find('input[type="password"]').val()
-    // console.log('email: ', email)
-    // console.log('password: ', password)
-    // console.log('confpassword: ', confirmPassword)
 
-    if (authentication(email, password, confirmPassword)) {
-      alert('signed up!')
-    }
-
+    if ( authentication(email, password, confirmPassword) ) {
+      dreamsModel.emailSignUp( email, password, confirmPassword )
+    } else { alert(authenticationError) }
   })
 
+  $('.btn-fb').on('click', function(e) {
+    e.preventDefault()
+    alert('facebook!')
+    // $.auth.authenticate({provider: 'github'})
+  })
 
+  $('.btn-tw').on('click', function(e) {
+    e.preventDefault()
+    alert('twitter!')
+    // $.auth.authenticate({provider: 'github'})
+  })
 
-    // $('#signup-modal').modal('show')
+  $('.btn-gh').on('click', function(e) {
+    e.preventDefault()
+    alert('github!!!')
+    // $.auth.authenticate({provider: 'github'})
+  })
 
-  // $('#login-dropdown').removeClass('open')
-
+  $('.btn-gl').on('click', function(e) {
+    e.preventDefault()
+    alert('google!')
+    // $.auth.authenticate({provider: 'github'})
+  })
 
   $('#save-dream').on('click', function (e) {
     e.preventDefault()
@@ -110,12 +123,14 @@ function showCreateAccount() {
   }, 100)
 }
 
+
+var authenticationError = null
 function authentication(email, password, confirmPassword) {
   if (password === confirmPassword) {
-      if (password.length > 7) {
+    if (password.length > 7) {
         if (email) {
           return true
-        } else { console.log('email must be a real email') ; showCreateAccount() ; return false }
-      } else { console.log('password must be atleast 8 characters') ; showCreateAccount() ; return false }
-    } else { console.log('passwords do not match!') ; showCreateAccount() ; return false }
+        } else { authenticationError = 'email must be a real email' ; showCreateAccount() ; return false }
+      } else { authenticationError = 'password must be atleast 8 characters' ; showCreateAccount() ; return false }
+  } else { authenticationError = 'passwords do not match!' ; showCreateAccount() ; return false }
 }
