@@ -49,8 +49,7 @@ $(document).ready( function () {
   $('#create-account-catch').on('click', function (e) {
     e.preventDefault()
     $('#login-dropdown').removeClass('open')
-    $('#login-dropdown').hide()
-    // $('#login-dropdown-toggle').hide()
+    // $('#login-dropdown').hide()
     $('#login-dropdown-toggle').attr('aria-expanded', 'false')
 
     showCreateAccount()
@@ -91,6 +90,12 @@ $(document).ready( function () {
     // $.auth.authenticate({provider: 'github'})
   })
 
+  $('#info').on('click', function(e) {
+    e.preventDefault()
+    alert('info!')
+    // $.auth.authenticate({provider: 'github'})
+  })
+
   $('#save-dream').on('click', function (e) {
     e.preventDefault()
     var dream = $('#dream-entry-modal').find('textarea[type="dream"]').val()
@@ -120,7 +125,7 @@ function showCreateAccount() {
     $('#signup-dropdown').addClass('open')
     $('.signup-dropdown-toggle').hide()
     $('#login-dropdown').show()
-  }, 100)
+  }, 1)
 }
 
 

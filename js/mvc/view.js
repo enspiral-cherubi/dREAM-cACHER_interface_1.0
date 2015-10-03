@@ -2,6 +2,7 @@
 
 var dreamsView = {
   updateNavBar: function () {
+    $('#info').show()
     $('#new-dream-tab').show()
     if ($.auth.user['id']) {
       $('#login-dropdown').hide()

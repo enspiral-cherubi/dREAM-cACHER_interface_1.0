@@ -151,7 +151,7 @@ onRenderFcts.push(function(){
   renderer.render( scene, camera );
 })
 
-// var lastTimeMsec = null
+var lastTimeMsec = null
 // requestAnimationFrame(function animate(nowMsec){
 //   // keep looping
 //   requestAnimationFrame( animate );
@@ -163,5 +163,4 @@ onRenderFcts.push(function(){
 //   onRenderFcts.forEach(function(onRenderFct){
 //     onRenderFct(deltaMsec/1000, nowMsec/1000)
 //   })
-
 // })
