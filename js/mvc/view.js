@@ -159,10 +159,23 @@ function generateATag(text) {
 function parseDreamString(dreamString, tagWords) {
   var outputString = dreamString
   for (var i = 0; i < tagWords.length; i++) {
+    // all lowercase
     var aTag = generateATag(tagWords[i])
     outputString = outputString.replace(tagWords[i], aTag)
+    // capitalised
+    var upCaseTag = capitalizeFirstLetter(tagWords[i])
+    aTag = generateATag(upCaseTag)
+    outputString = outputString.replace(upCaseTag, aTag)
+    // allCaps
+    var allCapsTag = tagWords[i].toUpperCase()
+    aTag = generateATag(allCapsTag)
+    outputString = outputString.replace(allCapsTag, aTag)
   }
   return outputString
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function parseTagObjects (tagObjects) {
