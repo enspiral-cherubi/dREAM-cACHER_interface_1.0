@@ -117,7 +117,18 @@ $(document).ready( function () {
 
 
 
+
 })
+
+function dreamModalListners () {
+  $('.tag').on('click', function(e) {
+    e.preventDefault()
+    var tag = this.id
+    dreamsModel.getDreamsForTag(tag)
+  })
+}
+
+
 
 function showCreateAccount() {
   setTimeout( function () {

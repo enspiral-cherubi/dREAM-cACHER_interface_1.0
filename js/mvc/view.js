@@ -137,17 +137,20 @@ var dreamsView = {
     $('#myModal').modal('show')
     $('.modal-body').replaceWith(html)
     $('.modal-title').replaceWith(titlehtml)
+
+    dreamModalListners()
+
   }
 
 
 };
 
 function generateATag(text) {
-  var html = "<a href='"
+  var html = "<a href='/"
   + text
   + "' class='tag' id="
   + text
-  + ">"
+  + " type='button'>"
   + text
   + "</a>"
   return html
@@ -158,7 +161,6 @@ function parseDreamString(dreamString, tagWords) {
   for (var i = 0; i < tagWords.length; i++) {
     var aTag = generateATag(tagWords[i])
     outputString = outputString.replace(tagWords[i], aTag)
-    console.log(outputString)
   }
   return outputString
 }

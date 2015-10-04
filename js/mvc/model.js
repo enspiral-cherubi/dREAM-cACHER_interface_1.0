@@ -100,7 +100,23 @@ var dreamsModel = {
         console.log("Error: ", err);
       }
     })
+  },
 
+  getDreamsForTag: function (tag) {
+    var data = {tag: tag}
+    $.ajax({
+      url: "http://localhost:3000/tag/dreams",
+      type: 'GET',
+      data: data,
+      success: function (dreams){
+        dreamData = dreams
+        dreamsView.clearScene()
+        dreamsView.populateDreamscape(dreams)
+      },
+      error: function (err){
+        console.log("Error: ", err);
+      }
+    })
   }
 
 
