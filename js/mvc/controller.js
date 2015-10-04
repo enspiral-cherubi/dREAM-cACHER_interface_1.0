@@ -106,7 +106,8 @@ $(document).ready( function () {
     if (objectUnderMouse >= 0) {
       // make the modal appear with the correct dream data
       var dream = dreamData[objectUnderMouse]
-      dreamsView.showDreamModal(dream)
+
+      dreamsModel.getTagsForDream(dream)
     }
   })
 

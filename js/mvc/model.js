@@ -85,6 +85,22 @@ var dreamsModel = {
       }
     });
 
+  },
+
+  getTagsForDream: function (dream) {
+    var data = {dream_id: dream.id}
+    $.ajax({
+      url: "http://localhost:3000/dream/tags",
+      type: 'GET',
+      data: data,
+      success: function (tags){
+        dreamsView.showDreamModal(dream, tags)
+      },
+      error: function (err){
+        console.log("Error: ", err);
+      }
+    })
+
   }
 
 

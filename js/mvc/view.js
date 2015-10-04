@@ -116,11 +116,15 @@ var dreamsView = {
     camera.lookAt( scene.position )
   },
 
-  showDreamModal: function (dream) {
+  showDreamModal: function (dream, tags) {
+    var tagWords = parseTagObjects(tags)
+    var taggedDreamString = parseDreamString(dream.contents, tagWords)
+    // console.log(taggedDreamString)
     var html = ""
       +   '<div class="modal-body">'
       +           "<p>"
-      +             dream.contents
+      // +             dream.contents
+      +                taggedDreamString
       +           "</p>"
       +       "</div>"
 
@@ -136,6 +140,35 @@ var dreamsView = {
   }
 
 
+};
+
+function generateATag(text) {
+  var html = "<a href='"
+  + text
+  + "' class='tag' id="
+  + text
+  + ">"
+  + text
+  + "</a>"
+  return html
+}
+
+function parseDreamString(dreamString, tagWords) {
+  var outputString = dreamString
+  for (var i = 0; i < tagWords.length; i++) {
+    var aTag = generateATag(tagWords[i])
+    outputString = outputString.replace(tagWords[i], aTag)
+    console.log(outputString)
+  }
+  return outputString
+}
+
+function parseTagObjects (tagObjects) {
+  var tags = []
+  for (var i = 0; i < tagObjects.length; i++) {
+      tags.push(tagObjects[i].word)
+  };
+  return tags
 }
 
 

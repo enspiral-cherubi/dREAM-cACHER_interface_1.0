@@ -152,15 +152,15 @@ onRenderFcts.push(function(){
 })
 
 var lastTimeMsec = null
-// requestAnimationFrame(function animate(nowMsec){
-//   // keep looping
-//   requestAnimationFrame( animate );
-//   // measure time
-//   lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
-//   var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-//   lastTimeMsec  = nowMsec
-//   // call each update function
-//   onRenderFcts.forEach(function(onRenderFct){
-//     onRenderFct(deltaMsec/1000, nowMsec/1000)
-//   })
-// })
+requestAnimationFrame(function animate(nowMsec){
+  // keep looping
+  requestAnimationFrame( animate );
+  // measure time
+  lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
+  var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+  lastTimeMsec  = nowMsec
+  // call each update function
+  onRenderFcts.forEach(function(onRenderFct){
+    onRenderFct(deltaMsec/1000, nowMsec/1000)
+  })
+})
