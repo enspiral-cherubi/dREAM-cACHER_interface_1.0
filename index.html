@@ -4,34 +4,268 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
+      <link href="./stylesheets/vendor/bootstrap.min.css" rel="stylesheet" />
+
       <link href="./stylesheets/index.css" rel="stylesheet" />
    </head>
+
+
    <body>
 
-      <div class="info">
+     <!--  <div class="info">
          <a href="http://github.io" target="_blank">enspiral-cherubi</a>dREAM-cACHER
-      </div>
+      </div> -->
+
+
+
+
+
+<!-- login navbar -->
+
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- <a class="navbar-brand" href="#">Login dropdown</a> -->
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active" id='dreamscape-tab'><a href="#">Dreamscape</a></li>
+        <li id='my-dreams-tab'><a href="#">My Dreams</a></li>
+        <li id='new-dream-tab'><a href="#">Cache New Dream</a></li>
+        <li id='info'><a href="#">Info</a></li>
+        <!-- <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li> -->
+      </ul>
+      <!-- <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form> -->
+      <ul class="nav navbar-nav navbar-right">
+        <li id='log-out-tab'><a href="#">Logout</a></li>
+        <li class="dropdown" id='login-dropdown'>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id='login-dropdown-toggle'><b>Login</b> <span class="caret"></span></a>
+          <ul id="login-dp" class="dropdown-menu">
+            <li>
+               <div class="row">
+                  <div class="col-md-12">
+                    Login via
+                    <div class="social-buttons">
+                      <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                      <a href="#" class="btn btn-gl"><i class="fa fa-google"></i> Google</a>
+                      <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+                      <a href="#" class="btn btn-gh"><i class="fa fa-github"></i> Github</a>
+                    </div>
+                                    or
+                     <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+                        <div class="form-group">
+                           <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                           <input name="email" type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+                        </div>
+                        <div class="form-group">
+                           <label class="sr-only" for="exampleInputPassword2">Password</label>
+                           <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+                                                 <div class="help-block text-right"><a href="">Forget the password ?</a></div>
+                        </div>
+                        <div class="form-group">
+                           <button type="button" class="btn btn-primary btn-block" id='sign-in-catch'>Sign in</button>
+                        </div>
+                        <div class="checkbox">
+                           <label>
+                           <input type="checkbox"> keep me logged-in
+                           </label>
+                        </div>
+                     </form>
+                  </div>
+                  <div class="bottom text-center">
+                    or, <a href="#" id='create-account-catch'><b>Create Account</b></a>
+                  </div>
+               </div>
+            </li>
+          </ul>
+
+        <!-- SIGNUP DROPDOWN -->
+        <li class="dropdown open" id='signup-dropdown' aria-expanded="true">
+          <a href="#" class="signup-dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><b>sign up!!</b> <span class="caret"></span></a>
+          <ul id="login-dp" class="dropdown-menu">
+            <li>
+               <div class="row">
+                  <div class="col-md-12">
+
+                     <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+                        <div class="form-group">
+                            Email
+                           <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                           <input name="email" type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+                        </div>
+                        <div class="form-group">
+                            Password
+                           <label class="sr-only" for="exampleInputPassword2">Password</label>
+                           <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+                        </div>
+                        <div class="form-group" id='confirm-password'>
+                            Confirm Password
+                           <label class="sr-only" for="exampleInputPassword2">Password</label>
+                           <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                        </div>
+                        <div class="checkbox">
+                           <!-- <label>
+                           <input type="checkbox"> keep me logged-in
+                           </label> -->
+                        </div>
+                     </form>
+                  </div>
+                  <div class="bottom text-center">
+
+                           <button type="button" class="btn btn-primary btn-block" id='submit-account-catch'>Create Account</button>
+
+                  </div>
+               </div>
+            </li>
+          </ul>
+        </li>
+
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<!-- Dream-entry modal -->
+<div id="dream-entry-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Dream-cacher</h4>
+            </div>
+            <div class="modal-body" id="dream-entry-modal">
+              <textarea class="form-control" type="dream" id="dream-field" placeholder="Dream" rows="7" required>
+              </textarea>
+            </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id='save-dream'>Save</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+
+
+
+
+
+
+
 
       <div id="container"></div>
 
 
-      <script src="./js/helpers.js"></script>
 
-      <script src="./js/dreamData.js"></script>
 
-      <script src="./js/three.min.js"></script>
 
-      <script src="./js/threex.noiseshadermaterial.js"></script>
 
-      <script src="./js/threex.daynight.js"></script>
+      <!-- dependencies - these should come BEFORE jToker -->
+      <script src='./js/vendor/jquery/jquery-2.1.4.min.js'></script>
+      <script src='./js/vendor/jquery/jquery.cookie.js'></script>
+      <script src='./js/vendor/jquery/jquery-deparam.js'></script>
 
-      <script src="./js/geometryChooser.js"></script>
+      <script src='./js/vendor/devise_token_auth/pubsub.js'></script>
 
-      <script src="./js/TrackballControls.js"></script>
+      <!-- this should come AFTER the preceeding files -->
+      <script src='/js/vendor/devise_token_auth/j-toker.js'></script>
+      <!-- jToker will now be available at $.auth -->
 
-      <script src="./js/starfields.js"></script>
 
-      <script src="./js/application.js"></script>
+
+      <script src="./js/vendor/bootstrap/bootstrap.min.js"></script>
+
+      <script src="./js/vendor/moment/moment.min.js"></script>
+
+      <script src="./js/interface/moment.js"></script>
+
+      <script src="./js/mvc/controller.js"></script>
+
+      <script src="./js/mvc/model.js"></script>
+
+      <script src="./js/mvc/view.js"></script>
+
+      <script src="./js/interface/helpers.js"></script>
+
+      <script src="./js/vendor/three/three.min.js"></script>
+
+      <script src="./js/threex/FlyControls.js"></script>
+
+      <script src="./js/threex/threex.windowresize.js"></script>
+
+      <script src='./js/threex/threex.domevents.js'></script>
+
+      <script src="./js/threex/threex.noiseshadermaterial.js"></script>
+
+      <script src="./js/threex/threex.daynight.js"></script>
+
+      <script src="./js/interface/geometryChooser.js"></script>
+
+      <script src="./js/threex/starfields.js"></script>
+
+      <script src="./js/interface/auth.js"></script>
+
+      <script src="./js/interface/application.js"></script>
+
+
 
    </body>
 </html>
