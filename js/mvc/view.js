@@ -117,6 +117,7 @@ var dreamsView = {
   },
 
   showDreamModal: function (dream, tags) {
+    var dreamTime = moment(dream.created_at).fromNow()
     var tagWords = parseTagObjects(tags)
     var taggedDreamString = parseDreamString(dream.contents, tagWords)
     // console.log(taggedDreamString)
@@ -130,8 +131,8 @@ var dreamsView = {
 
     var titlehtml = ""
       + '<h4 class="modal-title">'
-      +   "Dreamtime: "
-      +   dream.created_at
+      +   "A dream from "
+      +   dreamTime
       + "</h4>"
 
     $('#myModal').modal('show')
