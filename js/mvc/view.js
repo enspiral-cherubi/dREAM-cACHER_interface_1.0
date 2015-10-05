@@ -18,6 +18,10 @@ var dreamsView = {
     }
   },
 
+  showDreamEntryModal: function () {
+    $('#dream-entry-modal').modal('show')
+  },
+
   populateDreamscape: function (dreams) {
 
     geometry = new THREE.Geometry()
@@ -133,11 +137,11 @@ var dreamsView = {
       + '<h4 class="modal-title">'
       +   "A dream from "
       +   dreamTime
-      + "</h4>"
+      + ".</h4>"
 
-    $('#myModal').modal('show')
-    $('.modal-body').replaceWith(html)
-    $('.modal-title').replaceWith(titlehtml)
+    $('#dreamReadModal').modal('show')
+    $('#read-modal-body').html(html)
+    $('#read-modal-title').html(titlehtml)
 
     dreamModalListners()
 
@@ -149,9 +153,14 @@ var dreamsView = {
 function generateATag(text) {
   var html = "<a href='/"
   + text
-  + "' class='tag' id="
+  + "' "
+  + "class='tag"
+  + "' "
+  + "id='"
   + text
-  + " type='button'>"
+  + "'"
+  + " type='"
+  + "button'>"
   + text
   + "</a>"
   return html
@@ -160,18 +169,55 @@ function generateATag(text) {
 function parseDreamString(dreamString, tagWords) {
   var outputString = dreamString
   for (var i = 0; i < tagWords.length; i++) {
+    console.log('tagwords: ', tagWords)
+
+    var currentTagWordSpace = " " + tagWords[i] + " "
+    var currentTagWordComma = " " + tagWords[i] + ","
+    var currentTagWordStop = " " + tagWords[i] + "."
+
     // all lowercase
-    var aTag = generateATag(tagWords[i])
-    outputString = outputString.replace(tagWords[i], aTag)
+    var aTag = " " + generateATag(tagWords[i]) + " "
+    outputString = outputString.replace(currentTagWordSpace, aTag)
+
+    aTag = " " + generateATag(tagWords[i]) + ","
+    outputString = outputString.replace(currentTagWordComma, aTag)
+
+    aTag = " " + generateATag(tagWords[i]) + "."
+    outputString = outputString.replace(currentTagWordStop, aTag)
+
     // capitalised
-    var upCaseTag = capitalizeFirstLetter(tagWords[i])
-    aTag = generateATag(upCaseTag)
-    outputString = outputString.replace(upCaseTag, aTag)
+
+    currentTagWordSpace = " " + capitalizeFirstLetter(tagWords[i]) + " "
+    currentTagWordComma = " " + capitalizeFirstLetter(tagWords[i]) + ","
+    currentTagWordStop = " " + capitalizeFirstLetter(tagWords[i]) + "."
+
+    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + " "
+    outputString = outputString.replace(currentTagWordSpace, aTag)
+
+    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + ","
+    outputString = outputString.replace(currentTagWordComma, aTag)
+
+    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + "."
+    outputString = outputString.replace(currentTagWordStop, aTag)
+
     // allCaps
-    var allCapsTag = tagWords[i].toUpperCase()
     aTag = generateATag(allCapsTag)
-    outputString = outputString.replace(allCapsTag, aTag)
+    var allCapsTag = tagWords[i].toUpperCase()
+
+    currentTagWordSpace = " " + tagWords[i].toUpperCase() + " "
+    currentTagWordComma = " " + tagWords[i].toUpperCase() + ","
+    currentTagWordStop = " " + tagWords[i].toUpperCase() + "."
+
+    aTag = " " + generateATag(tagWords[i].toUpperCase()) + " "
+    outputString = outputString.replace(currentTagWordSpace, aTag)
+
+    aTag = " " + generateATag(tagWords[i].toUpperCase()) + ","
+    outputString = outputString.replace(currentTagWordComma, aTag)
+
+    aTag = " " + generateATag(tagWords[i].toUpperCase()) + "."
+    outputString = outputString.replace(currentTagWordStop, aTag)
   }
+  console.log(outputString)
   return outputString
 }
 

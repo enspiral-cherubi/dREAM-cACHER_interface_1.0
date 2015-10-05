@@ -4,14 +4,7 @@ $(document).ready( function () {
 
   init3dInterface();
 
-  $('#sign-in-catch').on("click", function(e) {
-    e.preventDefault()
-    var email = $('#login-nav').find('input[type="email"]').val()
-    var password = $('#login-nav').find('input[type="password"]').val()
-    dreamsModel.emailSignIn(email, password)
-  })
-
-
+  // change dream collections
   $('#dreamscape-tab').on('click', function(e) {
     e.preventDefault()
     $(this).addClass('active')
@@ -26,44 +19,13 @@ $(document).ready( function () {
     dreamsModel.getDreamsForUser()
   })
 
-  $('#log-out-tab').on('click', function(e) {
+  // user stuff
+
+  $('#sign-in-catch').on("click", function(e) {
     e.preventDefault()
-    $.auth.signOut().then(function () {
-      if ( $("#my-dreams-tab").hasClass("active") ) {
-        dreamsModel.getAllDreams()
-        $('#my-dreams-tab').removeClass('active')
-        $('#dreamscape-tab').addClass('active')
-      }
-      dreamsView.updateNavBar()
-    })
-
-  })
-
-  $('#new-dream-tab').on('click', function (e) {
-    e.preventDefault()
-    $('#dream-entry-modal').modal('show')
-  })
-
-
-  // create new account modal
-  $('#create-account-catch').on('click', function (e) {
-    e.preventDefault()
-    $('#login-dropdown').removeClass('open')
-    // $('#login-dropdown').hide()
-    $('#login-dropdown-toggle').attr('aria-expanded', 'false')
-
-    showCreateAccount()
-  })
-
-  $('#submit-account-catch').on("click", function(e) {
-    e.preventDefault()
-    var email = $('#signup-dropdown').find('input[type="email"]').val()
-    var password = $('#signup-dropdown').find('input[type="password"]').val()
-    var confirmPassword = $('#confirm-password').find('input[type="password"]').val()
-
-    if ( authentication(email, password, confirmPassword) ) {
-      dreamsModel.emailSignUp( email, password, confirmPassword )
-    } else { alert(authenticationError) }
+    var email = $('#login-nav').find('input[type="email"]').val()
+    var password = $('#login-nav').find('input[type="password"]').val()
+    dreamsModel.emailSignIn(email, password)
   })
 
   $('.btn-fb').on('click', function(e) {
@@ -90,17 +52,68 @@ $(document).ready( function () {
     // $.auth.authenticate({provider: 'github'})
   })
 
+  $('#log-out-tab').on('click', function(e) {
+    e.preventDefault()
+    $.auth.signOut().then(function () {
+      if ( $("#my-dreams-tab").hasClass("active") ) {
+        dreamsModel.getAllDreams()
+        $('#my-dreams-tab').removeClass('active')
+        $('#dreamscape-tab').addClass('active')
+      }
+      dreamsView.updateNavBar()
+    })
+  })
+
+  // create new account modal
+  $('#create-account-catch').on('click', function (e) {
+    e.preventDefault()
+    $('#login-dropdown').removeClass('open')
+    // $('#login-dropdown').hide()
+    $('#login-dropdown-toggle').attr('aria-expanded', 'false')
+
+    showCreateAccount()
+  })
+
+  $('#submit-account-catch').on("click", function(e) {
+    e.preventDefault()
+    var email = $('#signup-dropdown').find('input[type="email"]').val()
+    var password = $('#signup-dropdown').find('input[type="password"]').val()
+    var confirmPassword = $('#confirm-password').find('input[type="password"]').val()
+
+    if ( authentication(email, password, confirmPassword) ) {
+      dreamsModel.emailSignUp( email, password, confirmPassword )
+    } else { alert(authenticationError) }
+  })
+
+  // new dreams
+
+  $('#new-dream-tab').on('click', function (e) {
+    e.preventDefault()
+    dreamsView.showDreamEntryModal()
+  })
+
+  $('#save-dream').on('click', function (e) {
+    e.preventDefault()
+    var dream = $('#dream-entry-modal').find('textarea[type="dream"]').val()
+    if (dream.length > 10) { dreamsModel.saveDream(dream) } else {
+      alert('you must enter a dream :-)')
+      setTimeout( function () {
+        dreamsView.showDreamEntryModal()
+      }, 1000)
+    }
+  })
+
+
+  // other navbar stuff
+
   $('#info').on('click', function(e) {
     e.preventDefault()
     alert('info!')
     // $.auth.authenticate({provider: 'github'})
   })
 
-  $('#save-dream').on('click', function (e) {
-    e.preventDefault()
-    var dream = $('#dream-entry-modal').find('textarea[type="dream"]').val()
-    dreamsModel.saveDream(dream)
-  })
+
+  // three.js stuff
 
   renderer.domElement.addEventListener('mousedown', function () {
     if (objectUnderMouse >= 0) {
@@ -112,23 +125,19 @@ $(document).ready( function () {
   })
 
 
-
-
-
-
-
-
 })
+
+
+// helper functions
 
 function dreamModalListners () {
   $('.tag').on('click', function(e) {
     e.preventDefault()
     var tag = this.id
+    console.log
     dreamsModel.getDreamsForTag(tag)
   })
 }
-
-
 
 function showCreateAccount() {
   setTimeout( function () {
@@ -139,7 +148,6 @@ function showCreateAccount() {
     $('#login-dropdown').show()
   }, 1)
 }
-
 
 var authenticationError = null
 function authentication(email, password, confirmPassword) {
