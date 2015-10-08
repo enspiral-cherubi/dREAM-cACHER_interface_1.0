@@ -33,6 +33,10 @@ var dreamsModel = {
     });
   },
 
+  faceBookSignUp: function () {
+    $.auth.oAuthSignIn({provider: 'facebook'})
+  },
+
   getDreamsForUser: function() {
     $.ajax({
       url: "http://localhost:3000/user/dreams",

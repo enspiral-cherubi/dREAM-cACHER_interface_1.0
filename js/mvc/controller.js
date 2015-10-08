@@ -30,9 +30,15 @@ $(document).ready( function () {
 
   $('.btn-fb').on('click', function(e) {
     e.preventDefault()
-    alert('facebook!')
-    // $.auth.authenticate({provider: 'github'})
+    dreamsModel.faceBookSignUp()
   })
+
+  PubSub.subscribe('auth.validation.success', function(ev, msg) {
+    if ( $.auth.user.provider === 'facebook') {
+      window.history.pushState("", "Logged in with facebook", "/")
+      $.auth.validateToken()
+    }
+  });
 
   $('.btn-tw').on('click', function(e) {
     e.preventDefault()
@@ -108,8 +114,7 @@ $(document).ready( function () {
 
   $('#info').on('click', function(e) {
     e.preventDefault()
-    alert('info!')
-    // $.auth.authenticate({provider: 'github'})
+    dreamsView.showInfoModal()
   })
 
 
@@ -119,7 +124,6 @@ $(document).ready( function () {
     if (objectUnderMouse >= 0) {
       // make the modal appear with the correct dream data
       var dream = dreamData[objectUnderMouse]
-
       dreamsModel.getTagsForDream(dream)
     }
   })
@@ -135,6 +139,7 @@ function dreamModalListners () {
     e.preventDefault()
     var tag = this.id
     console.log
+    $('#dreamReadModal').modal('hide');
     dreamsModel.getDreamsForTag(tag)
   })
 }

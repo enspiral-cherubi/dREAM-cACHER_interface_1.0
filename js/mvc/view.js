@@ -120,6 +120,27 @@ var dreamsView = {
     camera.lookAt( scene.position )
   },
 
+  showInfoModal: function () {
+    var contents = 'Each shape in the dreamscape represents a dream submited by somebody. You can click on an object to read the dream. Submit a dream yourself by clicking "Cache New Dream" in the nav bar. All dreams are anonymous. If you would like to keep track of your dreams, create an account and you will have access to you own personal dreamscape. Think of it like a 3D dream diary. You can also click on keywords in a dream to reveal other dreams with the same themes.<br><br>We love <a href="feedback" id="feedback">Feedback</a>!<br><br>Dreamcacher is an experiment by <a href="http://will-sklenars.github.io/">Will Sklenars</a> and <a href="http://euglazer.github.io/">Eugene Lynch</a>, using <a href="http://threejs.org/">three.js</a>.'
+    // var contents = 'contents'
+    var html = ""
+      +   '<div class="modal-body">'
+      +           "<p>"
+      +                contents
+      +           "</p>"
+      +       "</div>"
+
+    var titlehtml = ""
+      + '<h4 class="modal-title">'
+      +   "About Dreamcacher"
+      + ".</h4>"
+
+    $('#dreamReadModal').modal('show')
+    $('#read-modal-body').html(html)
+    $('#read-modal-title').html(titlehtml)
+
+  },
+
   showDreamModal: function (dream, tags) {
     var dreamTime = moment(dream.created_at).fromNow()
     var tagWords = parseTagObjects(tags)
