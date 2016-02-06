@@ -10,7 +10,7 @@ var dreamsModel = {
       dreamsView.updateNavBar()
       console.log($.auth.user)
     }).fail(function(resp) {
-      alert('Authentication failure: ' + resp.errors.join(' '));
+      alert('Authentication failure: ' + (resp.errors && resp.errors.join(' ')));
     });
   },
 
@@ -26,10 +26,10 @@ var dreamsModel = {
         dreamsView.updateNavBar()
         console.log($.auth.user)
       }).fail(function(resp) {
-        alert('Authentication failure: ' + resp.errors.join(' '));
+        alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')));
       })
     }).fail(function(resp) {
-      alert('Authentication failure: ' + resp.errors.join(' '));
+      alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')));
     });
   },
 

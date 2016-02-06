@@ -1,4 +1,5 @@
 // adds the event listners
+USER_VALIDATED_FACEBOOK = false
 
 $(document).ready( function () {
 
@@ -19,6 +20,40 @@ $(document).ready( function () {
     dreamsModel.getDreamsForUser()
   })
 
+  // new dreams
+
+  $('#new-dream-tab').on('click', function (e) {
+    e.preventDefault()
+    dreamsView.showDreamEntryModal()
+  })
+
+  $('#save-dream').on('click', function (e) {
+    e.preventDefault()
+    var dream = $('#dream-entry-modal').find('textarea[type="dream"]').val()
+    $('#new-dream-tab').removeClass('active')
+    if (dream.length > 10) { dreamsModel.saveDream(dream) } else {
+      alert('you must enter a dream :-)')
+      setTimeout( function () {
+        dreamsView.showDreamEntryModal()
+      }, 1000)
+    }
+  })
+
+  // closing the dream entry modal
+  $('#dream-entry-modal').on('hidden.bs.modal', function () {
+    $(dreamsView.prevTabActive).addClass('active')
+    $('#new-dream-tab').removeClass('active')
+  })
+
+
+
+
+  // other navbar stuff
+
+  $('#info').on('click', function(e) {
+    e.preventDefault()
+    dreamsView.showInfoModal()
+  })
   // user stuff
 
   $('#sign-in-catch').on("click", function(e) {
@@ -34,10 +69,19 @@ $(document).ready( function () {
   })
 
   PubSub.subscribe('auth.validation.success', function(ev, msg) {
-    if ( $.auth.user.provider === 'facebook') {
+    if ( USER_VALIDATED_FACEBOOK === false && $.auth.user.provider === 'facebook' ) {
       window.history.pushState("", "Logged in with facebook", "/")
-      $.auth.validateToken()
+      $.auth.validateToken().then(function (user) {
+        console.log(user)
+      })
+      USER_VALIDATED_FACEBOOK = true
     }
+  });
+
+  PubSub.subscribe('auth.validation.error', function(ev, msg) {
+    // dreamsView.restorePublicInterface()
+    $.removeCookie('authHeaders')
+    console.log('validation error signal fired.')
   });
 
   $('.btn-tw').on('click', function(e) {
@@ -61,14 +105,11 @@ $(document).ready( function () {
   $('#log-out-tab').on('click', function(e) {
     e.preventDefault()
     $.auth.signOut().then(function () {
-      if ( $("#my-dreams-tab").hasClass("active") ) {
-        dreamsModel.getAllDreams()
-        $('#my-dreams-tab').removeClass('active')
-        $('#dreamscape-tab').addClass('active')
-      }
-      dreamsView.updateNavBar()
+      dreamsView.restorePublicInterface()
     })
   })
+
+
 
   // create new account modal
   $('#create-account-catch').on('click', function (e) {
@@ -91,31 +132,6 @@ $(document).ready( function () {
     } else { alert(authenticationError) }
   })
 
-  // new dreams
-
-  $('#new-dream-tab').on('click', function (e) {
-    e.preventDefault()
-    dreamsView.showDreamEntryModal()
-  })
-
-  $('#save-dream').on('click', function (e) {
-    e.preventDefault()
-    var dream = $('#dream-entry-modal').find('textarea[type="dream"]').val()
-    if (dream.length > 10) { dreamsModel.saveDream(dream) } else {
-      alert('you must enter a dream :-)')
-      setTimeout( function () {
-        dreamsView.showDreamEntryModal()
-      }, 1000)
-    }
-  })
-
-
-  // other navbar stuff
-
-  $('#info').on('click', function(e) {
-    e.preventDefault()
-    dreamsView.showInfoModal()
-  })
 
 
   // three.js stuff
@@ -138,9 +154,10 @@ function dreamModalListners () {
   $('.tag').on('click', function(e) {
     e.preventDefault()
     var tag = this.id
-    console.log
     $('#dreamReadModal').modal('hide');
     dreamsModel.getDreamsForTag(tag)
+    $('#dreamscape-tab').removeClass('active')
+    $('#my-dreams-tab').removeClass('active')
   })
 }
 

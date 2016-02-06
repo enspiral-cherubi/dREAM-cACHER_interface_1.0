@@ -1,28 +1,49 @@
-// post stuff to the dom
+  // post stuff to the dom
 
 var dreamsView = {
   updateNavBar: function () {
     $('#info').show()
     $('#new-dream-tab').show()
+    $('#dreamscape-tab').show()
     if ($.auth.user['id']) {
       $('#login-dropdown').hide()
-      $('#dreamscape-tab').show()
       $('#my-dreams-tab').show()
       $('#log-out-tab').show()
 
     } else {
       $('#login-dropdown').show()
-      $('#dreamscape-tab').hide()
       $('#my-dreams-tab').hide()
       $('#log-out-tab').hide()
     }
   },
 
+  restorePublicInterface: function () {
+    if ( $("#my-dreams-tab").hasClass("active") ) {
+      dreamsModel.getAllDreams()
+      $('#my-dreams-tab').removeClass('active')
+      $('#dreamscape-tab').addClass('active')
+    }
+    dreamsView.updateNavBar()
+  },
+
   showDreamEntryModal: function () {
-    $('#dream-entry-modal').modal('show')
+    if ( $('#dreamscape-tab').hasClass('active') ) {
+      $('#dreamscape-tab').removeClass('active')
+      $('#dream-entry-modal').modal('show')
+      $('#new-dream-tab').addClass('active')
+      this.prevTabActive = '#dreamscape-tab'
+    } else if  ( $('#my-dreams-tab').hasClass('active') ) {
+      $('#my-dreams-tab').removeClass('active')
+      $('#dream-entry-modal').modal('show')
+      $('#new-dream-tab').addClass('active')
+      this.prevTabActive = '#my-dreams-tab'
+    }
   },
 
   populateDreamscape: function (dreams) {
+
+    // dreams = dreams.slice(2)
+    console.log(dreams)
 
     geometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
@@ -133,7 +154,7 @@ var dreamsView = {
     var titlehtml = ""
       + '<h4 class="modal-title">'
       +   "About Dreamcacher"
-      + ".</h4>"
+      + "</h4>"
 
     $('#dreamReadModal').modal('show')
     $('#read-modal-body').html(html)
@@ -145,7 +166,6 @@ var dreamsView = {
     var dreamTime = moment(dream.created_at).fromNow()
     var tagWords = parseTagObjects(tags)
     var taggedDreamString = parseDreamString(dream.contents, tagWords)
-    // console.log(taggedDreamString)
     var html = ""
       +   '<div class="modal-body">'
       +           "<p>"
@@ -190,7 +210,6 @@ function generateATag(text) {
 function parseDreamString(dreamString, tagWords) {
   var outputString = dreamString
   for (var i = 0; i < tagWords.length; i++) {
-    console.log('tagwords: ', tagWords)
 
     var currentTagWordSpace = " " + tagWords[i] + " "
     var currentTagWordComma = " " + tagWords[i] + ","
@@ -238,7 +257,6 @@ function parseDreamString(dreamString, tagWords) {
     aTag = " " + generateATag(tagWords[i].toUpperCase()) + "."
     outputString = outputString.replace(currentTagWordStop, aTag)
   }
-  console.log(outputString)
   return outputString
 }
 
