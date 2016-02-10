@@ -35,7 +35,7 @@ function init3dInterface() {
 
   /////////////////////////// set up camera /////////////////////////////
 
-  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 20000 );
+  camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 1, 20000 );
 
   /////////////////////////// set fly controls /////////////////////////////
 
@@ -46,7 +46,6 @@ function init3dInterface() {
   controls.rollSpeed = Math.PI / 16;
   controls.autoForward = false;
   controls.dragToLook = false;
-  controls.enabled = false
 
   onRenderFcts.push(
     function (delta, now) {

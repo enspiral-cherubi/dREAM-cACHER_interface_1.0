@@ -6,12 +6,12 @@ $.ajaxSetup({
 });
 
 // $.auth.configure({
-//   apiUrl: 'http://localhost:3000'
+//   apiUrl: 'http://104.236.175.6'
 // });
 
 
 $.auth.configure({
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'http://104.236.175.6',
   forceHardRedirect: true,
   authProviderPaths: {
     facebook: '/auth/facebook' // <-- note that this is different than what was set with github

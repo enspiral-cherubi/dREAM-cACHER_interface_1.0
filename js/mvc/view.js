@@ -3,6 +3,7 @@
 var dreamsView = {
   updateNavBar: function () {
     $('#info').show()
+    $('#controls').show()
     $('#new-dream-tab').show()
     $('#dreamscape-tab').show()
     if ($.auth.user['id']) {
@@ -41,10 +42,6 @@ var dreamsView = {
   },
 
   populateDreamscape: function (dreams) {
-
-    // dreams = dreams.slice(2)
-    console.log(dreams)
-
     geometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
     // clear the scene!
@@ -60,22 +57,14 @@ var dreamsView = {
 
       // sets the position for each mesh
       var position = new THREE.Vector3();
-        // position.z = 1
       if ( i === 0) {
         position.x = 0
         position.y = 0
         position.z = 0
       } else {
-        if (dreams.length < 500) {
-          position.x = normCoords[0] * Math.log(i + 1) * dreams.length
-          position.y = normCoords[1] * Math.log(i + 1) * dreams.length
-          position.z = normCoords[2] * Math.log(i + 1) * dreams.length
-        } else {
-          position.x = normCoords[0] * ( i + 1)^500
-          position.y = normCoords[1] * ( i + 1)^500
-          position.z = normCoords[2] * ( i + 1)^500
-        }
-
+        position.x = normCoords[0] * Math.log(i + 1) * 90
+        position.y = normCoords[1] * Math.log(i + 1) * 90
+        position.z = normCoords[2] * Math.log(i + 1) * 90
       }
 
       // sets the rotation for each mesh
@@ -121,9 +110,12 @@ var dreamsView = {
 
     highlightBox = new THREE.Mesh(
       new THREE.SphereGeometry( 5, 32, 32 ),
-      new THREE.MeshBasicMaterial( {
-        shading: THREE.FlatShading, color: 0xf9d624, side: THREE.BackSide, transparent: true, opacity: 0.3
-      } )
+      new THREE.MeshBasicMaterial({
+        color: 0xeeeeee,
+        side: THREE.BackSide,
+        transparent: true,
+        opacity: 0.5
+      })
     )
     scene.add( highlightBox );
 
@@ -137,12 +129,12 @@ var dreamsView = {
   },
 
   positionCamera: function () {
-    camera.position.set( 0, 0, 100 );
+    camera.position.set( 0, 0, 300 );
     camera.lookAt( scene.position )
   },
 
   showInfoModal: function () {
-    var contents = 'Each shape in the dreamscape represents a dream submited by somebody. You can click on an object to read the dream. Submit a dream yourself by clicking "Cache New Dream" in the nav bar. All dreams are anonymous. If you would like to keep track of your dreams, create an account and you will have access to you own personal dreamscape. Think of it like a 3D dream diary. You can also click on keywords in a dream to reveal other dreams with the same themes.<br><br>We love <a href="feedback" id="feedback">Feedback</a>!<br><br>Dreamcacher is an experiment by <a href="http://will-sklenars.github.io/">Will Sklenars</a> and <a href="http://euglazer.github.io/">Eugene Lynch</a>, using <a href="http://threejs.org/">three.js</a>.'
+    var contents = 'Each shape in the dreamscape represents a dream submited by somebody. You can click on an object to read the dream. Submit a dream yourself by clicking "Cache New Dream" in the nav bar. All dreams are anonymous. If you would like to keep track of your dreams, create an account and you will have access to you own personal dreamscape. Think of it like a 3D dream diary. You can also click on keywords in a dream to reveal other dreams with the same themes.<br><br>Dreamcacher is an experiment by <a href="http://will-sklenars.github.io/" target="_blank">Will Sklenars</a> and <a href="https://github.com/data-doge" target="_blank">Eugene Lynch</a>, using <a href="http://threejs.org/">three.js</a>.<br><br> <a href="https://twitter.com/WIllSklenars" id="feedback" target="_blank">Feedback</a>'
     // var contents = 'contents'
     var html = ""
       +   '<div class="modal-body">'

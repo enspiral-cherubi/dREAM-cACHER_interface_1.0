@@ -33,13 +33,9 @@ var dreamsModel = {
     });
   },
 
-  faceBookSignUp: function () {
-    $.auth.oAuthSignIn({provider: 'facebook'})
-  },
-
   getDreamsForUser: function() {
     $.ajax({
-      url: "http://localhost:3000/user/dreams",
+      url: "http://104.236.175.6/user/dreams",
       type: 'GET',
       success: function (dreams){
         dreamData = dreams
@@ -56,7 +52,7 @@ var dreamsModel = {
     var self = this
     var returnValue = null
     $.ajax({
-      url: "http://localhost:3000/dreams",
+      url: "http://104.236.175.6/dreams",
       type: 'GET',
       success: function (dreams){
         dreamData = dreams
@@ -76,7 +72,7 @@ var dreamsModel = {
     console.log(formData)
 
     $.ajax({
-      url : "http://localhost:3000/dreams",
+      url : "http://104.236.175.6/dreams",
       type: "POST",
       data : formData,
       success: function(data, textStatus, jqXHR)
@@ -94,7 +90,7 @@ var dreamsModel = {
   getTagsForDream: function (dream) {
     var data = {dream_id: dream.id}
     $.ajax({
-      url: "http://localhost:3000/dream/tags",
+      url: "http://104.236.175.6/dream/tags",
       type: 'GET',
       data: data,
       success: function (tags){
@@ -109,7 +105,7 @@ var dreamsModel = {
   getDreamsForTag: function (tag) {
     var data = {tag: tag}
     $.ajax({
-      url: "http://localhost:3000/tag/dreams",
+      url: "http://104.236.175.6/tag/dreams",
       type: 'GET',
       data: data,
       success: function (dreams){

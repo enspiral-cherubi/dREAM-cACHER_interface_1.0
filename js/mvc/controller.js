@@ -63,45 +63,6 @@ $(document).ready( function () {
     dreamsModel.emailSignIn(email, password)
   })
 
-  $('.btn-fb').on('click', function(e) {
-    e.preventDefault()
-    dreamsModel.faceBookSignUp()
-  })
-
-  PubSub.subscribe('auth.validation.success', function(ev, msg) {
-    if ( USER_VALIDATED_FACEBOOK === false && $.auth.user.provider === 'facebook' ) {
-      window.history.pushState("", "Logged in with facebook", "/")
-      $.auth.validateToken().then(function (user) {
-        console.log(user)
-      })
-      USER_VALIDATED_FACEBOOK = true
-    }
-  });
-
-  PubSub.subscribe('auth.validation.error', function(ev, msg) {
-    // dreamsView.restorePublicInterface()
-    $.removeCookie('authHeaders')
-    console.log('validation error signal fired.')
-  });
-
-  $('.btn-tw').on('click', function(e) {
-    e.preventDefault()
-    alert('twitter!')
-    // $.auth.authenticate({provider: 'github'})
-  })
-
-  $('.btn-gh').on('click', function(e) {
-    e.preventDefault()
-    alert('github!!!')
-    // $.auth.authenticate({provider: 'github'})
-  })
-
-  $('.btn-gl').on('click', function(e) {
-    e.preventDefault()
-    alert('google!')
-    // $.auth.authenticate({provider: 'github'})
-  })
-
   $('#log-out-tab').on('click', function(e) {
     e.preventDefault()
     $.auth.signOut().then(function () {
