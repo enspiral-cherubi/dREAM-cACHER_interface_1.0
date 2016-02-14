@@ -17,11 +17,3 @@ $.auth.configure({
     facebook: '/auth/facebook' // <-- note that this is different than what was set with github
   }
 });
-
-// window.location function to change url.... query params, clear them out.
-// broadcasting libriry. pusbsub, jtoker
-
-
-PubSub.subscribe('auth.oAuthSignIn.success', function(ev, msg) {
-  alert('Welcome' + $.auth.user.name + '!');
-});
