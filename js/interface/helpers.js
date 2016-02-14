@@ -33,7 +33,7 @@ function isSuitableCoords (coords) {
 function normalizedCoordsFrom (coords) {
   var denominator = Math.sqrt(coords[0]*coords[0] + coords[1]*coords[1] + coords[2]*coords[2])
   var normCoords = coords.map(function (coord) {
-    coord / denominator
+    return coord / denominator
   })
   return normCoords
 }
