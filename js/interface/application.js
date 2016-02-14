@@ -136,7 +136,7 @@ function pick() {
     }
 
   } else {
-      highlightBox.visible = false;
+    if (highlightBox) { highlightBox.visible = false; }
   }
 }
 
