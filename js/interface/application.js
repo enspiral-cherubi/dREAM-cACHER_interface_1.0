@@ -92,17 +92,16 @@ function init3dInterface() {
 
 
   ///////////////////// initial populate dreamscape!~! ////////////////////////
-  dreamsModel.getAllDreams()
 
+  // call somewhere else -- in controller
+  dreamsModel.getAllDreams()
 
 }
 
 
 function onMouseMove( e ) {
-
   mouse.x = e.clientX;
   mouse.y = e.clientY;
-
 }
 
 

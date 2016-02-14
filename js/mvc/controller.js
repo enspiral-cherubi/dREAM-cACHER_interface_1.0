@@ -3,8 +3,11 @@ USER_VALIDATED_FACEBOOK = false
 
 $(document).ready( function () {
 
+
   // environment.init() ?
   init3dInterface();
+
+  // call get all dreams
 
   // change dream collections
   $('#dreamscape-tab').on('click', function(e) {
