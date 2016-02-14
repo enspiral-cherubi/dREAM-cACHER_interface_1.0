@@ -4,8 +4,12 @@ USER_VALIDATED_FACEBOOK = false
 $(document).ready( function () {
 
 
-  // environment.init() ?
-  init3dInterface();
+  environment.init()
+  environment.render()
+
+
+
+
 
   // call get all dreams
 
@@ -101,7 +105,7 @@ $(document).ready( function () {
 
   // three.js stuff
 
-  renderer.domElement.addEventListener('mousedown', function () {
+  environment.renderer.domElement.addEventListener('mousedown', function () {
     if (objectUnderMouse >= 0) {
       // make the modal appear with the correct dream data
       var dream = dreamData[objectUnderMouse]
