@@ -3,6 +3,7 @@ USER_VALIDATED_FACEBOOK = false
 
 $(document).ready( function () {
 
+  // environment.init() ?
   init3dInterface();
 
   // change dream collections
@@ -105,7 +106,6 @@ $(document).ready( function () {
     }
   })
 
-
 })
 
 
@@ -117,11 +117,13 @@ function dreamModalListners () {
     var tag = this.id
     $('#dreamReadModal').modal('hide');
     dreamsModel.getDreamsForTag(tag)
+    // TODO: turn into fxn, move to view
     $('#dreamscape-tab').removeClass('active')
     $('#my-dreams-tab').removeClass('active')
   })
 }
 
+// TODO: move to view
 function showCreateAccount() {
   setTimeout( function () {
     $('.signup-dropdown-toggle').attr('aria-expanded', 'true')
@@ -132,6 +134,7 @@ function showCreateAccount() {
   }, 1)
 }
 
+// TODO: rename to validation-something
 var authenticationError = null
 function authentication(email, password, confirmPassword) {
   if (password === confirmPassword) {

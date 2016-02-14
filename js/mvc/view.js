@@ -1,4 +1,4 @@
-  // post stuff to the dom
+// post stuff to the dom
 
 var dreamsView = {
   updateNavBar: function () {
@@ -24,7 +24,7 @@ var dreamsView = {
       $('#my-dreams-tab').removeClass('active')
       $('#dreamscape-tab').addClass('active')
     }
-    // (EL) can prolly change to `this` 
+    // (EL) can prolly change to `this`
     dreamsView.updateNavBar()
   },
 
@@ -42,10 +42,11 @@ var dreamsView = {
     }
   },
 
+  // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
     geometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
-    // clear the scene!
+
     var color = new THREE.Color();
     var quaternion = new THREE.Quaternion();
     var matrix = new THREE.Matrix4();
@@ -124,11 +125,13 @@ var dreamsView = {
 
   },
 
+  // move to 'environment'
   clearScene: function () {
     for( var i = scene.children.length - 1; i >= 0; i--) { scene.remove(scene.children[i]) }
     for( var i = pickingScene.children.length - 1; i >= 0; i--) { pickingScene.remove(pickingScene.children[i]) }
   },
 
+  // move to 'environment'
   positionCamera: function () {
     camera.position.set( 0, 0, 300 );
     camera.lookAt( scene.position )
@@ -200,6 +203,7 @@ function generateATag(text) {
   return html
 }
 
+// TODO: abstract into module
 function parseDreamString(dreamString, tagWords) {
   var outputString = dreamString
   for (var i = 0; i < tagWords.length; i++) {
