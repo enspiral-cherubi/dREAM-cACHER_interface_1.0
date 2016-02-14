@@ -24,6 +24,7 @@ var dreamsView = {
       $('#my-dreams-tab').removeClass('active')
       $('#dreamscape-tab').addClass('active')
     }
+    // (EL) can prolly change to `this` 
     dreamsView.updateNavBar()
   },
 
