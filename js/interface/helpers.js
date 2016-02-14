@@ -14,7 +14,7 @@ function dreamDiv (dream) {
 
 
 // Pick a random point inside the [-1,1]x[-1,1]x[-1,1] cube
-// If x*x + y*y + z*z > 1 repeat from 1
+// If x*x + y*y + z*z < 1, keep coords
 // Normalize dividing x, y and z by Math.sqrt(x*x + y*y + z*z)
 
 
@@ -26,21 +26,28 @@ function getXYZ () {
   return coords
 }
 
-var normCoords
-function getRandomCoords () {
-  var coords = getXYZ()
-  if ((coords[0]*coords[0] + coords[1]*coords[1] + coords[2]*coords[2]) < 1) {
-    normCoords = []
-    for (var i = 0; i < coords.length; i++) {
-      normCoords.push( coords[i] / Math.sqrt(coords[0]*coords[0] + coords[1]*coords[1] + coords[2]*coords[2]) )
-    }
-    return normCoords
-  } else {
-    getRandomCoords()
-  }
-
+function isSuitableCoords (coords) {
+  return (coords[0]*coords[0] + coords[1]*coords[1] + coords[2]*coords[2]) < 1
 }
 
-getRandomCoords()
+function normalizedCoordsFrom (coords) {
+  var denominator = Math.sqrt(coords[0]*coords[0] + coords[1]*coords[1] + coords[2]*coords[2])
+  var normCoords = coords.map(function (coord) {
+    coord / denominator
+  })
+  return normCoords
+}
 
+function getRandomCoords () {
+  var normCoords, coords, coordsFound = false
 
+  while (coordsFound === false) {
+    coords = getXYZ()
+    if (isSuitableCoords(coords)) {
+      coordsFound = true
+      normCoords = normalizedCoordsFrom(coords)
+    }
+  }
+
+  return normCoords
+}

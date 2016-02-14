@@ -54,7 +54,7 @@ var dreamsView = {
 
       var geom = THREE.geometryChooser(dreams[i].sentiment)
 
-      getRandomCoords()
+      var normCoords = getRandomCoords()
 
       // sets the position for each mesh
       var position = new THREE.Vector3();
