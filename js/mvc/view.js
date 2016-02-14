@@ -95,7 +95,7 @@ var dreamsView = {
 
       pickingGeometry.merge( geom, matrix );
 
-      pickingData[ i ] = {
+      environment.pickingData[ i ] = {
           position: position,
           rotation: rotation,
           scale: scale
@@ -105,12 +105,12 @@ var dreamsView = {
 
 
     // drawnObject is all of the dream objects merged together together
-    var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
-    scene.add( drawnObject );
+    var drawnObject = new THREE.Mesh( geometry, environment.defaultMaterial );
+    environment.scene.add( drawnObject );
 
-    pickingScene.add( new THREE.Mesh( pickingGeometry, pickingMaterial ) );
+    environment.pickingScene.add( new THREE.Mesh( pickingGeometry, environment.pickingMaterial ) );
 
-    highlightBox = new THREE.Mesh(
+    environment.highlightBox = new THREE.Mesh(
       new THREE.SphereGeometry( 5, 32, 32 ),
       new THREE.MeshBasicMaterial({
         color: 0xeeeeee,
@@ -119,7 +119,7 @@ var dreamsView = {
         opacity: 0.5
       })
     )
-    scene.add( highlightBox );
+    environment.scene.add( environment.highlightBox );
 
     this.positionCamera()
 
@@ -127,14 +127,14 @@ var dreamsView = {
 
   // move to 'environment'
   clearScene: function () {
-    for( var i = scene.children.length - 1; i >= 0; i--) { scene.remove(scene.children[i]) }
-    for( var i = pickingScene.children.length - 1; i >= 0; i--) { pickingScene.remove(pickingScene.children[i]) }
+    for( var i = environment.scene.children.length - 1; i >= 0; i--) { environment.scene.remove(environment.scene.children[i]) }
+    for( var i = environment.pickingScene.children.length - 1; i >= 0; i--) { environment.pickingScene.remove(environment.pickingScene.children[i]) }
   },
 
   // move to 'environment'
   positionCamera: function () {
-    camera.position.set( 0, 0, 300 );
-    camera.lookAt( scene.position )
+    environment.camera.position.set( 0, 0, 300 );
+    environment.camera.lookAt( environment.scene.position )
   },
 
   showInfoModal: function () {

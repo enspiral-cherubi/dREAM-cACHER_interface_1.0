@@ -6,6 +6,7 @@ $(document).ready( function () {
 
   environment.init()
   environment.render()
+  dreamsModel.getAllDreams()
 
 
 
@@ -106,9 +107,9 @@ $(document).ready( function () {
   // three.js stuff
 
   environment.renderer.domElement.addEventListener('mousedown', function () {
-    if (objectUnderMouse >= 0) {
+    if (environment.objectUnderMouse >= 0) {
       // make the modal appear with the correct dream data
-      var dream = dreamData[objectUnderMouse]
+      var dream = dreamData[environment.objectUnderMouse]
       dreamsModel.getTagsForDream(dream)
     }
   })

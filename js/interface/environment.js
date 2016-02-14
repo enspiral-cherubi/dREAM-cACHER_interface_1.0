@@ -66,8 +66,8 @@ environment.init = function () {
   this.container.appendChild( this.renderer.domElement );
 
   this.onMouseMove = function( e ) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    self.mouse.x = e.clientX;
+    self.mouse.y = e.clientY;
   }
   this.renderer.domElement.addEventListener( 'mousemove', this.onMouseMove );
 
