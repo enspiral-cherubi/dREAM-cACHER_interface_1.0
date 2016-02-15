@@ -97,7 +97,7 @@ $(document).ready( function () {
     var password = $('#signup-dropdown').find('input[type="password"]').val()
     var confirmPassword = $('#confirm-password').find('input[type="password"]').val()
 
-    if ( authentication(email, password, confirmPassword) ) {
+    if ( authoriseSignupCredentials(email, password, confirmPassword) ) {
       dreamsModel.emailSignUp( email, password, confirmPassword )
     } else { alert(authenticationError) }
   })
@@ -129,7 +129,7 @@ $(document).on('click', '.tag', function(e) {
 
 // TODO: rename to validation-something
 var authenticationError = null
-function authentication(email, password, confirmPassword) {
+function authoriseSignupCredentials(email, password, confirmPassword) {
   if (password === confirmPassword) {
     if (password.length > 7) {
         if (email) {
