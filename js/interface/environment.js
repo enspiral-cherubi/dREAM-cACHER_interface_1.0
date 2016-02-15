@@ -89,6 +89,22 @@ environment.updatePickingScene = function () {
 
 // utilities
 
+environment.resetCameraPosition = function () {
+  this.camera.position.set( 0, 0, 300 );
+  this.camera.lookAt( this.scene.position )
+}
+
+environment.clearScene = function () {
+  if (this.dreamsMesh) {
+    this.removeObjectFromScene(this.dreamsMesh)
+    this.dreamsMesh = null
+
+    this.removeObjectFromPickingScene(this.pickingMesh)
+    this.pickingMesh = null
+  }
+}
+
+
 environment.addObjectsToScene = function (objects) {
   _.forEach(objects, environment.addObjectToScene)
 }

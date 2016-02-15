@@ -85,11 +85,10 @@ var dreamsView = {
 
     // allDreamsMesh is all of the dream objects merged together together
     environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, environment.defaultMaterial );
-
     environment.addObjectToScene( environment.dreamsMesh );
 
-    environment.pickingMesh = new THREE.Mesh( pickingGeometry, environment.pickingMaterial )
 
+    environment.pickingMesh = new THREE.Mesh( pickingGeometry, environment.pickingMaterial )
     environment.pickingScene.add( environment.pickingMesh );
 
     environment.highlightSphere = new THREE.Mesh(
@@ -104,24 +103,8 @@ var dreamsView = {
 
     environment.addObjectToScene( environment.highlightSphere );
 
-    this.positionCamera()
+    environment.resetCameraPosition()
 
-  },
-
-  clearScene: function () {
-    if (environment.dreamsMesh) {
-      environment.removeObjectFromScene(environment.dreamsMesh)
-      environment.dreamsMesh = null
-
-      environment.removeObjectFromPickingScene(environment.pickingMesh)
-      environment.pickingMesh = null
-    }
-  },
-
-  // move to 'environment'
-  positionCamera: function () {
-    environment.camera.position.set( 0, 0, 300 );
-    environment.camera.lookAt( environment.scene.position )
   },
 
   showInfoModal: function () {

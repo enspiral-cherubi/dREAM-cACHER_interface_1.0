@@ -39,7 +39,7 @@ var dreamsModel = {
       type: 'GET',
       success: function (dreams){
         dreamData = dreams
-        dreamsView.clearScene()
+        environment.clearScene()
         dreamsView.populateDreamscape(dreams)
       },
       error: function (err){
@@ -56,7 +56,7 @@ var dreamsModel = {
       type: 'GET',
       success: function (dreams){
         dreamData = dreams
-        dreamsView.clearScene()
+        environment.clearScene()
         dreamsView.populateDreamscape(dreams)
         dreamsView.updateNavBar()
       },
@@ -110,7 +110,7 @@ var dreamsModel = {
       data: data,
       success: function (dreams){
         dreamData = dreams
-        dreamsView.clearScene()
+        environment.clearScene()
         dreamsView.populateDreamscape(dreams)
       },
       error: function (err){
