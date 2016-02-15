@@ -44,44 +44,40 @@ var dreamsView = {
 
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
+    // store the meshes somewhere so they can be removed from the scene
+    // move all threejs stuff into environment
+
     allDreamsGeometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
 
-    var color = new THREE.Color();
-    var quaternion = new THREE.Quaternion();
-    var matrix = new THREE.Matrix4();
 
     for ( var i = 0; i < dreams.length; i ++ ) {
+      var color = new THREE.Color();
+      var quaternion = new THREE.Quaternion();
+      var matrix = new THREE.Matrix4();
 
       var singleDreamGeom = THREE.geometryChooser(dreams[i].sentiment)
 
-      // sets the position for each mesh
-      var position = definePosition(i)
+      var matrixData = defineMatrixData(i)
 
-      // sets the rotation for each mesh
-      var rotation = defineRotation()
-
-      // sets the scale for each mesh
-      var scale = defineScale()
-
-      quaternion.setFromEuler( rotation, false );
+      quaternion.setFromEuler( matrixData.rotation, false );
 
       // the matrix has the position, scale, and rotation of the object
-      matrix.compose( position, quaternion, scale );
+      matrix.compose( matrixData.position, quaternion, matrixData.scale );
 
       // merge each geometry into the one 'master' geometry
       allDreamsGeometry.merge( singleDreamGeom, matrix );
 
       // give the singleDreamGeom's vertices a color corresponding to the "id"
 
-      applyVertexColors( singleDreamGeom, color.setHex( i ) );
+      applyVertexColorsToGeometry( singleDreamGeom, color.setHex( i ) );
 
       pickingGeometry.merge( singleDreamGeom, matrix );
 
       environment.pickingData[ i ] = {
-          position: position,
-          rotation: rotation,
-          scale: scale
+        position: matrixData.position,
+        rotation: matrixData.rotation,
+        scale: matrixData.scale
       }
 
     }
@@ -176,47 +172,13 @@ function parseTagObjects (tagObjects) {
   return tags
 }
 
-function applyVertexColors (g, c) {
-  g.faces.forEach(function (f) {
-    var n = (f instanceof THREE.Face3) ? 3 : 4;
+function applyVertexColorsToGeometry (geometry, color) {
+  geometry.faces.forEach(function (face) {
+    var n = (face instanceof THREE.Face3) ? 3 : 4;
     for (var j = 0; j < n; j++) {
-      f.vertexColors[j] = c;
+      face.vertexColors[j] = color;
     }
   })
 }
 
 
-function defineMatrix () {
-
-}
-
-function definePosition (i) {
-  var normCoords = getRandomCoords()
-  var position = new THREE.Vector3();
-  if ( i === 0) {
-    position.x = 0
-    position.y = 0
-    position.z = 0
-  } else {
-    position.x = normCoords[0] * Math.log(i + 1) * 90
-    position.y = normCoords[1] * Math.log(i + 1) * 90
-    position.z = normCoords[2] * Math.log(i + 1) * 90
-  }
-  return position
-}
-
-function defineRotation () {
-  var rotation = new THREE.Euler();
-  rotation.x = Math.random() * 2 * Math.PI;
-  rotation.y = Math.random() * 2 * Math.PI;
-  rotation.z = Math.random() * 2 * Math.PI;
-  return rotation
-}
-
-function defineScale () {
-  var scale = new THREE.Vector3();
-  scale.x =  0.05;
-  scale.y =  0.05;
-  scale.z =  0.05;
-  return scale
-}
