@@ -114,6 +114,12 @@ var controller = {
       $('#my-dreams-tab').removeClass('active')
     })
 
+    // HACK: makes sure that bootstrap-jquery doesn't ignore click events on
+    // inputs and textareas inside of dialogs and dropdowns. fucking bootstrap ..
+    $('textarea, input').on('click', function () {
+      $(this).focus()
+    })
+
     // helper functions
 
     // TODO: refactor
