@@ -1,6 +1,6 @@
-global.environment = require('./interface/environment')
+global.environment = require('./app/environment')
 
-var controller = require('./mvc/controller')
+var controller = require('./app/controller')
 
 controller.init()
 controller.bindEventListeners()

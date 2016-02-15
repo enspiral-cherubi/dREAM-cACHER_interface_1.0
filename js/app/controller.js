@@ -1,5 +1,5 @@
 var $ = require('jquery')
-var AuthInterface = require('./../interface/auth-interface')
+var AuthInterface = require('./../services/auth-interface')
 var dreamsModel = require('./model.js')
 var dreamsView = require('./view.js')
 

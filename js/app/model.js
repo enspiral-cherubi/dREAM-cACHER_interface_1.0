@@ -1,7 +1,6 @@
 var $ = require('jquery')
 var dreamsView = require('./view.js')
-var AuthInterface = require('./../interface/auth-interface')
-
+var AuthInterface = require('./../services/auth-interface')
 var environment = global.environment
 
 var dreamsModel =  {

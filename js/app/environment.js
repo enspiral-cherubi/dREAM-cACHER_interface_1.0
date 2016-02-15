@@ -1,7 +1,6 @@
 var THREE = require('three')
 var NoiseShaderMaterial = require('three-noise-shader-material')(THREE)
 var WindowResize = require('three-window-resize')
-// add FlyControls plugin to THREE
 require('three-fly-controls')(THREE)
 
 var environment = {

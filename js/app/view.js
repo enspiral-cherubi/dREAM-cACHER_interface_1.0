@@ -5,9 +5,7 @@ var moment = require('moment')
 var parseDreamString = require('./../services/parse-dream-string')
 var $ = require('jquery')
 require('bootstrap-jquery')
-
-var AuthInterface = require('./../interface/auth-interface')
-
+var AuthInterface = require('./../services/auth-interface')
 var environment = global.environment
 
 // posts stuff to the dom
