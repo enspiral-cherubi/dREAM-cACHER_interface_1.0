@@ -44,7 +44,7 @@ var dreamsView = {
 
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
-    geometry = new THREE.Geometry()
+    allDreamsGeometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
 
     var color = new THREE.Color();
@@ -53,7 +53,7 @@ var dreamsView = {
 
     for ( var i = 0; i < dreams.length; i ++ ) {
 
-      var geom = THREE.geometryChooser(dreams[i].sentiment)
+      var singleDreamGeom = THREE.geometryChooser(dreams[i].sentiment)
 
       var normCoords = getRandomCoords()
 
@@ -87,13 +87,13 @@ var dreamsView = {
       matrix.compose( position, quaternion, scale );
 
       // merge each geometry into the one 'master' geometry
-      geometry.merge( geom, matrix );
+      allDreamsGeometry.merge( singleDreamGeom, matrix );
 
-      // give the geom's vertices a color corresponding to the "id"
+      // give the singleDreamGeom's vertices a color corresponding to the "id"
 
-      applyVertexColors( geom, color.setHex( i ) );
+      applyVertexColors( singleDreamGeom, color.setHex( i ) );
 
-      pickingGeometry.merge( geom, matrix );
+      pickingGeometry.merge( singleDreamGeom, matrix );
 
       environment.pickingData[ i ] = {
           position: position,
@@ -104,9 +104,9 @@ var dreamsView = {
     }
 
 
-    // drawnObject is all of the dream objects merged together together
-    var drawnObject = new THREE.Mesh( geometry, environment.defaultMaterial );
-    environment.scene.add( drawnObject );
+    // allDreamsMesh is all of the dream objects merged together together
+    var allDreamsMesh = new THREE.Mesh( allDreamsGeometry, environment.defaultMaterial );
+    environment.scene.add( allDreamsMesh );
 
     environment.pickingScene.add( new THREE.Mesh( pickingGeometry, environment.pickingMaterial ) );
 

@@ -87,6 +87,29 @@ environment.updatePickingScene = function () {
   }
 }
 
+// utilities
+
+environment.addObjectsToScene = function (objects) {
+  _.forEach(objects, environment.addObjectToScene)
+}
+
+environment.addObjectToScene = function (object) {
+  if (object.mesh) {
+    environment.scene.add(object.mesh)
+  } else {
+    environment.scene.add(object)
+  }
+}
+
+environment.removeObjectFromScene = function (object) {
+  environment.scene.remove( object.mesh )
+}
+
+environment.removeObjectsFromScene = function (objects) { // duplicate of ebove function
+  _.forEach( objects, environment.removeObjectFromScene )
+}
+
+
 environment.updateRenderer = function () {
   this.renderer.render(this.scene, this.camera)
 }
