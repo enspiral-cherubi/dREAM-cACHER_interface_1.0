@@ -102,11 +102,27 @@ environment.addObjectToScene = function (object) {
 }
 
 environment.removeObjectFromScene = function (object) {
-  environment.scene.remove( object.mesh )
+  if (object.mesh) {
+    environment.scene.remove( object.mesh )
+  } else {
+    environment.scene.remove( object )
+  }
 }
 
 environment.removeObjectsFromScene = function (objects) { // duplicate of ebove function
   _.forEach( objects, environment.removeObjectFromScene )
+}
+
+environment.removeObjectFromPickingScene = function (object) {
+  if (object.mesh) {
+    environment.pickingScene.remove( object.mesh )
+  } else {
+    environment.pickingScene.remove( object )
+  }
+}
+
+environment.removeObjectsFromPickingScene = function (objects) { // duplicate of ebove function
+  _.forEach( objects, environment.removeObjectFromPickingScene )
 }
 
 
