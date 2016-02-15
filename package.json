@@ -1,5 +1,38 @@
 {
+  "name": "dREAM-cACHER_interface_1.0",
+  "version": "1.0.0",
+  "description": "This is the first iteration of the interface for the 'dREAM-cACHER' web application",
+  "main": "./js/mvc/controller.js",
   "scripts": {
+    "start": "budo . -d --serve bundle.js --live",
+    "build": "browserify . -o bundle.js -g uglifyify",
+    "test": "browserify test.js | smokestack | tap-spec",
+    "dist": "mkdir -p dist && bash -c 'cp *.{js,html,css} dist'",
+    "push": "gh-pages -d dist",
     "deploy": "git push origin master:gh-pages"
+  },
+  "browserify": {
+    "transform": []
+  },
+  "repository": {
+    "type": "git",
+    "url": "enspiral-cherubi/dREAM-cACHER_interface_1.0"
+  },
+  "author": "enspiral-cherubi",
+  "license": "MIT",
+  "bugs": {
+    "url": "enspiral-cherubi/dREAM-cACHER_interface_1.0/issues"
+  },
+  "homepage": "enspiral-cherubi/dREAM-cACHER_interface_1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^10.0.0",
+    "budo": "^4.0.0",
+    "gh-pages": "^0.3.0",
+    "smokestack": "^3.3.0",
+    "tap-spec": "^4.0.2",
+    "tape": "^4.0.0",
+    "uglifyify": "^3.0.1",
+    "watchify": "^3.1.0"
   }
 }
