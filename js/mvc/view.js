@@ -1,6 +1,8 @@
 var THREE = require('three')
 var geometryChooser = require('./../services/geometry-chooser')
 var getMatrixData = require('./../services/get-matrix-data')
+var moment = require('moment')
+var parseDreamString = require('./../services/parse-dream-string')
 var $ = require('jquery')
 require('bootstrap-jquery')
 
