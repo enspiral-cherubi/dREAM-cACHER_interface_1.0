@@ -1,5 +1,7 @@
-var dreamsModel = require('./model.js')
 var $ = require('jquery')
+var AuthInterface = require('./../interface/auth-interface')
+var dreamsModel = require('./model.js')
+var dreamsView = require('./view.js')
 
 var environment = global.environment
 
@@ -67,7 +69,7 @@ var controller = {
 
     $('#log-out-tab').on('click', function(e) {
       e.preventDefault()
-      $.auth.signOut().then(function () {
+      AuthInterface.signOut.then(function () {
         dreamsView.restorePublicInterface()
       })
     })

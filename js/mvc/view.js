@@ -2,6 +2,7 @@ var THREE = require('three')
 var geometryChooser = require('./../services/geometry-chooser')
 var getMatrixData = require('./../services/get-matrix-data')
 var $ = require('jquery')
+var AuthInterface = require('./../interface/auth-interface')
 
 var environment = global.environment
 
@@ -12,7 +13,7 @@ var dreamsView = {
     $('#controls').show()
     $('#new-dream-tab').show()
     $('#dreamscape-tab').show()
-    if ($.auth.user['id']) {
+    if (AuthInterface.user['id']) {
       $('#login-dropdown').hide()
       $('#my-dreams-tab').show()
       $('#log-out-tab').show()
