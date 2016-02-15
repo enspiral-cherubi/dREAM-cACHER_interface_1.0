@@ -29,6 +29,7 @@ var dreamsModel =  {
       AuthInterface.validateToken().then(function() {
         dreamsView.updateNavBar()
       }).fail(function(resp) {
+        // TODO: refactor these errors into AuthInterface
         alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')))
       })
     }).fail(function(resp) {
