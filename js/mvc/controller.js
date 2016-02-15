@@ -88,7 +88,7 @@ $(document).ready( function () {
     // $('#login-dropdown').hide()
     $('#login-dropdown-toggle').attr('aria-expanded', 'false')
 
-    showCreateAccount()
+    dreamsView.showCreateAccount()
   })
 
   $('#submit-account-catch').on("click", function(e) {
@@ -123,21 +123,9 @@ $(document).on('click', '.tag', function(e) {
   var tag = this.id
   $('#dreamReadModal').modal('hide');
   dreamsModel.getDreamsForTag(tag)
-  // TODO: turn into fxn, move to view
   $('#dreamscape-tab').removeClass('active')
   $('#my-dreams-tab').removeClass('active')
 })
-
-// TODO: move to view
-function showCreateAccount() {
-  setTimeout( function () {
-    $('.signup-dropdown-toggle').attr('aria-expanded', 'true')
-    $('#signup-dropdown').show()
-    $('#signup-dropdown').addClass('open')
-    $('.signup-dropdown-toggle').hide()
-    $('#login-dropdown').show()
-  }, 1)
-}
 
 // TODO: rename to validation-something
 var authenticationError = null
@@ -146,7 +134,7 @@ function authentication(email, password, confirmPassword) {
     if (password.length > 7) {
         if (email) {
           return true
-        } else { authenticationError = 'email must be a real email' ; showCreateAccount() ; return false }
-      } else { authenticationError = 'password must be atleast 8 characters' ; showCreateAccount() ; return false }
-  } else { authenticationError = 'passwords do not match!' ; showCreateAccount() ; return false }
+        } else { authenticationError = 'email must be a real email' ; dreamsView.showCreateAccount() ; return false }
+      } else { authenticationError = 'password must be atleast 8 characters' ; dreamsView.showCreateAccount() ; return false }
+  } else { authenticationError = 'passwords do not match!' ; dreamsView.showCreateAccount() ; return false }
 }

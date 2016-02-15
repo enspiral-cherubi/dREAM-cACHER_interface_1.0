@@ -42,6 +42,16 @@ var dreamsView = {
     }
   },
 
+  showCreateAccount: function () {
+    setTimeout( function () {
+      $('.signup-dropdown-toggle').attr('aria-expanded', 'true')
+      $('#signup-dropdown').show()
+      $('#signup-dropdown').addClass('open')
+      $('.signup-dropdown-toggle').hide()
+      $('#login-dropdown').show()
+    }, 1)
+  },
+
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
 
