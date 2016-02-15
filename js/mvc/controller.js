@@ -118,17 +118,15 @@ $(document).ready( function () {
 
 // helper functions
 
-function dreamModalListners () {
-  $('.tag').on('click', function(e) {
-    e.preventDefault()
-    var tag = this.id
-    $('#dreamReadModal').modal('hide');
-    dreamsModel.getDreamsForTag(tag)
-    // TODO: turn into fxn, move to view
-    $('#dreamscape-tab').removeClass('active')
-    $('#my-dreams-tab').removeClass('active')
-  })
-}
+$(document).on('click', '.tag', function(e) {
+  e.preventDefault()
+  var tag = this.id
+  $('#dreamReadModal').modal('hide');
+  dreamsModel.getDreamsForTag(tag)
+  // TODO: turn into fxn, move to view
+  $('#dreamscape-tab').removeClass('active')
+  $('#my-dreams-tab').removeClass('active')
+})
 
 // TODO: move to view
 function showCreateAccount() {

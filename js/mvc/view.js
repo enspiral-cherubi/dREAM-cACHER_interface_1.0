@@ -147,8 +147,6 @@ var dreamsView = {
     $('#read-modal-body').html(html)
     $('#read-modal-title').html(titlehtml)
 
-    dreamModalListners()
-
   }
 };
 
