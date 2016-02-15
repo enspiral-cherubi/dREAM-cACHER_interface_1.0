@@ -12,11 +12,9 @@ function dreamDiv (dream) {
   return html
 }
 
-
 // Pick a random point inside the [-1,1]x[-1,1]x[-1,1] cube
 // If x*x + y*y + z*z < 1, keep coords
 // Normalize dividing x, y and z by Math.sqrt(x*x + y*y + z*z)
-
 
 function getXYZ () {
   var coords = []
