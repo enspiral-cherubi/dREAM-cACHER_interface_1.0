@@ -173,3 +173,9 @@ a {
   top: 45px;
   margin: auto;
 }
+
+/* bootstrap mods */
+/* TODO: move this into separate css file */
+.modal-backdrop {
+  z-index: 0;
+}
