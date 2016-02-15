@@ -176,5 +176,3 @@ function applyVertexColorsToGeometry (geometry, color) {
     }
   })
 }
-
-
