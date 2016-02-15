@@ -74,16 +74,16 @@ environment.updatePickingScene = function () {
 
   this.objectUnderMouse = null
   if ( data) {
-    //move our highlightBox so that it surrounds the picked object
+    //move our highlightSphere so that it surrounds the picked object
     if ( data.position && data.rotation && data.scale ){
-      this.highlightBox.position.copy( data.position )
-      this.highlightBox.rotation.copy( data.rotation )
-      this.highlightBox.scale.copy( data.scale ).add( this.offset )
-      this.highlightBox.visible = true
+      this.highlightSphere.position.copy( data.position )
+      this.highlightSphere.rotation.copy( data.rotation )
+      this.highlightSphere.scale.copy( data.scale ).add( this.offset )
+      this.highlightSphere.visible = true
       this.objectUnderMouse = id
     }
   } else {
-    if (this.highlightBox) { this.highlightBox.visible = false; }
+    if (this.highlightSphere) { this.highlightSphere.visible = false; }
   }
 }
 

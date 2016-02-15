@@ -106,11 +106,11 @@ var dreamsView = {
 
     // allDreamsMesh is all of the dream objects merged together together
     var allDreamsMesh = new THREE.Mesh( allDreamsGeometry, environment.defaultMaterial );
-    environment.scene.add( allDreamsMesh );
+    environment.addObjectToScene( allDreamsMesh );
 
     environment.pickingScene.add( new THREE.Mesh( pickingGeometry, environment.pickingMaterial ) );
 
-    environment.highlightBox = new THREE.Mesh(
+    environment.highlightSphere = new THREE.Mesh(
       new THREE.SphereGeometry( 5, 32, 32 ),
       new THREE.MeshBasicMaterial({
         color: 0xeeeeee,
@@ -119,7 +119,7 @@ var dreamsView = {
         opacity: 0.5
       })
     )
-    environment.scene.add( environment.highlightBox );
+    environment.addObjectToScene( environment.highlightSphere );
 
     this.positionCamera()
 
