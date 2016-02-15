@@ -1,126 +1,115 @@
-var environment = {}
+var environment = {
+  objectUnderMouse: null,
+  pickingData: [],
+  objects: [],
+  onRenderFcts: [],
+  mouse: new THREE.Vector2(),
+  offset: new THREE.Vector3(10, 10, 10),
+  container: document.getElementById('container'),
+  defaultMaterial: new THREEx.NoiseShaderMaterial(),
+  camera: new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 20000),
+  scene: new THREE.Scene(),
+  renderer: new THREE.WebGLRenderer({ antialias: true})
+}
 
-environment.init = function () {
-  var self = this
+// init fxns
 
-  this.objectUnderMouse = null
-  this.pickingData = []
-  this.objects = [];
-  this.onRenderFcts = []
-
-  this.mouse = new THREE.Vector2();
-  this.offset = new THREE.Vector3( 10, 10, 10 );
-
-  this.container = document.getElementById( "container" );
-
-
-
-
-  /////////////////////////// set up marbled texture for objects ///////////////
-
-  this.defaultMaterial = new THREEx.NoiseShaderMaterial()
-  this.onRenderFcts.push(function (delta, now) {
-    self.defaultMaterial.uniforms[ "offset" ].value.x += delta/1
-  })
-
-
-
-  /////////////////////////// set up camera /////////////////////////////
-
-  this.camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 1, 20000 );
-
-  /////////////////////////// set fly controls /////////////////////////////
-
-  this.controls = new THREE.FlyControls( this.camera );
-
+environment.initializeFlyControls = function () {
+  this.controls = new THREE.FlyControls(this.camera)
   this.controls.movementSpeed = 120;
   this.controls.domElement = container;
   this.controls.rollSpeed = Math.PI / 16;
   this.controls.autoForward = false;
   this.controls.dragToLook = false;
+}
 
-  this.onRenderFcts.push(
-    function (delta, now) {
-      self.controls.update(delta)
-  })
+environment.initializeRenderer = function () {
+  this.renderer.setClearColor(0xffffff)
+  this.renderer.setPixelRatio(window.devicePixelRatio)
+  this.renderer.setSize(window.innerWidth, window.innerHeight)
+  this.container.appendChild(this.renderer.domElement)
 
+  this.onMouseMove = function( e ) {
+    this.mouse.x = e.clientX;
+    this.mouse.y = e.clientY;
+  }
+  this.renderer.domElement.addEventListener('mousemove', this.onMouseMove.bind(this));
+}
 
-  /////////////////////////// set up scene /////////////////////////////
+environment.initializeWindowResize = function () {
+  this.windowResize = new THREEx.WindowResize(this.renderer, this.camera)
+}
 
-  this.scene = new THREE.Scene();
-
-  ///////////////////// set up off-screen scene /////////////////////////////
-
+environment.initializePickingScene = function () {
   this.pickingScene = new THREE.Scene();
   this.pickingTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
   this.pickingTexture.minFilter = THREE.LinearFilter;
   this.pickingTexture.generateMipmaps = false;
   this.pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } )
+}
 
-  /////////////////////////// set up renderer /////////////////////////////
+// update fxns
 
-  this.renderer = new THREE.WebGLRenderer( { antialias: true } );
-  this.renderer.setClearColor( 0xffffff );
-  this.renderer.setPixelRatio( window.devicePixelRatio );
-  this.renderer.setSize( window.innerWidth, window.innerHeight );
-  this.container.appendChild( this.renderer.domElement );
+environment.updateMarbleTexture = function (delta, now) {
+  this.defaultMaterial.uniforms[ "offset" ].value.x += delta / 1
+}
 
-  this.onMouseMove = function( e ) {
-    self.mouse.x = e.clientX;
-    self.mouse.y = e.clientY;
-  }
-  this.renderer.domElement.addEventListener( 'mousemove', this.onMouseMove );
+environment.updateControls = function (delta, now) {
+  this.controls.update(delta)
+}
 
-  ///////////////////// On Window Resize ////////////////////////
-  this.windowResize = new THREEx.WindowResize(this.renderer, this.camera)
+environment.updatePickingScene = function () {
+  //render the picking scene off-screen
+  this.renderer.render( this.pickingScene, this.camera, this.pickingTexture );
 
-  this.pick = function () {
-    //render the picking scene off-screen
-    self.renderer.render( self.pickingScene, self.camera, self.pickingTexture );
+  //create buffer for reading single pixel
+  var pixelBuffer = new Uint8Array( 4 );
 
-    //create buffer for reading single pixel
-    var pixelBuffer = new Uint8Array( 4 );
+  //read the pixel under the mouse from the texture
+  this.renderer.readRenderTargetPixels(this.pickingTexture, this.mouse.x, this.pickingTexture.height - this.mouse.y, 1, 1, pixelBuffer);
 
-    //read the pixel under the mouse from the texture
-    self.renderer.readRenderTargetPixels(self.pickingTexture, self.mouse.x, self.pickingTexture.height - self.mouse.y, 1, 1, pixelBuffer);
+  //interpret the pixel as an ID
+  var id = ( pixelBuffer[0] << 16 ) | ( pixelBuffer[1] << 8 ) | ( pixelBuffer[2] );
+  var data = this.pickingData[ id ];
 
-    //interpret the pixel as an ID
-
-    var id = ( pixelBuffer[0] << 16 ) | ( pixelBuffer[1] << 8 ) | ( pixelBuffer[2] );
-    var data = self.pickingData[ id ];
-
-    self.objectUnderMouse = null
-    if ( data) {
-      //move our highlightBox so that it surrounds the picked object
-      if ( data.position && data.rotation && data.scale ){
-        self.highlightBox.position.copy( data.position )
-        self.highlightBox.rotation.copy( data.rotation )
-        self.highlightBox.scale.copy( data.scale ).add( self.offset )
-        self.highlightBox.visible = true
-        self.objectUnderMouse = id
-      }
-    } else {
-      if (self.highlightBox) { self.highlightBox.visible = false; }
+  this.objectUnderMouse = null
+  if ( data) {
+    //move our highlightBox so that it surrounds the picked object
+    if ( data.position && data.rotation && data.scale ){
+      this.highlightBox.position.copy( data.position )
+      this.highlightBox.rotation.copy( data.rotation )
+      this.highlightBox.scale.copy( data.scale ).add( this.offset )
+      this.highlightBox.visible = true
+      this.objectUnderMouse = id
     }
+  } else {
+    if (this.highlightBox) { this.highlightBox.visible = false; }
   }
-  this.onRenderFcts.push(this.pick)
+}
 
-  //////////////////////////////////////////////////////////////////////////////
-  //    render the scene            //
-  //////////////////////////////////////////////////////////////////////////////
+environment.updateRenderer = function () {
+  this.renderer.render(this.scene, this.camera)
+}
 
-  this.onRenderFcts.push(function(){
-    self.renderer.render( self.scene, self.camera );
-  })
+// 'public' methods
 
-
+environment.init = function () {
+  this.initializeFlyControls()
+  this.initializeRenderer()
+  this.initializePickingScene()
+  this.initializeWindowResize()
+  this.onRenderFcts = [
+    this.updateMarbleTexture.bind(this),
+    this.updateControls.bind(this),
+    this.updatePickingScene.bind(this),
+    this.updateRenderer.bind(this)
+  ]
 }
 
 environment.render = function () {
   var self = this
   var lastTimeMsec = null
   requestAnimationFrame(function animate(nowMsec){
-
     // keep looping
     requestAnimationFrame( animate );
 
@@ -135,21 +124,3 @@ environment.render = function () {
     })
   })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
