@@ -108,7 +108,6 @@ environment.renderer.domElement.addEventListener('mousedown', function () {
 })
 
 
-// helper functions
 
 $(document).on('click', '.tag', function(e) {
   e.preventDefault()
@@ -119,7 +118,9 @@ $(document).on('click', '.tag', function(e) {
   $('#my-dreams-tab').removeClass('active')
 })
 
-// TODO: rename to validation-something
+// helper functions
+
+// TODO: refactor
 var authenticationError = null
 function authoriseSignupCredentials(email, password, confirmPassword) {
   if (password === confirmPassword) {
