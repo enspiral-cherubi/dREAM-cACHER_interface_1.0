@@ -1,6 +1,3 @@
-// adds the event listners
-USER_VALIDATED_FACEBOOK = false
-
 environment.init()
 environment.render()
 dreamsModel.getAllDreams()
