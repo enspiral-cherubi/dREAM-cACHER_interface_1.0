@@ -2,6 +2,8 @@
 // calls view methods
 var dreamsModel = {
 
+  dreamData: undefined,
+
   emailSignIn: function(email, password) {
     $.auth.emailSignIn({
       email: email,
@@ -34,12 +36,13 @@ var dreamsModel = {
   },
 
   getDreamsForUser: function() {
+    var self = this
     $.ajax({
       url: "http://104.236.175.6/user/dreams",
       type: 'GET',
       success: function (dreams){
-        dreamData = dreams
-        dreamsView.clearScene()
+        self.dreamData = dreams
+        environment.clearScene()
         dreamsView.populateDreamscape(dreams)
       },
       error: function (err){
@@ -55,8 +58,8 @@ var dreamsModel = {
       url: "http://104.236.175.6/dreams",
       type: 'GET',
       success: function (dreams){
-        dreamData = dreams
-        dreamsView.clearScene()
+        self.dreamData = dreams
+        environment.clearScene()
         dreamsView.populateDreamscape(dreams)
         dreamsView.updateNavBar()
       },
@@ -103,14 +106,15 @@ var dreamsModel = {
   },
 
   getDreamsForTag: function (tag) {
+    var self = this
     var data = {tag: tag}
     $.ajax({
       url: "http://104.236.175.6/tag/dreams",
       type: 'GET',
       data: data,
       success: function (dreams){
-        dreamData = dreams
-        dreamsView.clearScene()
+        self.dreamData = dreams
+        environment.clearScene()
         dreamsView.populateDreamscape(dreams)
       },
       error: function (err){
@@ -118,8 +122,5 @@ var dreamsModel = {
       }
     })
   }
-
-
-
 
 }

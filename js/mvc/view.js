@@ -42,75 +42,63 @@ var dreamsView = {
     }
   },
 
+  showCreateAccount: function () {
+    setTimeout( function () {
+      $('.signup-dropdown-toggle').attr('aria-expanded', 'true')
+      $('#signup-dropdown').show()
+      $('#signup-dropdown').addClass('open')
+      $('.signup-dropdown-toggle').hide()
+      $('#login-dropdown').show()
+    }, 1)
+  },
+
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
-    geometry = new THREE.Geometry()
+
+    allDreamsGeometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
 
-    var color = new THREE.Color();
-    var quaternion = new THREE.Quaternion();
-    var matrix = new THREE.Matrix4();
-
     for ( var i = 0; i < dreams.length; i ++ ) {
+      var color = new THREE.Color();
+      var quaternion = new THREE.Quaternion();
+      var matrix = new THREE.Matrix4();
 
-      var geom = THREE.geometryChooser(dreams[i].sentiment)
+      var singleDreamGeom = THREE.geometryChooser(dreams[i].sentiment)
 
-      var normCoords = getRandomCoords()
+      var matrixData = defineMatrixData(i)
 
-      // sets the position for each mesh
-      var position = new THREE.Vector3();
-      if ( i === 0) {
-        position.x = 0
-        position.y = 0
-        position.z = 0
-      } else {
-        position.x = normCoords[0] * Math.log(i + 1) * 90
-        position.y = normCoords[1] * Math.log(i + 1) * 90
-        position.z = normCoords[2] * Math.log(i + 1) * 90
-      }
-
-      // sets the rotation for each mesh
-      var rotation = new THREE.Euler();
-      rotation.x = Math.random() * 2 * Math.PI;
-      rotation.y = Math.random() * 2 * Math.PI;
-      rotation.z = Math.random() * 2 * Math.PI;
-
-      // sets the scale for each mesh
-      var scale = new THREE.Vector3();
-      scale.x =  0.05;
-      scale.y =  0.05;
-      scale.z =  0.05;
-
-      quaternion.setFromEuler( rotation, false );
+      quaternion.setFromEuler( matrixData.rotation, false );
 
       // the matrix has the position, scale, and rotation of the object
-      matrix.compose( position, quaternion, scale );
+      matrix.compose( matrixData.position, quaternion, matrixData.scale );
 
       // merge each geometry into the one 'master' geometry
-      geometry.merge( geom, matrix );
+      allDreamsGeometry.merge( singleDreamGeom, matrix );
 
-      // give the geom's vertices a color corresponding to the "id"
+      // give the singleDreamGeom's vertices a color corresponding to the "id"
 
-      applyVertexColors( geom, color.setHex( i ) );
+      applyVertexColorsToGeometry( singleDreamGeom, color.setHex( i ) );
 
-      pickingGeometry.merge( geom, matrix );
+      pickingGeometry.merge( singleDreamGeom, matrix );
 
-      pickingData[ i ] = {
-          position: position,
-          rotation: rotation,
-          scale: scale
+      environment.pickingData[ i ] = {
+        position: matrixData.position,
+        rotation: matrixData.rotation,
+        scale: matrixData.scale
       }
 
     }
 
 
-    // drawnObject is all of the dream objects merged together together
-    var drawnObject = new THREE.Mesh( geometry, defaultMaterial );
-    scene.add( drawnObject );
+    // allDreamsMesh is all of the dream objects merged together together
+    environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, environment.defaultMaterial );
+    environment.addObjectToScene( environment.dreamsMesh );
 
-    pickingScene.add( new THREE.Mesh( pickingGeometry, pickingMaterial ) );
 
-    highlightBox = new THREE.Mesh(
+    environment.pickingMesh = new THREE.Mesh( pickingGeometry, environment.pickingMaterial )
+    environment.pickingScene.add( environment.pickingMesh );
+
+    environment.highlightSphere = new THREE.Mesh(
       new THREE.SphereGeometry( 5, 32, 32 ),
       new THREE.MeshBasicMaterial({
         color: 0xeeeeee,
@@ -119,22 +107,11 @@ var dreamsView = {
         opacity: 0.5
       })
     )
-    scene.add( highlightBox );
 
-    this.positionCamera()
+    environment.addObjectToScene( environment.highlightSphere );
 
-  },
+    environment.resetCameraPosition()
 
-  // move to 'environment'
-  clearScene: function () {
-    for( var i = scene.children.length - 1; i >= 0; i--) { scene.remove(scene.children[i]) }
-    for( var i = pickingScene.children.length - 1; i >= 0; i--) { pickingScene.remove(pickingScene.children[i]) }
-  },
-
-  // move to 'environment'
-  positionCamera: function () {
-    camera.position.set( 0, 0, 300 );
-    camera.lookAt( scene.position )
   },
 
   showInfoModal: function () {
@@ -180,101 +157,24 @@ var dreamsView = {
     $('#read-modal-body').html(html)
     $('#read-modal-title').html(titlehtml)
 
-    dreamModalListners()
-
   }
-
-
 };
-
-function generateATag(text) {
-  var html = "<a href='/"
-  + text
-  + "' "
-  + "class='tag"
-  + "' "
-  + "id='"
-  + text
-  + "'"
-  + " type='"
-  + "button'>"
-  + text
-  + "</a>"
-  return html
-}
-
-// TODO: abstract into module
-function parseDreamString(dreamString, tagWords) {
-  var outputString = dreamString
-  for (var i = 0; i < tagWords.length; i++) {
-
-    var currentTagWordSpace = " " + tagWords[i] + " "
-    var currentTagWordComma = " " + tagWords[i] + ","
-    var currentTagWordStop = " " + tagWords[i] + "."
-
-    // all lowercase
-    var aTag = " " + generateATag(tagWords[i]) + " "
-    outputString = outputString.replace(currentTagWordSpace, aTag)
-
-    aTag = " " + generateATag(tagWords[i]) + ","
-    outputString = outputString.replace(currentTagWordComma, aTag)
-
-    aTag = " " + generateATag(tagWords[i]) + "."
-    outputString = outputString.replace(currentTagWordStop, aTag)
-
-    // capitalised
-
-    currentTagWordSpace = " " + capitalizeFirstLetter(tagWords[i]) + " "
-    currentTagWordComma = " " + capitalizeFirstLetter(tagWords[i]) + ","
-    currentTagWordStop = " " + capitalizeFirstLetter(tagWords[i]) + "."
-
-    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + " "
-    outputString = outputString.replace(currentTagWordSpace, aTag)
-
-    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + ","
-    outputString = outputString.replace(currentTagWordComma, aTag)
-
-    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + "."
-    outputString = outputString.replace(currentTagWordStop, aTag)
-
-    // allCaps
-    aTag = generateATag(allCapsTag)
-    var allCapsTag = tagWords[i].toUpperCase()
-
-    currentTagWordSpace = " " + tagWords[i].toUpperCase() + " "
-    currentTagWordComma = " " + tagWords[i].toUpperCase() + ","
-    currentTagWordStop = " " + tagWords[i].toUpperCase() + "."
-
-    aTag = " " + generateATag(tagWords[i].toUpperCase()) + " "
-    outputString = outputString.replace(currentTagWordSpace, aTag)
-
-    aTag = " " + generateATag(tagWords[i].toUpperCase()) + ","
-    outputString = outputString.replace(currentTagWordComma, aTag)
-
-    aTag = " " + generateATag(tagWords[i].toUpperCase()) + "."
-    outputString = outputString.replace(currentTagWordStop, aTag)
-  }
-  return outputString
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 function parseTagObjects (tagObjects) {
   var tags = []
   for (var i = 0; i < tagObjects.length; i++) {
-      tags.push(tagObjects[i].word)
-  };
+    tags.push(tagObjects[i].word)
+  }
   return tags
 }
 
-
-function applyVertexColors( g, c ) {
-  g.faces.forEach( function( f ) {
-      var n = ( f instanceof THREE.Face3 ) ? 3 : 4;
-      for( var j = 0; j < n; j ++ ) {
-          f.vertexColors[ j ] = c;
-      }
-  } );
+function applyVertexColorsToGeometry (geometry, color) {
+  geometry.faces.forEach(function (face) {
+    var n = (face instanceof THREE.Face3) ? 3 : 4;
+    for (var j = 0; j < n; j++) {
+      face.vertexColors[j] = color;
+    }
+  })
 }
+
+

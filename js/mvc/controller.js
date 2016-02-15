@@ -4,8 +4,13 @@ USER_VALIDATED_FACEBOOK = false
 $(document).ready( function () {
 
 
-  // environment.init() ?
-  init3dInterface();
+  environment.init()
+  environment.render()
+  dreamsModel.getAllDreams()
+
+
+
+
 
   // call get all dreams
 
@@ -83,7 +88,7 @@ $(document).ready( function () {
     // $('#login-dropdown').hide()
     $('#login-dropdown-toggle').attr('aria-expanded', 'false')
 
-    showCreateAccount()
+    dreamsView.showCreateAccount()
   })
 
   $('#submit-account-catch').on("click", function(e) {
@@ -92,7 +97,7 @@ $(document).ready( function () {
     var password = $('#signup-dropdown').find('input[type="password"]').val()
     var confirmPassword = $('#confirm-password').find('input[type="password"]').val()
 
-    if ( authentication(email, password, confirmPassword) ) {
+    if ( authoriseSignupCredentials(email, password, confirmPassword) ) {
       dreamsModel.emailSignUp( email, password, confirmPassword )
     } else { alert(authenticationError) }
   })
@@ -101,50 +106,35 @@ $(document).ready( function () {
 
   // three.js stuff
 
-  renderer.domElement.addEventListener('mousedown', function () {
-    if (objectUnderMouse >= 0) {
+  environment.renderer.domElement.addEventListener('mousedown', function () {
+    if (environment.objectUnderMouse >= 0) {
       // make the modal appear with the correct dream data
-      var dream = dreamData[objectUnderMouse]
+      var dream = dreamsModel.dreamData[environment.objectUnderMouse]
       dreamsModel.getTagsForDream(dream)
     }
   })
 
 })
 
-
 // helper functions
 
-function dreamModalListners () {
-  $('.tag').on('click', function(e) {
-    e.preventDefault()
-    var tag = this.id
-    $('#dreamReadModal').modal('hide');
-    dreamsModel.getDreamsForTag(tag)
-    // TODO: turn into fxn, move to view
-    $('#dreamscape-tab').removeClass('active')
-    $('#my-dreams-tab').removeClass('active')
-  })
-}
-
-// TODO: move to view
-function showCreateAccount() {
-  setTimeout( function () {
-    $('.signup-dropdown-toggle').attr('aria-expanded', 'true')
-    $('#signup-dropdown').show()
-    $('#signup-dropdown').addClass('open')
-    $('.signup-dropdown-toggle').hide()
-    $('#login-dropdown').show()
-  }, 1)
-}
+$(document).on('click', '.tag', function(e) {
+  e.preventDefault()
+  var tag = this.id
+  $('#dreamReadModal').modal('hide');
+  dreamsModel.getDreamsForTag(tag)
+  $('#dreamscape-tab').removeClass('active')
+  $('#my-dreams-tab').removeClass('active')
+})
 
 // TODO: rename to validation-something
 var authenticationError = null
-function authentication(email, password, confirmPassword) {
+function authoriseSignupCredentials(email, password, confirmPassword) {
   if (password === confirmPassword) {
     if (password.length > 7) {
         if (email) {
           return true
-        } else { authenticationError = 'email must be a real email' ; showCreateAccount() ; return false }
-      } else { authenticationError = 'password must be atleast 8 characters' ; showCreateAccount() ; return false }
-  } else { authenticationError = 'passwords do not match!' ; showCreateAccount() ; return false }
+        } else { authenticationError = 'email must be a real email' ; dreamsView.showCreateAccount() ; return false }
+      } else { authenticationError = 'password must be atleast 8 characters' ; dreamsView.showCreateAccount() ; return false }
+  } else { authenticationError = 'passwords do not match!' ; dreamsView.showCreateAccount() ; return false }
 }
