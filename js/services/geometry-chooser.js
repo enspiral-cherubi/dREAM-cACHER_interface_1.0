@@ -1,4 +1,7 @@
-THREE.geometryChooser = function (sentiment) {
+var THREE = require('three')
+var getRandom = require('./get-random')
+
+function geometryChooser (sentiment) {
   if (sentiment > 0.75) {
     var argument = Math.round((sentiment - 0.5))
     return new THREE.SphereGeometry(150, argument, argument);
@@ -14,3 +17,5 @@ THREE.geometryChooser = function (sentiment) {
     return new THREE.TorusKnotGeometry(37.67, 200, 59, 2, getRandom(4,20), getRandom(4,20), 1)
   }
 }
+
+module.exports = geometryChooser

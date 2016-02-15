@@ -1,7 +1,9 @@
-// makes ajax calls
-// calls view methods
-var dreamsModel = {
+var $ = require('jquery')
+var dreamsView = require('./view.js')
 
+var environment = global.environment
+
+var dreamsModel =  {
   dreamData: undefined,
 
   emailSignIn: function(email, password) {
@@ -124,3 +126,5 @@ var dreamsModel = {
   }
 
 }
+
+module.exports = dreamsModel

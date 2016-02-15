@@ -1,3 +1,9 @@
+var THREE = require('three')
+var NoiseShaderMaterial = require('three-noise-shader-material')(THREE)
+var WindowResize = require('three-window-resize')
+// add FlyControls plugin to THREE
+require('three-fly-controls')(THREE)
+
 var environment = {
   objectUnderMouse: null,
   pickingData: [],
@@ -6,7 +12,7 @@ var environment = {
   mouse: new THREE.Vector2(),
   offset: new THREE.Vector3(10, 10, 10),
   container: document.getElementById('container'),
-  defaultMaterial: new THREEx.NoiseShaderMaterial(),
+  defaultMaterial: NoiseShaderMaterial(),
   camera: new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 20000),
   scene: new THREE.Scene(),
   renderer: new THREE.WebGLRenderer({ antialias: true})
@@ -37,7 +43,7 @@ environment.initializeRenderer = function () {
 }
 
 environment.initializeWindowResize = function () {
-  this.windowResize = new THREEx.WindowResize(this.renderer, this.camera)
+  this.windowResize = new WindowResize(this.renderer, this.camera)
 }
 
 environment.initializePickingScene = function () {
@@ -179,3 +185,5 @@ environment.render = function () {
     })
   })
 }
+
+module.exports = environment

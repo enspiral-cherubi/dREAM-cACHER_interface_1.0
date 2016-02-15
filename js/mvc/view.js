@@ -1,5 +1,11 @@
-// post stuff to the dom
+var THREE = require('three')
+var geometryChooser = require('./../services/geometry-chooser')
+var getMatrixData = require('./../services/get-matrix-data')
+var $ = require('jquery')
 
+var environment = global.environment
+
+// posts stuff to the dom
 var dreamsView = {
   updateNavBar: function () {
     $('#info').show()
@@ -63,9 +69,9 @@ var dreamsView = {
       var quaternion = new THREE.Quaternion();
       var matrix = new THREE.Matrix4();
 
-      var singleDreamGeom = THREE.geometryChooser(dreams[i].sentiment)
+      var singleDreamGeom = geometryChooser(dreams[i].sentiment)
 
-      var matrixData = defineMatrixData(i)
+      var matrixData = getMatrixData(i)
 
       quaternion.setFromEuler( matrixData.rotation, false );
 
@@ -93,7 +99,6 @@ var dreamsView = {
     // allDreamsMesh is all of the dream objects merged together together
     environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, environment.defaultMaterial );
     environment.addObjectToScene( environment.dreamsMesh );
-
 
     environment.pickingMesh = new THREE.Mesh( pickingGeometry, environment.pickingMaterial )
     environment.pickingScene.add( environment.pickingMesh );
@@ -176,3 +181,5 @@ function applyVertexColorsToGeometry (geometry, color) {
     }
   })
 }
+
+module.exports = dreamsView
