@@ -109,13 +109,12 @@ $(document).ready( function () {
   environment.renderer.domElement.addEventListener('mousedown', function () {
     if (environment.objectUnderMouse >= 0) {
       // make the modal appear with the correct dream data
-      var dream = dreamData[environment.objectUnderMouse]
+      var dream = dreamsModel.dreamData[environment.objectUnderMouse]
       dreamsModel.getTagsForDream(dream)
     }
   })
 
 })
-
 
 // helper functions
 

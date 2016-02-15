@@ -44,12 +44,9 @@ var dreamsView = {
 
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
-    // store the meshes somewhere so they can be removed from the scene
-    // move all threejs stuff into environment
 
     allDreamsGeometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
-
 
     for ( var i = 0; i < dreams.length; i ++ ) {
       var color = new THREE.Color();
