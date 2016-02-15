@@ -25,6 +25,7 @@
   },
   "homepage": "enspiral-cherubi/dREAM-cACHER_interface_1.0",
   "dependencies": {
+    "bootstrap-jquery": "^3.3.2",
     "j-toker": "0.0.10-beta3",
     "jquery": "^2.2.0",
     "moment": "^2.11.2",

@@ -2,6 +2,8 @@ var THREE = require('three')
 var geometryChooser = require('./../services/geometry-chooser')
 var getMatrixData = require('./../services/get-matrix-data')
 var $ = require('jquery')
+require('bootstrap-jquery')
+
 var AuthInterface = require('./../interface/auth-interface')
 
 var environment = global.environment
