@@ -36,7 +36,7 @@ var controller = {
 
     $('#save-dream').on('click', function (e) {
       e.preventDefault()
-      var dream = $('#dream-entry-modal').find('textarea[type="dream"]').val()
+      var dream = $('#dream-entry-modal-container').find('textarea[type="dream"]').val()
       $('#new-dream-tab').removeClass('active')
       if (dream.length > 10) { dreamsModel.saveDream(dream) } else {
         alert('you must enter a dream :-)')
@@ -47,7 +47,7 @@ var controller = {
     })
 
     // closing the dream entry modal
-    $('#dream-entry-modal').on('hidden.bs.modal', function () {
+    $('#dream-entry-modal-container').on('hidden.bs.modal', function () {
       $(dreamsView.prevTabActive).addClass('active')
       $('#new-dream-tab').removeClass('active')
     })
