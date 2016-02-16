@@ -1,90 +1,28 @@
-var random = require('lodash.random')
 var THREE = require('three')
+var random = require('lodash.random')
+var vectors = require('vectors')
+var normalize = require('vectors/normalize')(3)
+var range = require('lodash.range')
 
-function getMatrixData (i) {
-  // sets the position for each mesh
-  var position = getPosition(i)
-
-  // sets the rotation for each mesh
-  var rotation = getRotation()
-
-  // sets the scale for each mesh
-  var scale = getScale()
-
+module.exports = function (i) {
   return {
-    position: position,
-    rotation: rotation,
-    scale: scale
+    position: getPosition(i),
+    rotation: new THREE.Euler(random(2 * Math.PI), random(2 * Math.PI), random(2 * Math.PI)),
+    scale: new THREE.Vector3(0.05, 0.05, 0.05)
   }
 }
 
 function getPosition (i) {
-  var normCoords = getRandomCoords()
-  var position = new THREE.Vector3();
-  if ( i === 0) {
-    position.x = 0
-    position.y = 0
-    position.z = 0
+  var coords;
+  if (i === 0) {
+    coords = [0,0,0]
   } else {
-    position.x = normCoords[0] * Math.log(i + 1) * 90
-    position.y = normCoords[1] * Math.log(i + 1) * 90
-    position.z = normCoords[2] * Math.log(i + 1) * 90
+    coords = getRandNormCoords().map(function (c) { return c * Math.log(i + 1) * 90 })
   }
-  return position
+  return new THREE.Vector3(coords[0], coords[1], coords[2])
 }
 
-function getRotation () {
-  var rotation = new THREE.Euler();
-  rotation.x = Math.random() * 2 * Math.PI;
-  rotation.y = Math.random() * 2 * Math.PI;
-  rotation.z = Math.random() * 2 * Math.PI;
-  return rotation
+function getRandNormCoords () {
+  var randCoords = range(3).map(function () { return random(-1,1, true) })
+  return normalize(randCoords)
 }
-
-function getScale () {
-  var scale = new THREE.Vector3();
-  scale.x =  0.05;
-  scale.y =  0.05;
-  scale.z =  0.05;
-  return scale
-}
-
-// Pick a random point inside the [-1,1]x[-1,1]x[-1,1] cube
-// If x*x + y*y + z*z < 1, keep coords
-// Normalize dividing x, y and z by Math.sqrt(x*x + y*y + z*z)
-
-function getXYZ () {
-  var coords = []
-  for (var i = 0; i < 3; i++) {
-    coords.push(random(-1,1,true))
-  }
-  return coords
-}
-
-function isSuitableCoords (coords) {
-  return (coords[0]*coords[0] + coords[1]*coords[1] + coords[2]*coords[2]) < 1
-}
-
-function normalizedCoordsFrom (coords) {
-  var denominator = Math.sqrt(coords[0]*coords[0] + coords[1]*coords[1] + coords[2]*coords[2])
-  var normCoords = coords.map(function (coord) {
-    return coord / denominator
-  })
-  return normCoords
-}
-
-function getRandomCoords () {
-  var normCoords, coords, coordsFound = false
-
-  while (coordsFound === false) {
-    coords = getXYZ()
-    if (isSuitableCoords(coords)) {
-      coordsFound = true
-      normCoords = normalizedCoordsFrom(coords)
-    }
-  }
-
-  return normCoords
-}
-
-module.exports = getMatrixData

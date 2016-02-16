@@ -29,11 +29,13 @@
     "j-toker": "0.0.10-beta3",
     "jquery": "^2.2.0",
     "lodash.random": "^3.1.1",
+    "lodash.range": "^3.1.2",
     "moment": "^2.11.2",
     "three": "^0.74.0",
     "three-fly-controls": "^1.1.0",
     "three-noise-shader-material": "^1.0.2",
-    "three-window-resize": "^1.0.4"
+    "three-window-resize": "^1.0.4",
+    "vectors": "^0.1.0"
   },
   "devDependencies": {
     "browserify": "^10.0.0",
