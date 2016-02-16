@@ -36,11 +36,13 @@ var controller = {
 
     $('#save-dream').on('click', function (e) {
       e.preventDefault()
-      var dream = $('#dream-entry-modal-container').find('textarea[type="dream"]').val()
+      var dream = $('#dream-entry-modal-container').find('textarea').val()
       $('#new-dream-tab').removeClass('active')
-      if (dream.length > 10) { dreamsModel.saveDream(dream) } else {
-        alert('you must enter a dream :-)')
-        setTimeout( function () {
+      if (dream.length > 10) {
+        dreamsModel.saveDream(dream)
+      } else {
+        alert('your dream must be longer than 10 characters')
+        setTimeout(function () {
           dreamsView.showDreamEntryModal()
         }, 1000)
       }
