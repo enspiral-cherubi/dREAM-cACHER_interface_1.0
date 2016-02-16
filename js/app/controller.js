@@ -101,7 +101,7 @@ var controller = {
       if (environment.objectUnderMouse >= 0) {
         // make the modal appear with the correct dream data
         var dream = dreamsModel.dreamData[environment.objectUnderMouse]
-        dreamsModel.getTagsForDream(dream)
+        if (dream) { dreamsModel.getTagsForDream(dream) }
       }
     })
 
