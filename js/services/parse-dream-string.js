@@ -1,3 +1,4 @@
+// TODO: refactor
 function parseDreamString(dreamString, tagWords) {
   var outputString = dreamString
   for (var i = 0; i < tagWords.length; i++) {

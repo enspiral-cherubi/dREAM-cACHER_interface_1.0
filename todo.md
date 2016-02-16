@@ -1,7 +1,6 @@
 ## todo:
 
 - now:
-  - replace custom fxns with node modules, if they exist
   - get all controller actions working
   - recalibrate navigation speed
 
