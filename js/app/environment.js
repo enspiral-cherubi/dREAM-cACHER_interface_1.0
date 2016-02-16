@@ -20,9 +20,8 @@ var environment = {
 // init fxns
 
 environment.initializeFlyControls = function () {
-  this.controls = new THREE.FlyControls(this.camera)
+  this.controls = new THREE.FlyControls(this.camera, this.container)
   this.controls.movementSpeed = 1;
-  this.controls.domElement = this.container;
   this.controls.rollSpeed = Math.PI / 1600;
   this.controls.autoForward = false;
   this.controls.dragToLook = false;
