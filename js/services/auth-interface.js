@@ -27,7 +27,7 @@ var AuthInterface = {
     return Auth.validateToken()
   },
 
-  signOut: function (callback) {
+  signOut: function () {
     return Auth.signOut()
   }
 }

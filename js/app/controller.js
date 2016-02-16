@@ -72,9 +72,8 @@ var controller = {
 
     $('#log-out-tab').on('click', function(e) {
       e.preventDefault()
-      AuthInterface.signOut.then(function () {
-        dreamsView.restorePublicInterface()
-      })
+      AuthInterface.signOut()
+      dreamsView.restorePublicInterface()
     })
 
     // create new account modal
