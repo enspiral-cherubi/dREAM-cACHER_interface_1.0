@@ -1,4 +1,4 @@
-var getRandom = require('./get-random')
+var random = require('lodash.random')
 var THREE = require('three')
 
 function getMatrixData (i) {
@@ -56,7 +56,7 @@ function getScale () {
 function getXYZ () {
   var coords = []
   for (var i = 0; i < 3; i++) {
-    coords.push(getRandom(-1,1))
+    coords.push(random(-1,1,true))
   }
   return coords
 }
