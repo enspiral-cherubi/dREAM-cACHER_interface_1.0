@@ -9,7 +9,7 @@ $.ajaxSetup({
 })
 
 Auth.configure({
-  apiUrl: 'http://104.236.175.6'
+  apiUrl: global.apiUrl
 })
 
 var AuthInterface = {

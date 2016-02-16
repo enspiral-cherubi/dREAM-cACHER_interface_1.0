@@ -5,7 +5,6 @@ var environment = global.environment
 
 var dreamsModel =  {
   dreamData: undefined,
-
   emailSignIn: function(email, password) {
     AuthInterface.emailSignIn({
       email: email,
@@ -39,7 +38,7 @@ var dreamsModel =  {
   getDreamsForUser: function() {
     var self = this
     $.ajax({
-      url: "http://104.236.175.6/user/dreams",
+      url: global.apiUrl + "/user/dreams",
       type: 'GET',
       success: function (dreams){
         self.dreamData = dreams
@@ -56,7 +55,7 @@ var dreamsModel =  {
     var self = this
     var returnValue = null
     $.ajax({
-      url: "http://104.236.175.6/dreams",
+      url: global.apiUrl + "/dreams",
       type: 'GET',
       success: function (dreams){
         self.dreamData = dreams
@@ -76,7 +75,7 @@ var dreamsModel =  {
     console.log(formData)
 
     $.ajax({
-      url : "http://104.236.175.6/dreams",
+      url : global.apiUrl + "/dreams",
       type: "POST",
       data : formData,
       success: function(data, textStatus, jqXHR)
@@ -94,7 +93,7 @@ var dreamsModel =  {
   getTagsForDream: function (dream) {
     var data = {dream_id: dream.id}
     $.ajax({
-      url: "http://104.236.175.6/dream/tags",
+      url: global.apiUrl + "/dream/tags",
       type: 'GET',
       data: data,
       success: function (tags){
@@ -110,7 +109,7 @@ var dreamsModel =  {
     var self = this
     var data = {tag: tag}
     $.ajax({
-      url: "http://104.236.175.6/tag/dreams",
+      url: global.apiUrl + "/tag/dreams",
       type: 'GET',
       data: data,
       success: function (dreams){

@@ -9,7 +9,7 @@
     "test": "browserify test.js | smokestack | tap-spec",
     "dist": "mkdir -p dist && bash -c 'cp *.{js,html,css} dist'",
     "push": "gh-pages -d dist",
-    "deploy": "git push origin master:gh-pages"
+    "deploy": "(export NODE_ENV=production; git push origin master:gh-pages)"
   },
   "browserify": {
     "transform": []
