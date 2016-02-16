@@ -16,21 +16,13 @@ var dreamsModel =  {
     });
   },
 
-  emailSignUp: function (email, password, confirmPassword) {
-    // TODO: refactor
-    AuthInterface.emailSignUp({
-      email: email,
-      password: password,
-      password_confirmation: confirmPassword
-    }).then( function (user) {
-      // validate token, as AuthInterface.user wasnt showing the current user
-      AuthInterface.validateToken().then(function() {
-        dreamsView.updateNavBar()
-      }).fail(function(resp) {
-        // TODO: refactor these errors into AuthInterface
-        alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')))
-      })
-    }).fail(function(resp) {
+  emailSignUp: function (formParams) {
+    AuthInterface.emailSignUp(formParams).then(function (user) {
+      // TODO: AuthInterface.user seems not to be defined post-sign-up, may
+      // have to set AuthInterface as a global variable, or might have to
+      // validateToken like what was being done before
+      dreamsView.updateNavBar()
+    }).fail(function (resp) {
       alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')))
     })
   },

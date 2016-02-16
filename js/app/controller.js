@@ -2,6 +2,7 @@ var $ = require('jquery')
 var AuthInterface = require('./../services/auth-interface')
 var dreamsModel = require('./model.js')
 var dreamsView = require('./view.js')
+var queryString = require('query-string')
 
 var environment = global.environment
 
@@ -86,15 +87,17 @@ var controller = {
       dreamsView.showCreateAccount()
     })
 
-    $('#submit-account-catch').on("click", function(e) {
+    $('#sign-up-form').on('submit', function(e) {
       e.preventDefault()
-      var email = $('#signup-dropdown').find('input[type="email"]').val()
-      var password = $('#signup-dropdown').find('input[type="password"]').val()
-      var confirmPassword = $('#confirm-password').find('input[type="password"]').val()
-
-      if ( authoriseSignupCredentials(email, password, confirmPassword) ) {
-        dreamsModel.emailSignUp( email, password, confirmPassword )
-      } else { alert(authenticationError) }
+      var $form = $(this)
+      var formParams = queryString.parse($form.serialize())
+      var errors = signUpErrors(formParams)
+      if (errors) {
+        dreamsView.showCreateAccount()
+        alert(errors)
+      } else {
+        dreamsModel.emailSignUp(formParams)
+      }
     })
 
     // three.js stuff
@@ -125,15 +128,15 @@ var controller = {
     // helper functions
 
     // TODO: refactor
-    var authenticationError = null
-    function authoriseSignupCredentials(email, password, confirmPassword) {
-      if (password === confirmPassword) {
-        if (password.length > 7) {
-            if (email) {
-              return true
-            } else { authenticationError = 'email must be a real email' ; dreamsView.showCreateAccount() ; return false }
-          } else { authenticationError = 'password must be atleast 8 characters' ; dreamsView.showCreateAccount() ; return false }
-      } else { authenticationError = 'passwords do not match!' ; dreamsView.showCreateAccount() ; return false }
+    function signUpErrors (params) {
+      var errors = []
+      if (params.password.length < 8) {
+        errors.push('password must be atleast 8 characters')
+      }
+      if (params.password !== params.password_confirmation) {
+        errors.push('passwords do not match!')
+      }
+      return errors.length > 0 ? errors : null
     }
   }
 }
