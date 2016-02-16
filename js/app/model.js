@@ -9,7 +9,7 @@ var dreamsModel =  {
     AuthInterface.emailSignIn({
       email: email,
       password: password
-    }).then( function (user) {
+    }).then(function (user) {
       dreamsView.updateNavBar()
     }).fail(function(resp) {
       alert('Authentication failure: ' + (resp.errors && resp.errors.join(' ')));
@@ -39,15 +39,13 @@ var dreamsModel =  {
     var self = this
     $.ajax({
       url: global.apiUrl + "/user/dreams",
-      type: 'GET',
-      success: function (dreams){
-        self.dreamData = dreams
-        environment.clearScene()
-        dreamsView.populateDreamscape(dreams)
-      },
-      error: function (err){
-        console.log("Error: ", err);
-      }
+      type: 'GET'
+    }).then(function (dreams) {
+      self.dreamData = dreams
+      environment.clearScene()
+      dreamsView.populateDreamscape(dreams)
+    }).fail(function (err) {
+      console.log("Error: ", err)
     })
   },
 
@@ -56,38 +54,28 @@ var dreamsModel =  {
     var returnValue = null
     $.ajax({
       url: global.apiUrl + "/dreams",
-      type: 'GET',
-      success: function (dreams){
-        self.dreamData = dreams
-        environment.clearScene()
-        dreamsView.populateDreamscape(dreams)
-        dreamsView.updateNavBar()
-      },
-      error: function (err){
-        console.log("Error: ", err);
-      }
+      type: 'GET'
+    }).then(function (dreams){
+      self.dreamData = dreams
+      environment.clearScene()
+      dreamsView.populateDreamscape(dreams)
+      dreamsView.updateNavBar()
+    }).fail(function (err){
+      console.log("Error: ", err)
     })
   },
 
   saveDream: function (dream) {
-    var formData = {dream: dream}; //Array
-
-    console.log(formData)
-
+    var formData = {dream: dream}
     $.ajax({
       url : global.apiUrl + "/dreams",
       type: "POST",
-      data : formData,
-      success: function(data, textStatus, jqXHR)
-      {
-        console.log(data)
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-        console.log(errorThrown)
-      }
-    });
-
+      data : formData
+    }).then(function (data, textStatus, jqXHR) {
+      console.log(data)
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+      console.log(errorThrown)
+    })
   },
 
   getTagsForDream: function (dream) {
@@ -95,13 +83,11 @@ var dreamsModel =  {
     $.ajax({
       url: global.apiUrl + "/dream/tags",
       type: 'GET',
-      data: data,
-      success: function (tags){
-        dreamsView.showDreamModal(dream, tags)
-      },
-      error: function (err){
-        console.log("Error: ", err);
-      }
+      data: data
+    }).then(function (tags) {
+      dreamsView.showDreamModal(dream, tags)
+    }).fail(function (err) {
+      console.log("Error: ", err);
     })
   },
 
@@ -111,15 +97,13 @@ var dreamsModel =  {
     $.ajax({
       url: global.apiUrl + "/tag/dreams",
       type: 'GET',
-      data: data,
-      success: function (dreams){
-        self.dreamData = dreams
-        environment.clearScene()
-        dreamsView.populateDreamscape(dreams)
-      },
-      error: function (err){
-        console.log("Error: ", err);
-      }
+      data: data
+    }).then(function (dreams) {
+      self.dreamData = dreams
+      environment.clearScene()
+      dreamsView.populateDreamscape(dreams)
+    }).fail(function (err) {
+      console.log("Error: ", err);
     })
   }
 
