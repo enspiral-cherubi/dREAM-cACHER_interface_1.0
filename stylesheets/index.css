@@ -1,13 +1,9 @@
-  canvas {
+canvas {
   width: 100%;
   height: 100%;
   z-index: 1;
   visibility: visible;
-  /*position: absolute;*/
-  /*overflow-y: hidden; // hide vertical
-  overflow-x: hidden; // hide horizontal*/
 }
-
 
 body {
   font-family: "Helvitica", Arial;
@@ -22,27 +18,16 @@ a {
   font-size: 16px;
   color: #444;
   text-decoration: underline;
-  /*display: inline-block;*/
-  /*margin-right: 6px;*/
-  /*line-height: 20px;*/
 }
 
 #controls {
-    display: block;
-    padding: 10px 15px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-
-    /*position: absolute;*/
-    /*width: 100%;*/
-    /*left: 0;*/
-    /*text-align: center;*/
-    /*margin: auto;*/
+  display: block;
+  padding: 10px 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
-
 .navbar {
-  /*font-family: Monospace;*/
   position: absolute;
   width: 100%;
   opacity: 0.8;
@@ -55,8 +40,6 @@ a {
   display: none;
 }
 
-
-
 .navbar-inverse .navbar-nav >li>a:hover {
     color: #777;
     background-color: transparent;
@@ -67,29 +50,10 @@ a {
   border-radius: 1%;
 }
 
-/*.info {
-  font-size: 20px;
-  font-family: Monospace;
-  position: absolute;
-  background-color: black;
-  opacity: 0.8;
-  color: white;
-  text-align: center;
-  top: 0px;
-  width: 100%;
-}
-*/
-
-
-
-
 .modal-body {
-    max-height: calc(100vh - 210px);
-    overflow-y: auto;
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
 }
-
-
-
 
 /*login bar stuff*/
 
@@ -145,31 +109,30 @@ a {
 /*signup modal stuff*/
 
 #signup-modal input {
-    width: 95%;
-    margin: auto;
+  width: 95%;
+  margin: auto;
 }
 
 #signup-modal label {
-    margin-left: 2.5%;
-    padding-top: 1.5%;
+  margin-left: 2.5%;
+  padding-top: 1.5%;
 }
 
 #signup-modal em {
-    margin-left: 2.5%;
+  margin-left: 2.5%;
 }
 
-
 /*signup 2*/
+
 #test-signup>.dropdown-menu {
-    display: block;
-    position: absolute;
-    right: 0;
-    left: auto;
-    margin: 1%;
+  display: block;
+  position: absolute;
+  right: 0;
+  left: auto;
+  margin: 1%;
 }
 
 #login-dp {
-  /*position: absolute;*/
   top: 45px;
   margin: auto;
 }
