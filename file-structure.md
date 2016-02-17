@@ -1,5 +1,8 @@
 ## dREAM-cACHER interface file structure
 
+- `config`: where global configurations are set
+
+
 - `app`: where central parts of the interface are stored
   - `environment.js`: the three.js environment. initializes and manages three.js camera, scenes, and renderer
   - `view.js`: manages the DOM
@@ -10,4 +13,4 @@
 - `services`: a collection of shared utilities
 
 
-- `index.js`: the interface's entry point. sets `environment` as a global variable, initializes controller, and uses controller to bind event listeners
+- `index.js`: the interface's entry point. sets global configs, sets `environment` as a global, initializes controller, and uses controller to bind event listeners
