@@ -1,4 +1,5 @@
 var capitalize = require('capitalizer')
+var tagTemplate = require('./../templates/tag')
 
 // TODO: refactor
 function parseDreamString(dreamString, tagWords) {
@@ -10,13 +11,13 @@ function parseDreamString(dreamString, tagWords) {
     var currentTagWordStop = " " + tagWords[i] + "."
 
     // all lowercase
-    var aTag = " " + generateATag(tagWords[i]) + " "
+    var aTag = " " + tagTemplate(tagWords[i]) + " "
     outputString = outputString.replace(currentTagWordSpace, aTag)
 
-    aTag = " " + generateATag(tagWords[i]) + ","
+    aTag = " " + tagTemplate(tagWords[i]) + ","
     outputString = outputString.replace(currentTagWordComma, aTag)
 
-    aTag = " " + generateATag(tagWords[i]) + "."
+    aTag = " " + tagTemplate(tagWords[i]) + "."
     outputString = outputString.replace(currentTagWordStop, aTag)
 
     // capitalised
@@ -25,49 +26,33 @@ function parseDreamString(dreamString, tagWords) {
     currentTagWordComma = " " + capitalize(tagWords[i]) + ","
     currentTagWordStop = " " + capitalize(tagWords[i]) + "."
 
-    aTag = " " + generateATag(capitalize(tagWords[i])) + " "
+    aTag = " " + tagTemplate(capitalize(tagWords[i])) + " "
     outputString = outputString.replace(currentTagWordSpace, aTag)
 
-    aTag = " " + generateATag(capitalize(tagWords[i])) + ","
+    aTag = " " + tagTemplate(capitalize(tagWords[i])) + ","
     outputString = outputString.replace(currentTagWordComma, aTag)
 
-    aTag = " " + generateATag(capitalize(tagWords[i])) + "."
+    aTag = " " + tagTemplate(capitalize(tagWords[i])) + "."
     outputString = outputString.replace(currentTagWordStop, aTag)
 
     // allCaps
-    aTag = generateATag(allCapsTag)
+    aTag = tagTemplate(allCapsTag)
     var allCapsTag = tagWords[i].toUpperCase()
 
     currentTagWordSpace = " " + tagWords[i].toUpperCase() + " "
     currentTagWordComma = " " + tagWords[i].toUpperCase() + ","
     currentTagWordStop = " " + tagWords[i].toUpperCase() + "."
 
-    aTag = " " + generateATag(tagWords[i].toUpperCase()) + " "
+    aTag = " " + tagTemplate(tagWords[i].toUpperCase()) + " "
     outputString = outputString.replace(currentTagWordSpace, aTag)
 
-    aTag = " " + generateATag(tagWords[i].toUpperCase()) + ","
+    aTag = " " + tagTemplate(tagWords[i].toUpperCase()) + ","
     outputString = outputString.replace(currentTagWordComma, aTag)
 
-    aTag = " " + generateATag(tagWords[i].toUpperCase()) + "."
+    aTag = " " + tagTemplate(tagWords[i].toUpperCase()) + "."
     outputString = outputString.replace(currentTagWordStop, aTag)
   }
   return outputString
-}
-
-function generateATag(text) {
-  var html = "<a href='/"
-  + text
-  + "' "
-  + "class='tag"
-  + "' "
-  + "id='"
-  + text
-  + "'"
-  + " type='"
-  + "button'>"
-  + text
-  + "</a>"
-  return html
 }
 
 module.exports = parseDreamString
