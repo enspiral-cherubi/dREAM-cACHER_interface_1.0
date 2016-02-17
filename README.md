@@ -1,26 +1,28 @@
 # dREAM-cACHER_interface_1.0
 
-This is the first iteration of the interface for the 'dREAM-cACHER' web application
+dREAM-cACHER's user interface, built with [three.js](http://threejs.org/) and [node.js](https://nodejs.org/en/)
 
-## how
+[file structure](./file-structure.md)
+
+[dREAM-cACHER API repo](https://github.com/enspiral-cherubi/dREAM-cACHER)
 
 ### install
 
 ```
 git clone https://github.com/enspiral-cherubi/dREAM-cACHER_interface_1.0
-cd
+cd dREAM-cACHER_interface_1.0
 npm install
 ```
 
-## develop
+### develop
 
 ```
 npm start
 ```
 
-browse to <http://localhost:9966/>.
+and browse to <http://localhost:9966/>
 
-## deploy
+### deploy
 
 ```
 npm run deploy
