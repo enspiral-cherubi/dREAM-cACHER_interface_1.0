@@ -57,16 +57,25 @@ var dreamsModel =  {
     })
   },
 
+  getDreams: function () {
+    if ($('#my-dreams-tab').hasClass('active')) {
+      this.getDreamsForUser()
+    } else {
+      this.getAllDreams()
+    }
+  },
+
   saveDream: function (dream) {
+    var self = this
     var formData = {dream: dream}
     $.ajax({
       url : global.apiUrl + "/dreams",
       type: "POST",
       data : formData
-    }).then(function (data, textStatus, jqXHR) {
-      console.log(data)
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-      console.log(errorThrown)
+    }).then(function () {
+      self.getDreams()
+    }).fail(function (err) {
+      console.log('err: ', err)
     })
   },
 

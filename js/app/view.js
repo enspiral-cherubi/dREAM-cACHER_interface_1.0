@@ -27,16 +27,10 @@ var dreamsView = {
   },
 
   showDreamEntryModal: function () {
-    if ( $('#dreamscape-tab').hasClass('active') ) {
-      $('#dreamscape-tab').removeClass('active')
+    if ($('#dreamscape-tab').hasClass('active')) {
       $('#dream-entry-modal-container').modal('show')
-      $('#new-dream-tab').addClass('active')
-      this.prevTabActive = '#dreamscape-tab'
-    } else if  ( $('#my-dreams-tab').hasClass('active') ) {
-      $('#my-dreams-tab').removeClass('active')
+    } else if ($('#my-dreams-tab').hasClass('active')) {
       $('#dream-entry-modal-container').modal('show')
-      $('#new-dream-tab').addClass('active')
-      this.prevTabActive = '#my-dreams-tab'
     }
   },
 
