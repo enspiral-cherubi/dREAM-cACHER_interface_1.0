@@ -38,12 +38,13 @@
             <a href="#">Logout</a>
           </li>
 
-          <li class="dropdown" id='login-dropdown'>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id='login-dropdown-toggle'>
+          <li id="login-dropdown">
+            <a id="login-dropdown-btn" data-state="closed">
               <b>Login</b>
               <span class="caret"></span>
             </a>
-            <ul id="login-dp" class="dropdown-menu">
+
+            <ul id="login-dp-form-container" class="dropdown-menu dp-form-container">
               <li>
                 <div class="row">
                   <div class="col-md-12">
@@ -65,12 +66,39 @@
                   </div>
 
                   <div class="bottom text-center">
-                    or, <a href="#" id='create-account-catch'><b>Create Account</b></a>
+                    or, <a href="#" id='create-account-btn'><b>Create Account</b></a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <ul id="sign-up-dp-form-container" class="dropdown-menu dp-form-container">
+              <li>
+                <div class="row">
+                  <div class="col-md-12">
+                    <form class="form" role="form" accept-charset="UTF-8" id="sign-up-form">
+                      <div class="form-group">
+                        <input name="email" type="email" class="form-control" placeholder="Email address" required />
+                      </div>
+
+                      <div class="form-group">
+                        <input name="password" type="password" class="form-control" placeholder="Password" required />
+                      </div>
+
+                      <div class="form-group">
+                        <input name="password_confirmation" type="password" class="form-control" placeholder="Confirm password" required>
+                      </div>
+
+                      <div class="bottom text-center">
+                        <button type="submit" class="btn btn-primary btn-block" id='submit-account-catch'>Create Account</button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </li>
             </ul>
           </li>
+
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

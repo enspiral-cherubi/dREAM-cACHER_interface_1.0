@@ -41,7 +41,15 @@ a {
   background-color: transparent;
 }
 
+#login-dropdown {
+  cursor: pointer;
+}
+
 #log-out-tab, #my-dreams-tab {
+  display: none;
+}
+
+#sign-up-dp-form-container {
   display: none;
 }
 
@@ -57,34 +65,34 @@ a {
 
 /*login bar stuff*/
 
-#login-dp{
+.dp-form-container{
   min-width: 250px;
   padding: 14px 14px 0;
   overflow: hidden;
   background-color: rgba(255,255,255,.8);
 }
 
-#login-dp .help-block {
+.dp-form-container .help-block {
   font-size:12px
 }
 
-#login-dp .bottom {
+.dp-form-container .bottom {
   background-color:rgba(255,255,255,.8);
   border-top:1px solid #ddd;
   clear:both;
   padding:14px;
 }
 
-#login-dp .form-group {
+.dp-form-container .form-group {
   margin-bottom: 10px;
 }
 
 @media(max-width:768px){
-  #login-dp{
+  .dp-form-container{
     background-color: inherit;
     color: #fff;
   }
-  #login-dp .bottom{
+  .dp-form-container .bottom{
     background-color: inherit;
     border-top:0 none;
   }
@@ -132,7 +140,7 @@ a {
   margin: 1%;
 }
 
-#login-dp {
+.dp-form-container {
   top: 45px;
   margin: auto;
 }

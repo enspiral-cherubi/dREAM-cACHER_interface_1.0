@@ -41,13 +41,8 @@ var dreamsView = {
   },
 
   showCreateAccount: function () {
-    setTimeout( function () {
-      $('.signup-dropdown-toggle').attr('aria-expanded', 'true')
-      $('#signup-dropdown').show()
-      $('#signup-dropdown').addClass('open')
-      $('.signup-dropdown-toggle').hide()
-      $('#login-dropdown').show()
-    }, 1)
+    $('#sign-up-dp-form-container').show()
+    $('#login-dp-form-container').hide()
   },
 
   // takes dreams, decides where they're going to go

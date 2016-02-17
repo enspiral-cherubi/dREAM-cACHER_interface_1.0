@@ -82,10 +82,8 @@ var controller = {
     })
 
     // create new account modal
-    $('#create-account-catch').on('click', function (e) {
+    $('#create-account-btn').on('click', function (e) {
       e.preventDefault()
-      $('#login-dropdown').removeClass('open')
-      $('#login-dropdown-toggle').attr('aria-expanded', 'false')
       dreamsView.showCreateAccount()
     })
 
@@ -99,6 +97,19 @@ var controller = {
         alert(errors)
       } else {
         dreamsModel.emailSignUp(formParams)
+      }
+    })
+
+    // TODO: refactor and move into view
+    $('#login-dropdown-btn').on('click', function (e) {
+      e.preventDefault()
+      var $dropdown = $(this).parent()
+      if ($dropdown.attr('data-state') === 'open') {
+        $dropdown.attr('data-state', 'closed')
+        $dropdown.find('.dp-form-container').hide()
+      } else {
+        $dropdown.attr('data-state', 'open')
+        $dropdown.find('#login-dp-form-container').show()
       }
     })
 
