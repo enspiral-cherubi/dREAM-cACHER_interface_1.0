@@ -1,16 +1,20 @@
+var Auth = global.Auth
+var environment = global.environment
 var $ = require('jquery')
-var AuthInterface = require('./../services/auth-interface')
 var dreamsModel = require('./model.js')
 var dreamsView = require('./view.js')
 var queryString = require('query-string')
-
-var environment = global.environment
 
 var controller = {
   init: function () {
     environment.init()
     environment.render()
     dreamsModel.getAllDreams()
+    Auth.validateToken().then(function () {
+      dreamsView.setNavBarSignedIn()
+    }).fail(function () {
+      dreamsView.setNavBarSignedOut()
+    })
   },
   bindEventListeners: function () {
     // change dream collections
@@ -72,17 +76,16 @@ var controller = {
 
     $('#log-out-tab').on('click', function(e) {
       e.preventDefault()
-      AuthInterface.signOut()
-      dreamsView.restorePublicInterface()
+      Auth.signOut()
+      dreamsModel.getAllDreams()
+      dreamsView.setNavBarSignedOut()
     })
 
     // create new account modal
     $('#create-account-catch').on('click', function (e) {
       e.preventDefault()
       $('#login-dropdown').removeClass('open')
-      // $('#login-dropdown').hide()
       $('#login-dropdown-toggle').attr('aria-expanded', 'false')
-
       dreamsView.showCreateAccount()
     })
 

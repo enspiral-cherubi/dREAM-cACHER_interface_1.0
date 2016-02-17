@@ -1,29 +1,28 @@
+var Auth = global.Auth
+var environment = global.environment
 var $ = require('jquery')
 var dreamsView = require('./view.js')
-var AuthInterface = require('./../services/auth-interface')
-var environment = global.environment
 
 var dreamsModel =  {
   dreamData: undefined,
   emailSignIn: function(email, password) {
-    AuthInterface.emailSignIn({
+    Auth.emailSignIn({
       email: email,
       password: password
     }).then(function (user) {
-      dreamsView.updateNavBar()
+      dreamsView.setNavBarSignedIn()
     }).fail(function(resp) {
-      alert('Authentication failure: ' + (resp.errors && resp.errors.join(' ')));
-    });
+      alert('Authentication failure: ' + (resp.errors && resp.errors.join(' ')))
+      dreamsView.setNavBarSignedOut()
+    })
   },
 
   emailSignUp: function (formParams) {
-    AuthInterface.emailSignUp(formParams).then(function (user) {
-      // TODO: AuthInterface.user seems not to be defined post-sign-up, may
-      // have to set AuthInterface as a global variable, or might have to
-      // validateToken like what was being done before
-      dreamsView.updateNavBar()
+    Auth.emailSignUp(formParams).then(function (user) {
+      dreamsView.setNavBarSignedIn()
     }).fail(function (resp) {
       alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')))
+      dreamsView.setNavBarSignedOut()
     })
   },
 
@@ -51,7 +50,6 @@ var dreamsModel =  {
       self.dreamData = dreams
       environment.clearScene()
       dreamsView.populateDreamscape(dreams)
-      dreamsView.updateNavBar()
     }).fail(function (err){
       console.log("Error: ", err)
     })
@@ -79,7 +77,7 @@ var dreamsModel =  {
     }).then(function (tags) {
       dreamsView.showDreamModal(dream, tags)
     }).fail(function (err) {
-      console.log("Error: ", err);
+      console.log("Error: ", err)
     })
   },
 
@@ -95,7 +93,7 @@ var dreamsModel =  {
       environment.clearScene()
       dreamsView.populateDreamscape(dreams)
     }).fail(function (err) {
-      console.log("Error: ", err);
+      console.log("Error: ", err)
     })
   }
 

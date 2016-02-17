@@ -1,3 +1,5 @@
+var Auth = global.Auth
+var environment = global.environment
 var THREE = require('three')
 var geometryChooser = require('./../services/geometry-chooser')
 var getMatrixData = require('./../services/get-matrix-data')
@@ -5,36 +7,23 @@ var moment = require('moment')
 var parseDreamString = require('./../services/parse-dream-string')
 var $ = require('jquery')
 require('bootstrap-jquery')
-var AuthInterface = require('./../services/auth-interface')
-var environment = global.environment
 
 // posts stuff to the dom
 var dreamsView = {
-  updateNavBar: function () {
-    $('#info').show()
-    $('#controls').show()
-    $('#new-dream-tab').show()
-    $('#dreamscape-tab').show()
-    if (AuthInterface.user['id']) {
-      $('#login-dropdown').hide()
-      $('#my-dreams-tab').show()
-      $('#log-out-tab').show()
-
-    } else {
-      $('#login-dropdown').show()
-      $('#my-dreams-tab').hide()
-      $('#log-out-tab').hide()
-    }
+  setNavBarSignedIn: function () {
+    $('#login-dropdown').hide()
+    $('#my-dreams-tab').show()
+    $('#log-out-tab').show()
   },
 
-  restorePublicInterface: function () {
+  setNavBarSignedOut: function () {
     if ( $("#my-dreams-tab").hasClass("active") ) {
-      dreamsModel.getAllDreams()
       $('#my-dreams-tab').removeClass('active')
       $('#dreamscape-tab').addClass('active')
     }
-    // (EL) can prolly change to `this`
-    dreamsView.updateNavBar()
+    $('#login-dropdown').show()
+    $('#my-dreams-tab').hide()
+    $('#log-out-tab').hide()
   },
 
   showDreamEntryModal: function () {
