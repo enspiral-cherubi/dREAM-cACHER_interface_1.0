@@ -1,6 +1,5 @@
 var THREE = require('three')
 var random = require('lodash.random')
-var vectors = require('vectors')
 var normalize = require('vectors/normalize')(3)
 var range = require('lodash.range')
 
