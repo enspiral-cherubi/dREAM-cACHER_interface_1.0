@@ -45,6 +45,14 @@ var dreamsView = {
     $('#login-dp-form-container').hide()
   },
 
+  clearLoginForm: function () {
+    $('#login-dp-form-container form')[0].reset()
+  },
+
+  clearSignUpForm: function () {
+    $('#sign-up-dp-form-container form')[0].reset()
+  },
+
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
 

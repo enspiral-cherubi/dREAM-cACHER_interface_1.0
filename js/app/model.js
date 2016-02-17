@@ -11,6 +11,7 @@ var dreamsModel =  {
       password: password
     }).then(function (user) {
       dreamsView.setNavBarSignedIn()
+      dreamsView.clearLoginForm()
     }).fail(function(resp) {
       alert('Authentication failure: ' + (resp.errors && resp.errors.join(' ')))
       dreamsView.setNavBarSignedOut()
@@ -20,6 +21,7 @@ var dreamsModel =  {
   emailSignUp: function (formParams) {
     Auth.emailSignUp(formParams).then(function (user) {
       dreamsView.setNavBarSignedIn()
+      dreamsView.clearSignUpForm()
     }).fail(function (resp) {
       alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')))
       dreamsView.setNavBarSignedOut()
