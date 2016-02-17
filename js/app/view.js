@@ -12,18 +12,18 @@ require('bootstrap-jquery')
 var dreamsView = {
   setNavBarSignedIn: function () {
     $('#login-dropdown').hide()
+    $('.dp-form-container').hide()
     $('#my-dreams-tab').show()
-    $('#log-out-tab').show()
+    $('#log-out-btn').show()
   },
 
   setNavBarSignedOut: function () {
-    if ( $("#my-dreams-tab").hasClass("active") ) {
-      $('#my-dreams-tab').removeClass('active')
-      $('#dreamscape-tab').addClass('active')
-    }
+    $('#my-dreams-tab').removeClass('active')
+    $('#dreamscape-tab').addClass('active')
     $('#login-dropdown').show()
+    $('#login-dropdown').attr('data-state', 'closed')
     $('#my-dreams-tab').hide()
-    $('#log-out-tab').hide()
+    $('#log-out-btn').hide()
   },
 
   showDreamEntryModal: function () {

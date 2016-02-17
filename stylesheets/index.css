@@ -45,7 +45,7 @@ a {
   cursor: pointer;
 }
 
-#log-out-tab, #my-dreams-tab {
+#log-out-btn, #my-dreams-tab {
   display: none;
 }
 

@@ -74,7 +74,7 @@ var controller = {
       dreamsModel.emailSignIn(email, password)
     })
 
-    $('#log-out-tab').on('click', function(e) {
+    $('#log-out-btn').on('click', function(e) {
       e.preventDefault()
       Auth.signOut()
       dreamsModel.getAllDreams()
