@@ -13,9 +13,4 @@ module.exports = function (apiUrl) {
   })
 
   return Auth
-  // return {
-  //   emailSignUp: function (formParams) {
-  //     Auth.emailSignUp(formParams).then()
-  //   }
-  // }
 }
