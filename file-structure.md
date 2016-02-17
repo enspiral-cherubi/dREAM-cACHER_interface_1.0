@@ -13,4 +13,7 @@
 - `services`: a collection of shared utilities
 
 
+- `templates`: a collection of modules containing fxns that returh HTML strings
+
+
 - `index.js`: the interface's entry point. sets global configs, sets `environment` as a global, initializes controller, and uses controller to bind event listeners
