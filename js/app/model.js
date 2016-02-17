@@ -5,11 +5,8 @@ var dreamsView = require('./view.js')
 
 var dreamsModel =  {
   dreamData: undefined,
-  emailSignIn: function(email, password) {
-    Auth.emailSignIn({
-      email: email,
-      password: password
-    }).then(function (user) {
+  emailSignIn: function(formParams) {
+    Auth.emailSignIn(formParams).then(function (user) {
       dreamsView.setNavBarSignedIn()
       dreamsView.clearLoginForm()
     }).fail(function(resp) {

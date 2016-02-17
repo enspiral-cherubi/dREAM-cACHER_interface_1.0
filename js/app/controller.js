@@ -67,11 +67,11 @@ var controller = {
     })
     // user stuff
 
-    $('#sign-in-catch').on("click", function(e) {
+    $('#login-form').on('submit', function(e) {
       e.preventDefault()
-      var email = $('#login-nav').find('input[type="email"]').val()
-      var password = $('#login-nav').find('input[type="password"]').val()
-      dreamsModel.emailSignIn(email, password)
+      var $form = $(this)
+      var formParams = queryString.parse($form.serialize())
+      dreamsModel.emailSignIn(formParams)
     })
 
     $('#log-out-btn').on('click', function(e) {
