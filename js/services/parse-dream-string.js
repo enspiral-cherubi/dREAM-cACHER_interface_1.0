@@ -1,3 +1,5 @@
+var capitalize = require('capitalizer')
+
 // TODO: refactor
 function parseDreamString(dreamString, tagWords) {
   var outputString = dreamString
@@ -19,17 +21,17 @@ function parseDreamString(dreamString, tagWords) {
 
     // capitalised
 
-    currentTagWordSpace = " " + capitalizeFirstLetter(tagWords[i]) + " "
-    currentTagWordComma = " " + capitalizeFirstLetter(tagWords[i]) + ","
-    currentTagWordStop = " " + capitalizeFirstLetter(tagWords[i]) + "."
+    currentTagWordSpace = " " + capitalize(tagWords[i]) + " "
+    currentTagWordComma = " " + capitalize(tagWords[i]) + ","
+    currentTagWordStop = " " + capitalize(tagWords[i]) + "."
 
-    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + " "
+    aTag = " " + generateATag(capitalize(tagWords[i])) + " "
     outputString = outputString.replace(currentTagWordSpace, aTag)
 
-    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + ","
+    aTag = " " + generateATag(capitalize(tagWords[i])) + ","
     outputString = outputString.replace(currentTagWordComma, aTag)
 
-    aTag = " " + generateATag(capitalizeFirstLetter(tagWords[i])) + "."
+    aTag = " " + generateATag(capitalize(tagWords[i])) + "."
     outputString = outputString.replace(currentTagWordStop, aTag)
 
     // allCaps
@@ -66,10 +68,6 @@ function generateATag(text) {
   + text
   + "</a>"
   return html
-}
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 module.exports = parseDreamString
