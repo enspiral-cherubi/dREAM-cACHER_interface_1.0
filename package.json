@@ -1,5 +1,52 @@
 {
+  "name": "dREAM-cACHER_interface_1.0",
+  "version": "1.0.0",
+  "description": "This is the first iteration of the interface for the 'dREAM-cACHER' web application",
+  "main": "./js/index.js",
   "scripts": {
-    "deploy": "git push origin master:gh-pages"
+    "start": "budo . -d --serve bundle.js --live",
+    "build": "browserify . -o bundle.js -g uglifyify",
+    "test": "browserify test.js | smokestack | tap-spec",
+    "dist": "mkdir -p dist && bash -c 'cp *.{js,html,css} dist'",
+    "push": "gh-pages -d dist",
+    "deploy": "(export NODE_ENV=production; git push origin master:gh-pages)"
+  },
+  "browserify": {
+    "transform": []
+  },
+  "repository": {
+    "type": "git",
+    "url": "enspiral-cherubi/dREAM-cACHER_interface_1.0"
+  },
+  "author": "enspiral-cherubi",
+  "license": "MIT",
+  "bugs": {
+    "url": "enspiral-cherubi/dREAM-cACHER_interface_1.0/issues"
+  },
+  "homepage": "enspiral-cherubi/dREAM-cACHER_interface_1.0",
+  "dependencies": {
+    "bootstrap-jquery": "^3.3.2",
+    "capitalizer": "^0.2.0",
+    "j-toker": "0.0.10-beta3",
+    "jquery": "^2.2.0",
+    "lodash.random": "^3.1.1",
+    "lodash.range": "^3.1.2",
+    "moment": "^2.11.2",
+    "query-string": "^3.0.0",
+    "three": "^0.74.0",
+    "three-fly-controls": "^1.1.0",
+    "three-noise-shader-material": "^1.0.2",
+    "three-window-resize": "^1.0.4",
+    "vectors": "^0.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^10.0.0",
+    "budo": "^4.0.0",
+    "gh-pages": "^0.3.0",
+    "smokestack": "^3.3.0",
+    "tap-spec": "^4.0.2",
+    "tape": "^4.0.0",
+    "uglifyify": "^3.0.1",
+    "watchify": "^3.1.0"
   }
 }

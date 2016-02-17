@@ -1,13 +1,9 @@
-  canvas {
+canvas {
   width: 100%;
   height: 100%;
   z-index: 1;
   visibility: visible;
-  /*position: absolute;*/
-  /*overflow-y: hidden; // hide vertical
-  overflow-x: hidden; // hide horizontal*/
 }
-
 
 body {
   font-family: "Helvitica", Arial;
@@ -22,27 +18,16 @@ a {
   font-size: 16px;
   color: #444;
   text-decoration: underline;
-  /*display: inline-block;*/
-  /*margin-right: 6px;*/
-  /*line-height: 20px;*/
 }
 
 #controls {
-    display: block;
-    padding: 10px 15px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-
-    /*position: absolute;*/
-    /*width: 100%;*/
-    /*left: 0;*/
-    /*text-align: center;*/
-    /*margin: auto;*/
+  display: block;
+  padding: 10px 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
-
 .navbar {
-  /*font-family: Monospace;*/
   position: absolute;
   width: 100%;
   opacity: 0.8;
@@ -51,15 +36,21 @@ a {
   text-decoration: none;
 }
 
-.navbar-nav>li {
+.navbar-inverse .navbar-nav >li>a:hover {
+  color: #777;
+  background-color: transparent;
+}
+
+#login-dropdown {
+  cursor: pointer;
+}
+
+#log-out-btn, #my-dreams-tab {
   display: none;
 }
 
-
-
-.navbar-inverse .navbar-nav >li>a:hover {
-    color: #777;
-    background-color: transparent;
+#sign-up-dp-form-container {
+  display: none;
 }
 
 .modal-content {
@@ -67,107 +58,49 @@ a {
   border-radius: 1%;
 }
 
-/*.info {
-  font-size: 20px;
-  font-family: Monospace;
-  position: absolute;
-  background-color: black;
-  opacity: 0.8;
-  color: white;
-  text-align: center;
-  top: 0px;
-  width: 100%;
-}
-*/
-
-
-
-
 .modal-body {
-    max-height: calc(100vh - 210px);
-    overflow-y: auto;
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
 }
-
-
-
 
 /*login bar stuff*/
 
-#login-dp{
-    min-width: 250px;
-    padding: 14px 14px 0;
-    overflow: hidden;
-    background-color: rgba(255,255,255,.8);
-}
-#login-dp .help-block{
-    font-size:12px
-}
-#login-dp .bottom{
-    background-color:rgba(255,255,255,.8);
-    border-top:1px solid #ddd;
-    clear:both;
-    padding:14px;
-}
-/*#login-dp .social-buttons{
-    margin:12px 0
-}
-#login-dp .social-buttons a{
-    width: 49%;
-}*/
-#login-dp .form-group {
-    margin-bottom: 10px;
+.dp-form-container{
+  min-width: 250px;
+  padding: 14px 14px 0;
+  overflow: hidden;
+  background-color: rgba(255,255,255,.8);
 }
 
-/*.btn-fb{
-    color: #fff;
-    background-color:#3b5998;
-    margin-bottom: 1.5%;
+.dp-form-container .help-block {
+  font-size:12px
 }
-.btn-fb:hover{
-    color: #fff;
-    background-color:#496ebc
+
+.dp-form-container .bottom {
+  background-color:rgba(255,255,255,.8);
+  border-top:1px solid #ddd;
+  clear:both;
+  padding:14px;
 }
-.btn-tw{
-    color: #fff;
-    background-color:#55acee;
-    margin-bottom: 1.5%;
+
+.dp-form-container .form-group {
+  margin-bottom: 10px;
 }
-.btn-tw:hover{
-    color: #fff;
-    background-color:#59b5fa;
-}
-.btn-gl{
-    color: #fff;
-    background-color:#3369e8;
-    margin-bottom: 1.5%;
-}
-.btn-gl:hover{
-    color: #fff;
-    background-color:#537EE4;
-}
-.btn-gh{
-    color: #fff;
-    background-color:#4CE8E3;
-    margin-bottom: 1.5%;
-}
-.btn-gh:hover{
-    color: #fff;
-    background-color:#6DEFEA;
-}*/
+
 @media(max-width:768px){
-    #login-dp{
-        background-color: inherit;
-        color: #fff;
-    }
-    #login-dp .bottom{
-        background-color: inherit;
-        border-top:0 none;
-    }
+  .dp-form-container{
+    background-color: inherit;
+    color: #fff;
+  }
+  .dp-form-container .bottom{
+    background-color: inherit;
+    border-top:0 none;
+  }
 }
 
+/* dream-entry-modal */
 
-
-.modal-body#dream-entry-modal {
+#dream-entry-modal-body {
   overflow: hidden;
   height: 50%;
 }
@@ -184,31 +117,36 @@ a {
 /*signup modal stuff*/
 
 #signup-modal input {
-    width: 95%;
-    margin: auto;
+  width: 95%;
+  margin: auto;
 }
 
 #signup-modal label {
-    margin-left: 2.5%;
-    padding-top: 1.5%;
+  margin-left: 2.5%;
+  padding-top: 1.5%;
 }
 
 #signup-modal em {
-    margin-left: 2.5%;
+  margin-left: 2.5%;
 }
-
 
 /*signup 2*/
+
 #test-signup>.dropdown-menu {
-    display: block;
-    position: absolute;
-    right: 0;
-    left: auto;
-    margin: 1%;
+  display: block;
+  position: absolute;
+  right: 0;
+  left: auto;
+  margin: 1%;
 }
 
-#login-dp {
-  /*position: absolute;*/
+.dp-form-container {
   top: 45px;
   margin: auto;
+}
+
+/* bootstrap mods */
+/* TODO: move this into separate css file */
+.modal-backdrop {
+  z-index: 0;
 }
