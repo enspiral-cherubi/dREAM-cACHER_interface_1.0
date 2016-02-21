@@ -21,10 +21,13 @@ var environment = {
 
 environment.initializeFlyControls = function () {
   this.controls = new THREE.FlyControls(this.camera, this.container)
+  this.controls.domElement = document.getElementById('asdf')
   this.controls.movementSpeed = 1;
   this.controls.rollSpeed = Math.PI / 1600;
   this.controls.autoForward = false;
   this.controls.dragToLook = false;
+  console.log(this.controls.mousedown)
+
 }
 
 environment.initializeRenderer = function () {
@@ -50,6 +53,18 @@ environment.initializePickingScene = function () {
   this.pickingTexture.minFilter = THREE.LinearFilter;
   this.pickingTexture.generateMipmaps = false;
   this.pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } )
+}
+
+environment.initHighlightSphere = function () {
+  var geometry = new THREE.SphereGeometry( 5, 32, 32 )
+  var material = new THREE.MeshBasicMaterial({
+    color: 0xeeeeee,
+    side: THREE.BackSide,
+    transparent: true,
+    opacity: 0.5
+  })
+  this.highlightSphere = new THREE.Mesh( geometry, material )
+  this.addObjectToScene( this.highlightSphere );
 }
 
 // update fxns
@@ -157,6 +172,7 @@ environment.init = function () {
   this.initializeRenderer()
   this.initializePickingScene()
   this.initializeWindowResize()
+  this.initHighlightSphere()
   this.onRenderFcts = [
     this.updateMarbleTexture.bind(this),
     this.updateControls.bind(this),
