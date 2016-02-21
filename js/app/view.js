@@ -56,15 +56,13 @@ var dreamsView = {
     var viewedMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
     var materials = [ environment.defaultMaterial, viewedMaterial ]
 
-    for ( var i = 0; i < dreams.length; i ++ ) {
-
-      if (i % 4 === 1) { dreams[i].viewed = true} // test, delete later
+    dreams.forEach(function ( dream, i ) {
 
       var color = new THREE.Color();
       var quaternion = new THREE.Quaternion();
       var matrix = new THREE.Matrix4();
 
-      var singleDreamGeom = geometryChooser(dreams[i].sentiment)
+      var singleDreamGeom = geometryChooser(dream.sentiment)
 
       var matrixData = getMatrixData(i)
 
@@ -87,7 +85,7 @@ var dreamsView = {
 
 
       for (var j = facesLow; j <= facesHi; j++) {
-        allDreamsGeometry.faces[j].materialIndex = (dreams[i].viewed) ? 1 : 0
+        allDreamsGeometry.faces[j].materialIndex = (dream.viewed) ? 1 : 0
       };
 
       // give the singleDreamGeom's vertices a color corresponding to the "id"
@@ -101,13 +99,10 @@ var dreamsView = {
         scale: matrixData.scale,
         facesLocation: facesLocation
       }
-
-    }
-
+    })
 
     environment.allDreamsGeometry = allDreamsGeometry
     // allDreamsMesh is all of the dream objects merged together together
-    // environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, new THREE.MeshFaceMaterial() );
     environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, new THREE.MultiMaterial(materials) );
     environment.addObjectToScene( environment.dreamsMesh );
 
