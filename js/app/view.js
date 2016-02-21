@@ -53,6 +53,10 @@ var dreamsView = {
     allDreamsGeometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
 
+    var seenMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
+    var materials = [ environment.defaultMaterial, seenMaterial ]
+    allDreamsGeometry.materials = materials
+
     for ( var i = 0; i < dreams.length; i ++ ) {
       var color = new THREE.Color();
       var quaternion = new THREE.Quaternion();
@@ -67,8 +71,35 @@ var dreamsView = {
       // the matrix has the position, scale, and rotation of the object
       matrix.compose( matrixData.position, quaternion, matrixData.scale );
 
+
+      var facesBeforeMerge = allDreamsGeometry.faces.length
+      allDreamsGeometry.merge(singleDreamGeom, matrix)
+      var facesAfterMerge = allDreamsGeometry.faces.length
+
+      var facesLocation = {
+        low: facesBeforeMerge,
+        hi: facesAfterMerge - 1
+      }
+      var low = facesLocation.low
+      var hi = facesLocation.hi
+
+      // console.log(hi)
+
+      // for (var j = low; j < hi; j++) {
+      //   // console.log(allDreamsGeometry.faces[j])
+      //   allDreamsGeometry.faces[ i ].materialIndex = 0
+      // };
+
+      // console.log(allDreamsGeometry)
+
+
+
+
       // merge each geometry into the one 'master' geometry
-      allDreamsGeometry.merge( singleDreamGeom, matrix );
+
+      // allDreamsGeometry.merge( singleDreamGeom, matrix );
+
+
 
       // give the singleDreamGeom's vertices a color corresponding to the "id"
 
@@ -79,14 +110,20 @@ var dreamsView = {
       environment.pickingData[ i ] = {
         position: matrixData.position,
         rotation: matrixData.rotation,
-        scale: matrixData.scale
+        scale: matrixData.scale,
+        facesLocation: facesLocation
       }
 
     }
 
+    allDreamsGeometry.faces.forEach( function (face) {
+      face.materialIndex = 0
+    })
 
+    environment.allDreamsGeometry = allDreamsGeometry
     // allDreamsMesh is all of the dream objects merged together together
-    environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, environment.defaultMaterial );
+    // environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, new THREE.MeshFaceMaterial() );
+    environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, new THREE.MultiMaterial(materials) );
     environment.addObjectToScene( environment.dreamsMesh );
 
     environment.pickingMesh = new THREE.Mesh( pickingGeometry, environment.pickingMaterial )

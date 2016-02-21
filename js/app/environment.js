@@ -85,6 +85,7 @@ environment.updatePickingScene = function () {
       this.highlightSphere.scale.copy( data.scale ).add( this.offset )
       this.highlightSphere.visible = true
       this.objectUnderMouse = id
+      // this.verticesLocation = data.verticesLocation
     }
   } else {
     if (this.highlightSphere) { this.highlightSphere.visible = false; }
