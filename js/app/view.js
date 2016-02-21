@@ -53,11 +53,13 @@ var dreamsView = {
     allDreamsGeometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
 
-    var seenMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
-    var materials = [ environment.defaultMaterial, seenMaterial ]
-    allDreamsGeometry.materials = materials
+    var viewedMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
+    var materials = [ environment.defaultMaterial, viewedMaterial ]
 
     for ( var i = 0; i < dreams.length; i ++ ) {
+
+      if (i % 2 === 0) { dreams[i].viewed = true} // test, delete later
+
       var color = new THREE.Color();
       var quaternion = new THREE.Quaternion();
       var matrix = new THREE.Matrix4();
@@ -71,38 +73,18 @@ var dreamsView = {
       // the matrix has the position, scale, and rotation of the object
       matrix.compose( matrixData.position, quaternion, matrixData.scale );
 
-
       var facesBeforeMerge = allDreamsGeometry.faces.length
       allDreamsGeometry.merge(singleDreamGeom, matrix)
       var facesAfterMerge = allDreamsGeometry.faces.length
 
-      var facesLocation = {
+      var facesLocation = { // this is how we can find the faces for this particular geom, after it is merged into the single geom
         low: facesBeforeMerge,
         hi: facesAfterMerge - 1
       }
-      var low = facesLocation.low
-      var hi = facesLocation.hi
 
-      // console.log(hi)
-
-      // for (var j = low; j < hi; j++) {
-      //   // console.log(allDreamsGeometry.faces[j])
-      //   allDreamsGeometry.faces[ i ].materialIndex = 0
-      // };
-
-      // console.log(allDreamsGeometry)
-
-
-
-
-      // merge each geometry into the one 'master' geometry
-
-      // allDreamsGeometry.merge( singleDreamGeom, matrix );
-
-
+      todo: if this dream has been viewed by the user already (as shown by the database dream.viewed attribute that is yet to be created), take these facesLocations, and itterate through the geometry
 
       // give the singleDreamGeom's vertices a color corresponding to the "id"
-
       applyVertexColorsToGeometry( singleDreamGeom, color.setHex( i ) );
 
       pickingGeometry.merge( singleDreamGeom, matrix );

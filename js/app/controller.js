@@ -120,29 +120,28 @@ var controller = {
       if (environment.objectUnderMouse >= 0) {
         // make the modal appear with the correct dream data
         var dream = dreamsModel.dreamData[environment.objectUnderMouse]
-        // if (dream) { dreamsModel.getTagsForDream(dream) }
+        if (dream) {
+          dreamsModel.getTagsForDream(dream)
 
+          environment.removeObjectFromScene(environment.dreamsMesh)
+          var clonedGeom = environment.allDreamsGeometry.clone()
 
-        environment.removeObjectFromScene(environment.dreamsMesh)
-        var clonedGeom = environment.allDreamsGeometry.clone()
+          var facesLocation = environment.pickingData[environment.objectUnderMouse].facesLocation
+          var facesLow = facesLocation.low
+          var facesHi = facesLocation.hi
 
-        var facesLocation = environment.pickingData[environment.objectUnderMouse].facesLocation
-        var facesLow = facesLocation.low
-        var facesHi = facesLocation.hi
+          for (var i = facesLow; i <= facesHi; i++) {
+            clonedGeom.faces[i].materialIndex = 1
+          };
 
-        for (var i = facesLow; i <= facesHi; i++) {
-          clonedGeom.faces[i].materialIndex = 1
-        };
+          environment.allDreamsGeometry = clonedGeom
 
-        environment.allDreamsGeometry = clonedGeom
+          var viewedMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
+          var materials = [ environment.defaultMaterial, viewedMaterial ]
 
-        var seenMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
-        var materials = [ environment.defaultMaterial, seenMaterial ]
-        console.log(materials)
-
-        environment.dreamsMesh = new THREE.Mesh( clonedGeom, new THREE.MultiMaterial(materials) );
-        environment.addObjectToScene( environment.dreamsMesh );
-
+          environment.dreamsMesh = new THREE.Mesh( clonedGeom, new THREE.MultiMaterial(materials) );
+          environment.addObjectToScene( environment.dreamsMesh );
+        }
 
 
 
