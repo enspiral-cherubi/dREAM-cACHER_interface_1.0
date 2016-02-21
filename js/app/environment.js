@@ -25,7 +25,6 @@ environment.initializeFlyControls = function () {
   this.controls.rollSpeed = Math.PI / 1600;
   this.controls.autoForward = false;
   this.controls.dragToLook = false;
-
 }
 
 environment.initializeRenderer = function () {
