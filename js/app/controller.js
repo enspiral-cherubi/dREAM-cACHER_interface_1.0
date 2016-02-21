@@ -136,8 +136,7 @@ var controller = {
 
           environment.allDreamsGeometry = clonedGeom
 
-          var viewedMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
-          var materials = [ environment.defaultMaterial, viewedMaterial ]
+          var materials = [ environment.defaultMaterial, environment.viewedMaterial ]
 
           environment.dreamsMesh = new THREE.Mesh( clonedGeom, new THREE.MultiMaterial(materials) );
           environment.addObjectToScene( environment.dreamsMesh );

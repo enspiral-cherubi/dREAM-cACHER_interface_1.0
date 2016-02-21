@@ -53,9 +53,6 @@ var dreamsView = {
     allDreamsGeometry = new THREE.Geometry()
     pickingGeometry = new THREE.Geometry()
 
-    var viewedMaterial = new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff})
-    var materials = [ environment.defaultMaterial, viewedMaterial ]
-
     dreams.forEach(function ( dream, i ) {
 
       var color = new THREE.Color();
@@ -84,7 +81,7 @@ var dreamsView = {
       var facesHi = facesLocation.hi
 
 
-      for (var j = facesLow; j <= facesHi; j++) {
+      for (var j = facesLow; j <= facesHi; j++) { // this is to support dream.viewed feature yet to be added to the rails back end
         allDreamsGeometry.faces[j].materialIndex = (dream.viewed) ? 1 : 0
       };
 
@@ -103,6 +100,7 @@ var dreamsView = {
 
     environment.allDreamsGeometry = allDreamsGeometry
     // allDreamsMesh is all of the dream objects merged together together
+    var materials = [ environment.defaultMaterial, environment.viewedMaterial ]
     environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, new THREE.MultiMaterial(materials) );
     environment.addObjectToScene( environment.dreamsMesh );
 

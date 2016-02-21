@@ -12,6 +12,7 @@ var environment = {
   offset: new THREE.Vector3(10, 10, 10),
   container: document.getElementById('container'),
   defaultMaterial: NoiseShaderMaterial(),
+  viewedMaterial: new THREE.MeshBasicMaterial({shading: THREE.FlatShading, color: 0x00f0ff}),
   camera: new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 20000),
   scene: new THREE.Scene(),
   renderer: new THREE.WebGLRenderer({ antialias: true})
