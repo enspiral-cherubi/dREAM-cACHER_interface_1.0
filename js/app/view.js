@@ -58,7 +58,7 @@ var dreamsView = {
 
     for ( var i = 0; i < dreams.length; i ++ ) {
 
-      if (i % 2 === 0) { dreams[i].viewed = true} // test, delete later
+      if (i % 4 === 1) { dreams[i].viewed = true} // test, delete later
 
       var color = new THREE.Color();
       var quaternion = new THREE.Quaternion();
@@ -82,7 +82,13 @@ var dreamsView = {
         hi: facesAfterMerge - 1
       }
 
-      todo: if this dream has been viewed by the user already (as shown by the database dream.viewed attribute that is yet to be created), take these facesLocations, and itterate through the geometry
+      var facesLow = facesLocation.low
+      var facesHi = facesLocation.hi
+
+
+      for (var j = facesLow; j <= facesHi; j++) {
+        allDreamsGeometry.faces[j].materialIndex = (dreams[i].viewed) ? 1 : 0
+      };
 
       // give the singleDreamGeom's vertices a color corresponding to the "id"
       applyVertexColorsToGeometry( singleDreamGeom, color.setHex( i ) );
@@ -98,9 +104,6 @@ var dreamsView = {
 
     }
 
-    allDreamsGeometry.faces.forEach( function (face) {
-      face.materialIndex = 0
-    })
 
     environment.allDreamsGeometry = allDreamsGeometry
     // allDreamsMesh is all of the dream objects merged together together
