@@ -123,8 +123,8 @@ var controller = {
         if (dream) {
           dreamsModel.getTagsForDream(dream)
 
+          var clonedGeom = environment.dreamsMesh.geometry.clone()
           environment.removeObjectFromScene(environment.dreamsMesh)
-          var clonedGeom = environment.allDreamsGeometry.clone()
 
           var facesLocation = environment.pickingData[environment.objectUnderMouse].facesLocation
           var facesLow = facesLocation.low
@@ -133,8 +133,6 @@ var controller = {
           for (var i = facesLow; i <= facesHi; i++) {
             clonedGeom.faces[i].materialIndex = 1
           };
-
-          environment.allDreamsGeometry = clonedGeom
 
           var materials = [ environment.defaultMaterial, environment.viewedMaterial ]
 

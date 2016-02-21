@@ -98,7 +98,6 @@ var dreamsView = {
       }
     })
 
-    environment.allDreamsGeometry = allDreamsGeometry
     // allDreamsMesh is all of the dream objects merged together together
     var materials = [ environment.defaultMaterial, environment.viewedMaterial ]
     environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, new THREE.MultiMaterial(materials) );
