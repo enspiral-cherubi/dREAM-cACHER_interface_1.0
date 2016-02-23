@@ -7,6 +7,7 @@ var moment = require('moment')
 var parseDreamString = require('./../services/parse-dream-string')
 var $ = require('jquery')
 require('bootstrap-jquery')
+var range = require('lodash.range')
 
 // posts stuff to the dom
 var dreamsView = {
@@ -68,22 +69,18 @@ var dreamsView = {
       // the matrix has the position, scale, and rotation of the object
       matrix.compose( matrixData.position, quaternion, matrixData.scale );
 
-      var facesBeforeMerge = allDreamsGeometry.faces.length
+      var faceCountBeforeMerge = allDreamsGeometry.faces.length
       allDreamsGeometry.merge(singleDreamGeom, matrix)
-      var facesAfterMerge = allDreamsGeometry.faces.length
+      var faceCountAfterMerge = allDreamsGeometry.faces.length
 
-      var facesLocation = { // this is how we can find the faces for this particular geom, after it is merged into the single geom
-        low: facesBeforeMerge,
-        hi: facesAfterMerge - 1
+      var faceIndices = { // this is how we can find the faces for this particular geom, after it is merged into the single geom
+        low: faceCountBeforeMerge,
+        hi: faceCountAfterMerge
       }
 
-      var facesLow = facesLocation.low
-      var facesHi = facesLocation.hi
-
-
-      for (var j = facesLow; j <= facesHi; j++) { // this is to support dream.viewed feature yet to be added to the rails back end
-        allDreamsGeometry.faces[j].materialIndex = (dream.viewed) ? 1 : 0
-      };
+      range(faceIndices.low, faceIndices.hi).forEach(function (faceIndex) { // this is to support dream.viewed feature yet to be added to the rails back end
+        allDreamsGeometry.faces[faceIndex].materialIndex = (dream.viewed) ? 1 : 0
+      })
 
       // give the singleDreamGeom's vertices a color corresponding to the "id"
       applyVertexColorsToGeometry( singleDreamGeom, color.setHex( i ) );
@@ -94,7 +91,7 @@ var dreamsView = {
         position: matrixData.position,
         rotation: matrixData.rotation,
         scale: matrixData.scale,
-        facesLocation: facesLocation
+        faceIndices: faceIndices
       }
     })
 

@@ -5,6 +5,7 @@ var $ = require('jquery')
 var dreamsModel = require('./model.js')
 var dreamsView = require('./view.js')
 var queryString = require('query-string')
+var range = require('lodash.range')
 
 var controller = {
   init: function () {
@@ -126,22 +127,17 @@ var controller = {
           var clonedGeom = environment.dreamsMesh.geometry.clone()
           environment.removeObjectFromScene(environment.dreamsMesh)
 
-          var facesLocation = environment.pickingData[environment.objectUnderMouse].facesLocation
-          var facesLow = facesLocation.low
-          var facesHi = facesLocation.hi
+          var faceIndices = environment.pickingData[environment.objectUnderMouse].faceIndices
 
-          for (var i = facesLow; i <= facesHi; i++) {
-            clonedGeom.faces[i].materialIndex = 1
-          };
+          range(faceIndices.low, faceIndices.hi).forEach(function (faceIndex) {
+            clonedGeom.faces[faceIndex].materialIndex = 1
+          })
 
           var materials = [ environment.defaultMaterial, environment.viewedMaterial ]
 
-          environment.dreamsMesh = new THREE.Mesh( clonedGeom, new THREE.MultiMaterial(materials) );
-          environment.addObjectToScene( environment.dreamsMesh );
+          environment.dreamsMesh = new THREE.Mesh( clonedGeom, new THREE.MultiMaterial(materials) )
+          environment.addObjectToScene( environment.dreamsMesh )
         }
-
-
-
       }
     })
 
