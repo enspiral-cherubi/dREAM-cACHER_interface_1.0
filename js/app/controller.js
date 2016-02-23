@@ -5,7 +5,6 @@ var $ = require('jquery')
 var dreamsModel = require('./model.js')
 var dreamsView = require('./view.js')
 var queryString = require('query-string')
-var range = require('lodash.range')
 
 var controller = {
   init: function () {
@@ -118,25 +117,13 @@ var controller = {
     // three.js stuff
 
     environment.renderer.domElement.addEventListener('mousedown', function () {
-      if (environment.objectUnderMouse >= 0) {
+      var dreamIndex = environment.objectUnderMouse
+      if (dreamIndex >= 0) {
         // make the modal appear with the correct dream data
-        var dream = dreamsModel.dreamData[environment.objectUnderMouse]
+        var dream = dreamsModel.dreamData[dreamIndex]
         if (dream) {
           dreamsModel.getTagsForDream(dream)
-
-          var clonedGeom = environment.dreamsMesh.geometry.clone()
-          environment.removeObjectFromScene(environment.dreamsMesh)
-
-          var faceIndices = environment.pickingData[environment.objectUnderMouse].faceIndices
-
-          range(faceIndices.low, faceIndices.hi).forEach(function (faceIndex) {
-            clonedGeom.faces[faceIndex].materialIndex = 1
-          })
-
-          var materials = [ environment.defaultMaterial, environment.viewedMaterial ]
-
-          environment.dreamsMesh = new THREE.Mesh( clonedGeom, new THREE.MultiMaterial(materials) )
-          environment.addObjectToScene( environment.dreamsMesh )
+          environment.markDreamAsViewed(dreamIndex)
         }
       }
     })
