@@ -45,6 +45,6 @@ module.exports = function (dreams) {
   return {
     allDreamsGeometry: allDreamsGeometry,
     pickingGeometry: pickingGeometry,
-    pickingData
+    pickingData: pickingData
   }
 }
