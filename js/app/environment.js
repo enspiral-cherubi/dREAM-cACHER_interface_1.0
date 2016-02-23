@@ -52,6 +52,18 @@ environment.initializePickingScene = function () {
   this.pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } )
 }
 
+environment.initHighlightSphere = function () {
+  var geometry = new THREE.SphereGeometry( 5, 32, 32 )
+  var material = new THREE.MeshBasicMaterial({
+    color: 0xeeeeee,
+    side: THREE.BackSide,
+    transparent: true,
+    opacity: 0.5
+  })
+  this.highlightSphere = new THREE.Mesh( geometry, material )
+  this.addObjectToScene( this.highlightSphere );
+}
+
 // update fxns
 
 environment.updateMarbleTexture = function (delta, now) {
@@ -157,6 +169,7 @@ environment.init = function () {
   this.initializeRenderer()
   this.initializePickingScene()
   this.initializeWindowResize()
+  this.initHighlightSphere()
   this.onRenderFcts = [
     this.updateMarbleTexture.bind(this),
     this.updateControls.bind(this),
