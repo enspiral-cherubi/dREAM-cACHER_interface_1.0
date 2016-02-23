@@ -103,18 +103,6 @@ var dreamsView = {
     environment.pickingMesh = new THREE.Mesh( pickingGeometry, environment.pickingMaterial )
     environment.pickingScene.add( environment.pickingMesh );
 
-    environment.highlightSphere = new THREE.Mesh(
-      new THREE.SphereGeometry( 5, 32, 32 ),
-      new THREE.MeshBasicMaterial({
-        color: 0xeeeeee,
-        side: THREE.BackSide,
-        transparent: true,
-        opacity: 0.5
-      })
-    )
-
-    environment.addObjectToScene( environment.highlightSphere );
-
     environment.resetCameraPosition()
 
   },
