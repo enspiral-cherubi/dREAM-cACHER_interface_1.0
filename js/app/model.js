@@ -63,6 +63,15 @@ var dreamsModel =  {
     })
   },
 
+  markDreamAsViewed: function (dream) {
+    Auth.validateToken().then(function () {
+      $.post(global.apiUrl + '/views', {view: {dream_id: dream.id}}).then(function () {
+        dream.viewed = true
+        environment.markDreamAsViewed(dream.objectId)
+      })
+    })
+  },
+
   getTagsForDream: function (dream) {
     var data = {dream_id: dream.id}
     $.ajax({
