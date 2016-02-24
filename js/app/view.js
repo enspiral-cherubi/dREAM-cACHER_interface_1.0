@@ -1,12 +1,11 @@
 var Auth = global.Auth
 var environment = global.environment
 var THREE = require('three')
-var geometryChooser = require('./../services/geometry-chooser')
-var getMatrixData = require('./../services/get-matrix-data')
 var moment = require('moment')
 var parseDreamString = require('./../services/parse-dream-string')
 var $ = require('jquery')
 require('bootstrap-jquery')
+var generateMergedGeometriesFromDreams = require('./../services/generate-merged-geometries-from-dreams')
 
 // posts stuff to the dom
 var dreamsView = {
@@ -49,51 +48,19 @@ var dreamsView = {
 
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
+    var mergedGeometries = generateMergedGeometriesFromDreams(dreams)
 
-    allDreamsGeometry = new THREE.Geometry()
-    pickingGeometry = new THREE.Geometry()
-
-    for ( var i = 0; i < dreams.length; i ++ ) {
-      var color = new THREE.Color();
-      var quaternion = new THREE.Quaternion();
-      var matrix = new THREE.Matrix4();
-
-      var singleDreamGeom = geometryChooser(dreams[i].sentiment)
-
-      var matrixData = getMatrixData(i)
-
-      quaternion.setFromEuler( matrixData.rotation, false );
-
-      // the matrix has the position, scale, and rotation of the object
-      matrix.compose( matrixData.position, quaternion, matrixData.scale );
-
-      // merge each geometry into the one 'master' geometry
-      allDreamsGeometry.merge( singleDreamGeom, matrix );
-
-      // give the singleDreamGeom's vertices a color corresponding to the "id"
-
-      applyVertexColorsToGeometry( singleDreamGeom, color.setHex( i ) );
-
-      pickingGeometry.merge( singleDreamGeom, matrix );
-
-      environment.pickingData[ i ] = {
-        position: matrixData.position,
-        rotation: matrixData.rotation,
-        scale: matrixData.scale
-      }
-
-    }
-
+    environment.pickingData = mergedGeometries.pickingData
 
     // allDreamsMesh is all of the dream objects merged together together
-    environment.dreamsMesh = new THREE.Mesh( allDreamsGeometry, environment.defaultMaterial );
+    var materials = [ environment.defaultMaterial, environment.viewedMaterial ]
+    environment.dreamsMesh = new THREE.Mesh( mergedGeometries.allDreamsGeometry, new THREE.MultiMaterial(materials) );
     environment.addObjectToScene( environment.dreamsMesh );
 
-    environment.pickingMesh = new THREE.Mesh( pickingGeometry, environment.pickingMaterial )
+    environment.pickingMesh = new THREE.Mesh( mergedGeometries.pickingGeometry, environment.pickingMaterial )
     environment.pickingScene.add( environment.pickingMesh );
 
     environment.resetCameraPosition()
-
   },
 
   showInfoModal: function () {
@@ -148,15 +115,6 @@ function parseTagObjects (tagObjects) {
     tags.push(tagObjects[i].word)
   }
   return tags
-}
-
-function applyVertexColorsToGeometry (geometry, color) {
-  geometry.faces.forEach(function (face) {
-    var n = (face instanceof THREE.Face3) ? 3 : 4;
-    for (var j = 0; j < n; j++) {
-      face.vertexColors[j] = color;
-    }
-  })
 }
 
 module.exports = dreamsView

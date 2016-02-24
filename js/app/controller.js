@@ -1,3 +1,4 @@
+var THREE = require('three')
 var Auth = global.Auth
 var environment = global.environment
 var $ = require('jquery')
@@ -9,12 +10,12 @@ var controller = {
   init: function () {
     environment.init()
     environment.render()
-    dreamsModel.getAllDreams()
     Auth.validateToken().then(function () {
       dreamsView.setNavBarSignedIn()
     }).fail(function () {
       dreamsView.setNavBarSignedOut()
     })
+    dreamsModel.getDreams('all')
   },
   bindEventListeners: function () {
     // change dream collections
@@ -22,14 +23,14 @@ var controller = {
       e.preventDefault()
       $(this).addClass('active')
       $('#my-dreams-tab').removeClass('active')
-      dreamsModel.getAllDreams()
+      dreamsModel.getDreams('all')
     })
 
     $('#my-dreams-tab').on('click', function(e) {
       e.preventDefault()
       $(this).addClass('active')
       $('#dreamscape-tab').removeClass('active')
-      dreamsModel.getDreamsForUser()
+      dreamsModel.getDreams('forUser')
     })
 
     // new dreams
@@ -77,8 +78,8 @@ var controller = {
     $('#log-out-btn').on('click', function(e) {
       e.preventDefault()
       Auth.signOut()
-      dreamsModel.getAllDreams()
       dreamsView.setNavBarSignedOut()
+      dreamsModel.getDreams('all')
     })
 
     // create new account modal
@@ -116,10 +117,14 @@ var controller = {
     // three.js stuff
 
     environment.renderer.domElement.addEventListener('mousedown', function () {
-      if (environment.objectUnderMouse >= 0) {
+      var dreamIndex = environment.objectUnderMouse
+      if (dreamIndex >= 0) {
         // make the modal appear with the correct dream data
-        var dream = dreamsModel.dreamData[environment.objectUnderMouse]
-        if (dream) { dreamsModel.getTagsForDream(dream) }
+        var dream = dreamsModel.dreamData[dreamIndex]
+        if (dream) {
+          dreamsModel.getTagsForDream(dream)
+          if (!dream.viewed) { dreamsModel.markDreamAsViewed(dream) }
+        }
       }
     })
 
@@ -127,7 +132,7 @@ var controller = {
       e.preventDefault()
       var tag = this.id
       $('#dreamReadModal').modal('hide');
-      dreamsModel.getDreamsForTag(tag)
+      dreamsModel.getDreams({tag: tag})
       $('#dreamscape-tab').removeClass('active')
       $('#my-dreams-tab').removeClass('active')
     })
