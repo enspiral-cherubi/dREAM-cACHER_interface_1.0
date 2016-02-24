@@ -28,6 +28,7 @@ var dreamsModel =  {
   fetchDreams: function (fetchType) {
     var apiPath = fetchType === 'forUser' ? '/user/dreams' : '/dreams'
     var $promise = $.get(global.apiUrl + apiPath)
+    $promise.fail(function (err) { console.log('err: ', err) })
     return $promise
   },
 
