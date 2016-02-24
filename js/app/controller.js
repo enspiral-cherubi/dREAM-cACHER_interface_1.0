@@ -10,12 +10,12 @@ var controller = {
   init: function () {
     environment.init()
     environment.render()
-    dreamsModel.getDreams()
     Auth.validateToken().then(function () {
       dreamsView.setNavBarSignedIn()
     }).fail(function () {
       dreamsView.setNavBarSignedOut()
     })
+    dreamsModel.getDreams()
   },
   bindEventListeners: function () {
     // change dream collections

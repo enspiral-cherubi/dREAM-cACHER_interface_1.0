@@ -25,41 +25,20 @@ var dreamsModel =  {
     })
   },
 
-  getDreamsForUser: function() {
-    var self = this
-    $.ajax({
-      url: global.apiUrl + "/user/dreams",
-      type: 'GET'
-    }).then(function (dreams) {
-      self.dreamData = dreams
-      environment.clearScene()
-      dreamsView.populateDreamscape(dreams)
-    }).fail(function (err) {
-      console.log("Error: ", err)
-    })
-  },
-
-  getAllDreams: function () {
-    var self = this
-    var returnValue = null
-    $.ajax({
-      url: global.apiUrl + "/dreams",
-      type: 'GET'
-    }).then(function (dreams){
-      self.dreamData = dreams
-      environment.clearScene()
-      dreamsView.populateDreamscape(dreams)
-    }).fail(function (err){
-      console.log("Error: ", err)
-    })
+  fetchDreams: function (fetchType) {
+    var apiPath = fetchType === 'forUser' ? '/user/dreams' : '/dreams'
+    var $promise = $.get(global.apiUrl + apiPath)
+    return $promise
   },
 
   getDreams: function () {
-    if ($('#my-dreams-tab').hasClass('active')) {
-      this.getDreamsForUser()
-    } else {
-      this.getAllDreams()
-    }
+    var self = this
+    fetchType = $('#my-dreams-tab').hasClass('active') ? 'forUser' : 'all'
+    this.fetchDreams(fetchType).then(function (dreams) {
+      self.dreamData = dreams
+      environment.clearScene()
+      dreamsView.populateDreamscape(dreams)
+    })
   },
 
   saveDream: function (dream) {
