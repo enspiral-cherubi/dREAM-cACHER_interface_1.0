@@ -2,6 +2,7 @@ var THREE = require('three')
 var NoiseShaderMaterial = require('three-noise-shader-material')(THREE)
 var WindowResize = require('three-window-resize')
 require('three-fly-controls')(THREE)
+var range = require('lodash.range')
 
 var environment = {
   objectUnderMouse: null,
@@ -196,6 +197,19 @@ environment.render = function () {
       onRenderFct(deltaMsec/1000, nowMsec/1000)
     })
   })
+}
+
+environment.markDreamAsViewed = function (dreamIndex) {
+  var clonedGeom = this.dreamsMesh.geometry.clone()
+  this.removeObjectFromScene(this.dreamsMesh)
+  var faceIndices = this.pickingData[dreamIndex].faceIndices
+  range(faceIndices.low, faceIndices.hi).forEach(function (faceIndex) {
+    clonedGeom.faces[faceIndex].materialIndex = 1
+  })
+
+  var materials = [ this.defaultMaterial, this.viewedMaterial ]
+  this.dreamsMesh = new THREE.Mesh( clonedGeom, new THREE.MultiMaterial(materials) )
+  this.addObjectToScene( this.dreamsMesh )
 }
 
 module.exports = environment

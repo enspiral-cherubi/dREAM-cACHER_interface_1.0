@@ -25,41 +25,14 @@ var dreamsModel =  {
     })
   },
 
-  getDreamsForUser: function() {
+  getDreams: function (fetchType) {
     var self = this
-    $.ajax({
-      url: global.apiUrl + "/user/dreams",
-      type: 'GET'
-    }).then(function (dreams) {
-      self.dreamData = dreams
-      environment.clearScene()
-      dreamsView.populateDreamscape(dreams)
-    }).fail(function (err) {
-      console.log("Error: ", err)
+    this.fetchDreams(fetchType).then(function () {
+      self.fetchViews().then(function () {
+        environment.clearScene()
+        dreamsView.populateDreamscape(self.dreamData)
+      })
     })
-  },
-
-  getAllDreams: function () {
-    var self = this
-    var returnValue = null
-    $.ajax({
-      url: global.apiUrl + "/dreams",
-      type: 'GET'
-    }).then(function (dreams){
-      self.dreamData = dreams
-      environment.clearScene()
-      dreamsView.populateDreamscape(dreams)
-    }).fail(function (err){
-      console.log("Error: ", err)
-    })
-  },
-
-  getDreams: function () {
-    if ($('#my-dreams-tab').hasClass('active')) {
-      this.getDreamsForUser()
-    } else {
-      this.getAllDreams()
-    }
   },
 
   saveDream: function (dream) {
@@ -70,9 +43,19 @@ var dreamsModel =  {
       type: "POST",
       data : formData
     }).then(function () {
-      self.getDreams()
+      fetchType = $('#my-dreams-tab').hasClass('active') ? 'forUser' : 'all'
+      self.getDreams(fetchType)
     }).fail(function (err) {
       console.log('err: ', err)
+    })
+  },
+
+  markDreamAsViewed: function (dream) {
+    Auth.validateToken().then(function () {
+      $.post(global.apiUrl + '/views', {view: {dream_id: dream.id}}).then(function () {
+        dream.viewed = true
+        environment.markDreamAsViewed(dream.objectId)
+      })
     })
   },
 
@@ -89,22 +72,50 @@ var dreamsModel =  {
     })
   },
 
-  getDreamsForTag: function (tag) {
-    var self = this
-    var data = {tag: tag}
-    $.ajax({
-      url: global.apiUrl + "/tag/dreams",
-      type: 'GET',
-      data: data
-    }).then(function (dreams) {
-      self.dreamData = dreams
-      environment.clearScene()
-      dreamsView.populateDreamscape(dreams)
-    }).fail(function (err) {
-      console.log("Error: ", err)
-    })
-  }
+  // private
 
+  pathForFetchType: function (fetchType) {
+    if (typeof fetchType === 'object' && fetchType.tag) {
+      return '/tag/dreams?tag=' + fetchType.tag
+    } else if (fetchType === 'forUser') {
+      return '/user/dreams'
+    } else {
+      return '/dreams'
+    }
+  },
+
+  fetchViews: function () {
+    var self = this
+    var $deferred = $.Deferred()
+    $.get(global.apiUrl + '/views').then(function (views) {
+      var orderedViewData = {}
+      views.forEach(function (view) { orderedViewData[view.dream_id] = view })
+      self.dreamData.forEach(function (dream) {
+        if (orderedViewData[dream.id]) { dream.viewed = true }
+      })
+      $deferred.resolve()
+    }).fail(function (err) {
+      console.log('err: ', err)
+      $deferred.reject()
+    })
+    return $deferred.promise()
+  },
+
+  fetchDreams: function (fetchType) {
+    var self = this
+    var $deferred = $.Deferred()
+
+    var apiPath = this.pathForFetchType(fetchType)
+    $.get(global.apiUrl + apiPath).then(function (dreams) {
+      self.dreamData = dreams
+      self.dreamData.forEach(function (dream, i) { dream.objectId = i })
+      $deferred.resolve()
+    }).fail(function (err) {
+      console.log('err: ', err)
+      $deferred.reject()
+    })
+    return $deferred.promise()
+  }
 }
 
 module.exports = dreamsModel
