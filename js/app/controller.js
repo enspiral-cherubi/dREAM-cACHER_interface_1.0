@@ -123,7 +123,7 @@ var controller = {
         var dream = dreamsModel.dreamData[dreamIndex]
         if (dream) {
           dreamsModel.getTagsForDream(dream)
-          environment.markDreamAsViewed(dreamIndex)
+          dreamsModel.markDreamAsViewed(dream)
         }
       }
     })

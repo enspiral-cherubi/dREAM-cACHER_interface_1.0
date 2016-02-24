@@ -9,8 +9,8 @@ module.exports = function (dreams) {
   var pickingGeometry = new THREE.Geometry()
   var pickingData = []
 
-  dreams.forEach(function ( dream, i ) {
-    var matrixData = getMatrixData(i)
+  dreams.forEach(function ( dream ) {
+    var matrixData = getMatrixData(dream.objectId)
     var singleDreamGeom = geometryChooser(dream.sentiment)
     var quaternion = new THREE.Quaternion()
     quaternion.setFromEuler( matrixData.rotation, false );
@@ -30,7 +30,7 @@ module.exports = function (dreams) {
 
     // give the singleDreamGeom's vertices a color corresponding to the "id"
     var color = new THREE.Color()
-    applyVertexColorsToGeometry( singleDreamGeom, color.setHex( i ) )
+    applyVertexColorsToGeometry( singleDreamGeom, color.setHex( dream.objectId ) )
 
     pickingGeometry.merge( singleDreamGeom, matrix )
 

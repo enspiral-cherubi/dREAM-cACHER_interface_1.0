@@ -26,10 +26,17 @@ var dreamsModel =  {
   },
 
   fetchDreams: function (fetchType) {
+    var $deferred = $.Deferred()
     var apiPath = fetchType === 'forUser' ? '/user/dreams' : '/dreams'
-    var $promise = $.get(global.apiUrl + apiPath)
-    $promise.fail(function (err) { console.log('err: ', err) })
-    return $promise
+    $.get(global.apiUrl + apiPath).then(function (dreams) {
+      self.dreamData = dreams
+      self.dreamData.forEach(function (dream, i) { dream.objectId = i })
+      $deferred.resolve(self.dreamData)
+    }).fail(function (err) {
+      console.log('err: ', err)
+      $deferred.reject()
+    })
+    return $deferred.promise()
   },
 
   getDreams: function () {
