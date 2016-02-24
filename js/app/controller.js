@@ -10,7 +10,7 @@ var controller = {
   init: function () {
     environment.init()
     environment.render()
-    dreamsModel.getAllDreams()
+    dreamsModel.getDreams()
     Auth.validateToken().then(function () {
       dreamsView.setNavBarSignedIn()
     }).fail(function () {
@@ -23,14 +23,14 @@ var controller = {
       e.preventDefault()
       $(this).addClass('active')
       $('#my-dreams-tab').removeClass('active')
-      dreamsModel.getAllDreams()
+      dreamsModel.getDreams()
     })
 
     $('#my-dreams-tab').on('click', function(e) {
       e.preventDefault()
       $(this).addClass('active')
       $('#dreamscape-tab').removeClass('active')
-      dreamsModel.getDreamsForUser()
+      dreamsModel.getDreams()
     })
 
     // new dreams
@@ -78,8 +78,8 @@ var controller = {
     $('#log-out-btn').on('click', function(e) {
       e.preventDefault()
       Auth.signOut()
-      dreamsModel.getAllDreams()
       dreamsView.setNavBarSignedOut()
+      dreamsModel.getDreams()
     })
 
     // create new account modal
