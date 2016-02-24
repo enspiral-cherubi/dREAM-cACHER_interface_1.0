@@ -25,27 +25,14 @@ var dreamsModel =  {
     })
   },
 
-  fetchDreams: function (fetchType) {
-    var $deferred = $.Deferred()
-    var apiPath = fetchType === 'forUser' ? '/user/dreams' : '/dreams'
-    $.get(global.apiUrl + apiPath).then(function (dreams) {
-      self.dreamData = dreams
-      self.dreamData.forEach(function (dream, i) { dream.objectId = i })
-      $deferred.resolve(self.dreamData)
-    }).fail(function (err) {
-      console.log('err: ', err)
-      $deferred.reject()
-    })
-    return $deferred.promise()
-  },
-
   getDreams: function () {
     var self = this
     fetchType = $('#my-dreams-tab').hasClass('active') ? 'forUser' : 'all'
-    this.fetchDreams(fetchType).then(function (dreams) {
-      self.dreamData = dreams
-      environment.clearScene()
-      dreamsView.populateDreamscape(dreams)
+    this.fetchDreams(fetchType).then(function () {
+      self.fetchViews().then(function () {
+        environment.clearScene()
+        dreamsView.populateDreamscape(self.dreamData)
+      })
     })
   },
 
@@ -99,8 +86,41 @@ var dreamsModel =  {
     }).fail(function (err) {
       console.log("Error: ", err)
     })
-  }
+  },
 
+  // private
+
+  fetchViews: function () {
+    var self = this
+    var $deferred = $.Deferred()
+    $.get(global.apiUrl + '/views').then(function (views) {
+      var orderedViewData = {}
+      views.forEach(function (view) { orderedViewData[view.dream_id] = view })
+      self.dreamData.forEach(function (dream) {
+        if (orderedViewData[dream.id]) { dream.viewed = true }
+      })
+      $deferred.resolve()
+    }).fail(function (err) {
+      console.log('err: ', err)
+      $deferred.reject()
+    })
+    return $deferred.promise()
+  },
+
+  fetchDreams: function (fetchType) {
+    var self = this
+    var $deferred = $.Deferred()
+    var apiPath = fetchType === 'forUser' ? '/user/dreams' : '/dreams'
+    $.get(global.apiUrl + apiPath).then(function (dreams) {
+      self.dreamData = dreams
+      self.dreamData.forEach(function (dream, i) { dream.objectId = i })
+      $deferred.resolve()
+    }).fail(function (err) {
+      console.log('err: ', err)
+      $deferred.reject()
+    })
+    return $deferred.promise()
+  }
 }
 
 module.exports = dreamsModel
