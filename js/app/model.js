@@ -25,9 +25,8 @@ var dreamsModel =  {
     })
   },
 
-  getDreams: function () {
+  getDreams: function (fetchType) {
     var self = this
-    fetchType = $('#my-dreams-tab').hasClass('active') ? 'forUser' : 'all'
     this.fetchDreams(fetchType).then(function () {
       self.fetchViews().then(function () {
         environment.clearScene()
@@ -44,7 +43,8 @@ var dreamsModel =  {
       type: "POST",
       data : formData
     }).then(function () {
-      self.getDreams()
+      fetchType = $('#my-dreams-tab').hasClass('active') ? 'forUser' : 'all'
+      self.getDreams(fetchType)
     }).fail(function (err) {
       console.log('err: ', err)
     })
@@ -72,23 +72,17 @@ var dreamsModel =  {
     })
   },
 
-  getDreamsForTag: function (tag) {
-    var self = this
-    var data = {tag: tag}
-    $.ajax({
-      url: global.apiUrl + "/tag/dreams",
-      type: 'GET',
-      data: data
-    }).then(function (dreams) {
-      self.dreamData = dreams
-      environment.clearScene()
-      dreamsView.populateDreamscape(dreams)
-    }).fail(function (err) {
-      console.log("Error: ", err)
-    })
-  },
-
   // private
+
+  pathForFetchType: function (fetchType) {
+    if (typeof fetchType === 'object' && fetchType.tag) {
+      return '/tag/dreams?tag=' + fetchType.tag
+    } else if (fetchType === 'forUser') {
+      return '/user/dreams'
+    } else {
+      return '/dreams'
+    }
+  },
 
   fetchViews: function () {
     var self = this
@@ -110,7 +104,8 @@ var dreamsModel =  {
   fetchDreams: function (fetchType) {
     var self = this
     var $deferred = $.Deferred()
-    var apiPath = fetchType === 'forUser' ? '/user/dreams' : '/dreams'
+
+    var apiPath = this.pathForFetchType(fetchType)
     $.get(global.apiUrl + apiPath).then(function (dreams) {
       self.dreamData = dreams
       self.dreamData.forEach(function (dream, i) { dream.objectId = i })

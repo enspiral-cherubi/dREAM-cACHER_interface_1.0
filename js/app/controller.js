@@ -15,7 +15,7 @@ var controller = {
     }).fail(function () {
       dreamsView.setNavBarSignedOut()
     })
-    dreamsModel.getDreams()
+    dreamsModel.getDreams('all')
   },
   bindEventListeners: function () {
     // change dream collections
@@ -23,14 +23,14 @@ var controller = {
       e.preventDefault()
       $(this).addClass('active')
       $('#my-dreams-tab').removeClass('active')
-      dreamsModel.getDreams()
+      dreamsModel.getDreams('all')
     })
 
     $('#my-dreams-tab').on('click', function(e) {
       e.preventDefault()
       $(this).addClass('active')
       $('#dreamscape-tab').removeClass('active')
-      dreamsModel.getDreams()
+      dreamsModel.getDreams('forUser')
     })
 
     // new dreams
@@ -79,7 +79,7 @@ var controller = {
       e.preventDefault()
       Auth.signOut()
       dreamsView.setNavBarSignedOut()
-      dreamsModel.getDreams()
+      dreamsModel.getDreams('all')
     })
 
     // create new account modal
@@ -132,7 +132,7 @@ var controller = {
       e.preventDefault()
       var tag = this.id
       $('#dreamReadModal').modal('hide');
-      dreamsModel.getDreamsForTag(tag)
+      dreamsModel.getDreams({tag: tag})
       $('#dreamscape-tab').removeClass('active')
       $('#my-dreams-tab').removeClass('active')
     })
