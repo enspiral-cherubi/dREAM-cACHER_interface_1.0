@@ -28,7 +28,7 @@ var dreamsModel =  {
   getDreams: function (fetchType) {
     var self = this
     this.fetchDreams(fetchType).then(function () {
-      self.fetchViews().then(function () {
+      self.fetchViews().always(function () {
         environment.clearScene()
         dreamsView.populateDreamscape(self.dreamData)
       })
