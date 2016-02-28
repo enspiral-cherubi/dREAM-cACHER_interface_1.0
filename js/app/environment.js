@@ -23,10 +23,9 @@ var environment = {
 
 environment.initializeFlyControls = function () {
   this.controls = new THREE.FlyControls(this.camera, this.container)
-  this.controls.movementSpeed = 1;
-  this.controls.rollSpeed = Math.PI / 1600;
-  this.controls.autoForward = false;
-  this.controls.dragToLook = false;
+  this.controls.movementSpeed = 1
+  this.controls.rollSpeed = Math.PI / 1600
+  this.controls.dragToLook = true
 }
 
 environment.initializeRenderer = function () {
