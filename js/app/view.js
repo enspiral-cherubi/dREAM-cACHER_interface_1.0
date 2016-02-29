@@ -38,13 +38,10 @@ var dreamsView = {
     $('#login-dp-form-container').hide()
   },
 
-  clearLoginForm: function () {
+  resetForms: function () {
     $('#login-dp-form-container form')[0].reset()
-    this.hideLoginError()
-  },
-
-  clearSignUpForm: function () {
     $('#sign-up-dp-form-container form')[0].reset()
+    this.hideFormErrors()
   },
 
   // takes dreams, decides where they're going to go
@@ -108,15 +105,23 @@ var dreamsView = {
     $('#read-modal-title').html(titlehtml)
   },
 
+  // errors
+
   showLoginError: function () {
     $('#login-form-error').show()
   },
 
-  hideLoginError: function () {
-    $('#login-form-error').hide()
-  }
+  showSignUpErrors: function (errors) {
+    if (errors.email && errors.email[0] === 'is not an email') { $('#sign-up-form-email-invalid-error').show() }
+    if (errors.email && errors.email[0] === 'address is already in use') { $('#sign-up-form-email-exists-error').show() }
+    if (errors.password) { $('#sign-up-form-password-length-error').show() }
+    if (errors.password_confirmation) { $('#sign-up-form-password-matching-error').show() }
+  },
 
-};
+  hideFormErrors: function () {
+    $('.form-error').hide()
+  }
+}
 
 function parseTagObjects (tagObjects) {
   var tags = []
