@@ -10,7 +10,7 @@ var dreamsModel =  {
       dreamsView.setNavBarSignedIn()
       dreamsView.clearLoginForm()
     }).fail(function(resp) {
-      alert('Authentication failure: ' + (resp.errors && resp.errors.join(' ')))
+      dreamsView.showLoginError()
       dreamsView.setNavBarSignedOut()
     })
   },

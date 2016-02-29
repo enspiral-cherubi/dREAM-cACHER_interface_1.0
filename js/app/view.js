@@ -40,6 +40,7 @@ var dreamsView = {
 
   clearLoginForm: function () {
     $('#login-dp-form-container form')[0].reset()
+    this.hideLoginError()
   },
 
   clearSignUpForm: function () {
@@ -105,8 +106,16 @@ var dreamsView = {
     $('#dreamReadModal').modal('show')
     $('#read-modal-body').html(html)
     $('#read-modal-title').html(titlehtml)
+  },
 
+  showLoginError: function () {
+    $('#login-form-error').show()
+  },
+
+  hideLoginError: function () {
+    $('#login-form-error').hide()
   }
+
 };
 
 function parseTagObjects (tagObjects) {
