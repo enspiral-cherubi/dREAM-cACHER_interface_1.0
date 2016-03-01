@@ -98,6 +98,14 @@ a {
   }
 }
 
+.form-error {
+  display: none;
+  font-size: 12px;
+  color: red;
+  margin-bottom: 5px;
+  margin-left: 2px;
+}
+
 /* dream-entry-modal */
 
 #dream-entry-modal-body {

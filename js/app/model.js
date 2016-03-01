@@ -6,21 +6,24 @@ var dreamsView = require('./view.js')
 var dreamsModel =  {
   dreamData: undefined,
   emailSignIn: function(formParams) {
+    dreamsView.hideFormErrors()
     Auth.emailSignIn(formParams).then(function (user) {
       dreamsView.setNavBarSignedIn()
-      dreamsView.clearLoginForm()
+      dreamsView.resetForms()
     }).fail(function(resp) {
-      alert('Authentication failure: ' + (resp.errors && resp.errors.join(' ')))
+      dreamsView.showLoginError()
       dreamsView.setNavBarSignedOut()
     })
   },
 
   emailSignUp: function (formParams) {
+    dreamsView.hideFormErrors()
     Auth.emailSignUp(formParams).then(function (user) {
       dreamsView.setNavBarSignedIn()
-      dreamsView.clearSignUpForm()
-    }).fail(function (resp) {
-      alert('Authentication failure: ' + (resp.errors &&  resp.errors.join(' ')))
+      dreamsView.resetForms()
+    }).fail(function (res) {
+      var errors = res.data.errors
+      dreamsView.showSignUpErrors(errors)
       dreamsView.setNavBarSignedOut()
     })
   },

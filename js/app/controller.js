@@ -5,6 +5,7 @@ var $ = require('jquery')
 var dreamsModel = require('./model.js')
 var dreamsView = require('./view.js')
 var queryString = require('query-string')
+var isEmptyObject = require('is-empty-object')
 
 var controller = {
   init: function () {
@@ -92,13 +93,7 @@ var controller = {
       e.preventDefault()
       var $form = $(this)
       var formParams = queryString.parse($form.serialize())
-      var errors = signUpErrors(formParams)
-      if (errors) {
-        dreamsView.showCreateAccount()
-        alert(errors)
-      } else {
-        dreamsModel.emailSignUp(formParams)
-      }
+      dreamsModel.emailSignUp(formParams)
     })
 
     // TODO: refactor and move into view
@@ -143,19 +138,6 @@ var controller = {
       $(this).focus()
     })
 
-    // helper functions
-
-    // TODO: refactor
-    function signUpErrors (params) {
-      var errors = []
-      if (params.password.length < 8) {
-        errors.push('password must be atleast 8 characters')
-      }
-      if (params.password !== params.password_confirmation) {
-        errors.push('passwords do not match!')
-      }
-      return errors.length > 0 ? errors : null
-    }
   }
 }
 
