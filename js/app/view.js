@@ -33,6 +33,7 @@ var dreamsView = {
   closeDreamEntryModal: function () {
     $('#dream-entry-modal-container').modal('hide')
     $('#save-dream-btn').attr('disabled', true)
+    $('#dream-field').val('')
   },
 
   showCreateAccount: function () {
