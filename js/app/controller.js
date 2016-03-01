@@ -40,12 +40,14 @@ var controller = {
       dreamsView.showDreamEntryModal()
     })
 
-    $('#save-dream').on('click', function (e) {
+    $('#save-dream-btn').on('click', function (e) {
       e.preventDefault()
       var dream = $('#dream-entry-modal-container').find('textarea').val()
       $('#new-dream-tab').removeClass('active')
+      // TODO: refactor, move validation from client to server
       if (dream.length > 10) {
         dreamsModel.saveDream(dream)
+        dreamsView.closeDreamEntryModal()
       } else {
         alert('your dream must be longer than 10 characters')
         setTimeout(function () {
