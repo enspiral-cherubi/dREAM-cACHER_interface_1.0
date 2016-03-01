@@ -46,6 +46,10 @@ var dreamsView = {
     $('#sign-up-dp-form-container form')[0].reset()
   },
 
+  clearDreamEntryModal: function () {
+    $('#dream-field').val('')
+  },
+
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
     var mergedGeometries = generateMergedGeometriesFromDreams(dreams)
