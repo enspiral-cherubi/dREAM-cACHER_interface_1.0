@@ -26,11 +26,14 @@ var dreamsView = {
   },
 
   showDreamEntryModal: function () {
-    if ($('#dreamscape-tab').hasClass('active')) {
-      $('#dream-entry-modal-container').modal('show')
-    } else if ($('#my-dreams-tab').hasClass('active')) {
-      $('#dream-entry-modal-container').modal('show')
-    }
+    $('#dream-entry-modal-container').modal('show')
+    $('#save-dream-btn').attr('disabled', false)
+  },
+
+  closeDreamEntryModal: function () {
+    $('#dream-entry-modal-container').modal('hide')
+    $('#save-dream-btn').attr('disabled', true)
+    $('#dream-field').val('')
   },
 
   showCreateAccount: function () {
@@ -42,10 +45,6 @@ var dreamsView = {
     $('#login-dp-form-container form')[0].reset()
     $('#sign-up-dp-form-container form')[0].reset()
     this.hideFormErrors()
-  },
-
-  clearDreamEntryModal: function () {
-    $('#dream-field').val('')
   },
 
   // takes dreams, decides where they're going to go
