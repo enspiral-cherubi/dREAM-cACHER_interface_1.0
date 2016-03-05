@@ -44,6 +44,10 @@ var dreamsView = {
     this.hideFormErrors()
   },
 
+  clearDreamEntryModal: function () {
+    $('#dream-field').val('')
+  },
+
   // takes dreams, decides where they're going to go
   populateDreamscape: function (dreams) {
     var mergedGeometries = generateMergedGeometriesFromDreams(dreams)

@@ -47,6 +47,7 @@ var controller = {
       $('#new-dream-tab').removeClass('active')
       if (dream.length > 10) {
         dreamsModel.saveDream(dream)
+        dreamsView.clearDreamEntryModal()
       } else {
         alert('your dream must be longer than 10 characters')
         setTimeout(function () {
