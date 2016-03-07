@@ -5,10 +5,10 @@
   "main": "./js/index.js",
   "scripts": {
     "start": "(export NODE_ENV=development; budo . -d --serve bundle.js --live)",
-    "build": "browserify . -o bundle.js -g uglifyify",
+    "build": "NODE_ENV=production browserify . -o bundle.js -g uglifyify",
     "test": "browserify test.js | smokestack | tap-spec",
-    "dist": "mkdir -p dist && bash -c 'cp *.{js,html,css} dist'",
-    "push": "(export NODE_ENV=production; gh-pages -d dist)",
+    "dist": "mkdir -p dist && bash -c 'cp -r *.{js,html} ./stylesheets dist'",
+    "push": "gh-pages -d dist",
     "deploy": "npm run build && npm run dist && npm run push"
   },
   "browserify": {
