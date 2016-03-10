@@ -25,7 +25,6 @@ module.exports = function(THREE) {
 
         this.dragToLook = true;
         this.autoForward = false;
-        this.fuck = 'fuck'
 
         // disable default target object behavior
 
@@ -276,57 +275,55 @@ module.exports = function(THREE) {
 
         };
 
-    this.addListeners = function () {
+        this.addListeners = function() {
 
-        this.domElement.addEventListener( 'contextmenu', contextmenu, false );
+            this.domElement.addEventListener( 'contextmenu', contextmenu, false );
 
-        this.domElement.addEventListener( 'mousemove', _mousemove, false );
-        this.domElement.addEventListener( 'mousedown', _mousedown, false );
-        this.domElement.addEventListener( 'mouseup',   _mouseup, false );
+            this.domElement.addEventListener( 'mousemove', _mousemove, false );
+            this.domElement.addEventListener( 'mousedown', _mousedown, false );
+            this.domElement.addEventListener( 'mouseup',   _mouseup, false );
 
-        window.addEventListener( 'keydown', _keydown, false );
-        window.addEventListener( 'keyup',   _keyup, false );
+            window.addEventListener( 'keydown', _keydown, false );
+            window.addEventListener( 'keyup',   _keyup, false );
 
-    }
+        }
 
-    this.removeListeners = function() {
+        this.removeListeners = function() {
 
-        this.domElement.removeEventListener( 'contextmenu', contextmenu, false );
-        this.domElement.removeEventListener( 'mousedown', _mousedown, false );
-        this.domElement.removeEventListener( 'mousemove', _mousemove, false );
-        this.domElement.removeEventListener( 'mouseup', _mouseup, false );
+            this.domElement.removeEventListener( 'contextmenu', contextmenu, false );
+            this.domElement.removeEventListener( 'mousedown', _mousedown, false );
+            this.domElement.removeEventListener( 'mousemove', _mousemove, false );
+            this.domElement.removeEventListener( 'mouseup', _mouseup, false );
 
-        window.removeEventListener( 'keydown', _keydown, false );
-        window.removeEventListener( 'keyup', _keyup, false );
+            window.removeEventListener( 'keydown', _keydown, false );
+            window.removeEventListener( 'keyup', _keyup, false );
 
-    }
+        }
 
+        function bind( scope, fn ) {
 
+            return function () {
 
-    function bind( scope, fn ) {
+                fn.apply( scope, arguments );
 
-        return function () {
-
-            fn.apply( scope, arguments );
+            };
 
         };
 
-    };
+        function contextmenu( event ) {
 
-    function contextmenu( event ) {
+            event.preventDefault();
 
-        event.preventDefault();
+        }
 
-    }
+        var _mousemove = bind( this, this.mousemove );
+        var _mousedown = bind( this, this.mousedown );
+        var _mouseup = bind( this, this.mouseup );
+        var _keydown = bind( this, this.keydown );
+        var _keyup = bind( this, this.keyup );
 
-    var _mousemove = bind( this, this.mousemove );
-    var _mousedown = bind( this, this.mousedown );
-    var _mouseup = bind( this, this.mouseup );
-    var _keydown = bind( this, this.keydown );
-    var _keyup = bind( this, this.keyup );
-
-    this.updateMovementVector();
-    this.updateRotationVector();
+        this.updateMovementVector();
+        this.updateRotationVector();
 
     };
 
