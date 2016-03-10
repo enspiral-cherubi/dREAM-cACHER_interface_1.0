@@ -1,7 +1,8 @@
 var THREE = require('three')
 var NoiseShaderMaterial = require('three-noise-shader-material')(THREE)
 var WindowResize = require('three-window-resize')
-require('three-fly-controls')(THREE)
+// require('three-fly-controls')(THREE)
+require('./../services/three-fly-controls-modified')(THREE)
 var range = require('lodash.range')
 
 var environment = {
