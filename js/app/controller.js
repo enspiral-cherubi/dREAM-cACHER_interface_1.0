@@ -38,7 +38,9 @@ var controller = {
 
     $('#new-dream-tab').on('click', function (e) {
       e.preventDefault()
+
       dreamsView.showDreamEntryModal()
+      environment.controls.removeListners()
     })
 
     $('#save-dream-btn').on('click', function (e) {
@@ -61,6 +63,7 @@ var controller = {
     $('#dream-entry-modal-container').on('hidden.bs.modal', function () {
       $(dreamsView.prevTabActive).addClass('active')
       $('#new-dream-tab').removeClass('active')
+      environment.controls.addListners()
     })
 
     // other navbar stuff
