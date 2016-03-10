@@ -278,7 +278,7 @@ module.exports = function(THREE) {
 
         };
 
-        this.addListeners = function() {
+        this.enable = function() {
 
             this.domElement.addEventListener( 'contextmenu', contextmenu, false );
 
@@ -291,7 +291,7 @@ module.exports = function(THREE) {
 
         }
 
-        this.removeListeners = function() {
+        this.disable = function() {
 
             this.domElement.removeEventListener( 'contextmenu', contextmenu, false );
             this.domElement.removeEventListener( 'mousedown', _mousedown, false );
@@ -328,7 +328,7 @@ module.exports = function(THREE) {
         this.updateMovementVector();
         this.updateRotationVector();
 
-        if ( opts.autoEnabled ) { this.addListeners() }
+        if ( opts.autoEnabled ) { this.enable() }
 
     };
 
