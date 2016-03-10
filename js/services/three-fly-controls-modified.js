@@ -18,6 +18,9 @@ module.exports = function(THREE) {
         this.domElement = ( domElement !== undefined ) ? domElement : document;
         if ( domElement ) this.domElement.setAttribute( 'tabindex', -1 );
 
+        // enabled by default
+        if ( opts.autoEnabled === undefined ) { opts.autoEnabled = true }
+
         // API
 
         this.movementSpeed = (opts.movementSpeed === undefined) ? 1.0 : opts.movementSpeed;
@@ -324,6 +327,8 @@ module.exports = function(THREE) {
 
         this.updateMovementVector();
         this.updateRotationVector();
+
+        if ( opts.autoEnabled ) { this.addListeners() }
 
     };
 
