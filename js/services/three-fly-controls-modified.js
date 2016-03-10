@@ -276,7 +276,7 @@ module.exports = function(THREE) {
 
         };
 
-    this.addListners = function () {
+    this.addListeners = function () {
 
         this.domElement.addEventListener( 'contextmenu', contextmenu, false );
 
@@ -289,7 +289,7 @@ module.exports = function(THREE) {
 
     }
 
-    this.removeListners = function() {
+    this.removeListeners = function() {
 
         this.domElement.removeEventListener( 'contextmenu', contextmenu, false );
         this.domElement.removeEventListener( 'mousedown', _mousedown, false );
