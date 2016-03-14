@@ -7,7 +7,7 @@
     "start": "(export NODE_ENV=development; budo . -d --serve bundle.js --live)",
     "build": "NODE_ENV=production browserify . -o bundle.js -g uglifyify",
     "test": "browserify test.js | smokestack | tap-spec",
-    "dist": "mkdir -p dist && bash -c 'cp -r *.{js,html} ./stylesheets CNAME dist'",
+    "dist": "mkdir -p dist && bash -c 'cp -r *.{js,html} ./media ./stylesheets CNAME  dist'",
     "push": "gh-pages -d dist",
     "deploy": "npm run build && npm run dist && npm run push"
   },
@@ -37,7 +37,6 @@
     "moment": "^2.11.2",
     "query-string": "^3.0.0",
     "three": "^0.74.0",
-    "three-fly-controls": "^1.1.0",
     "three-noise-shader-material": "^1.0.2",
     "three-window-resize": "^1.0.4",
     "vectors": "^0.1.0"
