@@ -7,7 +7,7 @@
     "start": "(export NODE_ENV=development; budo . -d --serve bundle.js --live)",
     "build": "NODE_ENV=production browserify . -o bundle.js -g uglifyify",
     "test": "browserify test.js | smokestack | tap-spec",
-    "dist": "mkdir -p dist && bash -c 'cp -r *.{js,html} ./stylesheets CNAME ./media dist'",
+    "dist": "mkdir -p dist && bash -c 'cp -r *.{js,html} ./media ./stylesheets CNAME  dist'",
     "push": "gh-pages -d dist",
     "deploy": "npm run build && npm run dist && npm run push"
   },
